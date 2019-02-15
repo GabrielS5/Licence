@@ -16,8 +16,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 public class SamplePart {
+	
+	public static final String ID = "rcpapplication.part.sample";
 	 
-    private Text txtInput;
     private TableViewer tableViewer;
  
     @Inject
@@ -27,16 +28,6 @@ public class SamplePart {
     public void createComposite(Composite parent) {
         parent.setLayout(new GridLayout(1, false));
  
-        txtInput = new Text(parent, SWT.BORDER);
-        txtInput.setMessage("Enter text to mark part as dirty");
-        txtInput.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                dirty.setDirty(true);
-            }
-        });
-        txtInput.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
- 
         tableViewer = new TableViewer(parent);
  
         tableViewer.add("Sample item 1");
@@ -45,6 +36,10 @@ public class SamplePart {
         tableViewer.add("Sample item 4");
         tableViewer.add("Sample item 5");
         tableViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+    }
+    
+    public TableViewer getTable() {
+    	return tableViewer;
     }
  
     @Focus

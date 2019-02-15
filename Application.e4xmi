@@ -5,10 +5,11 @@
       <children xsi:type="advanced:Perspective" xmi:id="_pnn8oClHEemW17xzKkIVvg" elementId="rcpapplication.perspective.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_tRtBsClHEemW17xzKkIVvg" elementId="rcpapplication.partsashcontainer.0" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_eE97UClTEemW17xzKkIVvg" elementId="rcpapplication.partstack.0">
-            <children xsi:type="basic:Part" xmi:id="_f0MdQClTEemW17xzKkIVvg" elementId="rcpapplication.part.sample1" contributionURI="bundleclass://RCPApplication/part.SamplePart" label="Sample1"/>
-            <children xsi:type="basic:Part" xmi:id="_2wn8wClTEemW17xzKkIVvg" elementId="rcpapplication.part.sample2" contributionURI="bundleclass://RCPApplication/part.SamplePart" label="Sample2"/>
+            <children xsi:type="basic:Part" xmi:id="_f0MdQClTEemW17xzKkIVvg" elementId="rcpapplication.part.sample" contributionURI="bundleclass://RCPApplication/part.SamplePart" label="Sample"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_ef4VsClTEemW17xzKkIVvg" elementId="rcpapplication.partstack.1"/>
+          <children xsi:type="basic:PartStack" xmi:id="_ef4VsClTEemW17xzKkIVvg" elementId="rcpapplication.partstack.1">
+            <children xsi:type="basic:Part" xmi:id="_6EHXQDEpEemOMejh8eg8Bw" elementId="rcpapplication.part.adding" contributionURI="bundleclass://RCPApplication/part.AddingPart" label="Adding"/>
+          </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_h9_bUClTEemW17xzKkIVvg" elementId="rcpapplication.partsashcontainer.1">
             <children xsi:type="basic:PartStack" xmi:id="_kopDsClTEemW17xzKkIVvg" elementId="rcpapplication.partstack.2"/>
             <children xsi:type="basic:PartStack" xmi:id="_lAne0ClTEemW17xzKkIVvg" elementId="rcpapplication.partstack.3"/>
