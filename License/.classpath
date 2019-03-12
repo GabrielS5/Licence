@@ -9,6 +9,20 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gabri/Desktop/Git 2/Licence/jars/richtextfx-fat-0.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/richtextfx-fat-0.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/antlr4-runtime-4.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/commons-lang3-3.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/commons-text-1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/fastutil-8.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/guava-26.0-jre.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-bundle-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-core-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-demo-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-ext-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-guava-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-io-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgrapht-opt-1.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jgraphx-3.4.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/JGraphT/jheaps-0.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

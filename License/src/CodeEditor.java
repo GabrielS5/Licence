@@ -20,26 +20,30 @@ import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.Subscription;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 public class CodeEditor extends Editor {
-	public String rawText = "";
 	public Node node;
 	public CodeArea codeArea;
-	public boolean modified = false;
 	private App app;
 
-	public CodeEditor(App app) {
-		init();
+	public CodeEditor(App app, String name) {
+		this.name = name;
 		this.app = app;
+		this.modified = false;
+
+		init();
 	}
 
 	private void init() {
@@ -49,8 +53,14 @@ public class CodeEditor extends Editor {
 		Subscription cleanupWhenNoLongerNeedIt = codeArea.multiPlainChanges().successionEnds(Duration.ofMillis(500))
 				.subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
 
+		this.codeArea.onKeyReleasedProperty().set(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent evt) {
+				modified = true;
+			}
+		});
+
 		node = new VirtualizedScrollPane<>(codeArea);
-		// codeArea.replaceText(0, 0, sampleCode);
 	}
 
 	public Node getDisplay() {
@@ -63,14 +73,6 @@ public class CodeEditor extends Editor {
 
 	public String getText() {
 		return codeArea.getText();
-	}
-
-	private ArrayList<Text> formatText(String Text) {
-		ArrayList<Text> result = new ArrayList<Text>();
-		result.add(new Text("salot"));
-
-		return result;
-
 	}
 
 	private StyleSpans<Collection<String>> computeHighlighting(String text) {
@@ -116,42 +118,34 @@ public class CodeEditor extends Editor {
 
 	@Override
 	public void loadData(String path) {
-		StringBuffer sb = new StringBuffer();
-		try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis)) {
-			while (bis.available() > 0) {
-				sb.append((char) bis.read());
+		StringBuffer stringBuffer = new StringBuffer();
+		try (FileInputStream fileInputStream = new FileInputStream(path);
+				BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
+			while (bufferedInputStream.available() > 0) {
+				stringBuffer.append((char) bufferedInputStream.read());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		this.setText(sb.toString());
-		name = Paths.get(path).getFileName().toString();
+		this.setText(stringBuffer.toString());
 	}
 
 	@Override
 	public void saveData() {
 		File file = null;
 
-		// SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-		// Tab selectedTab = selectionModel.getSelectedItem();
-		// editor = getEditorForTextArea((TextArea)selectedTab.getContent());
-		String openFileName = "Name";
-
-		if (name == null) {
+		if (name.equals("")) {
 			TextInputDialog dialog = new TextInputDialog("Program");
 
-			dialog.setTitle("New program");
 			dialog.setHeaderText("Enter the program name:");
 			dialog.setContentText("Name:");
 
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
 		}
+		file = new File("../Data/Programs/" + name + ".java");
 
-		file = new File("C:\\Users\\gabri\\Desktop\\Git 2\\Licence\\Data\\Programs\\" + name);
-
-		// Write the content to the file
 		try (FileOutputStream fos = new FileOutputStream(file);
 				BufferedOutputStream bos = new BufferedOutputStream(fos)) {
 			String text = getText();
@@ -160,6 +154,8 @@ public class CodeEditor extends Editor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		modified = false;
 	}
 
 }
