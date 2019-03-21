@@ -1,3 +1,4 @@
+package editors;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -12,26 +13,18 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.Subscription;
-
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.stage.FileChooser;
+
+import main.App;
 
 public class CodeEditor extends Editor {
 	public Node node;
@@ -144,7 +137,7 @@ public class CodeEditor extends Editor {
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
 		}
-		file = new File("../Data/Programs/" + name + ".java");
+		file = new File("../../Data/Programs/" + name + ".java");
 
 		try (FileOutputStream fos = new FileOutputStream(file);
 				BufferedOutputStream bos = new BufferedOutputStream(fos)) {

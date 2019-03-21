@@ -1,6 +1,11 @@
+package main;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
+
+import editors.CodeEditor;
+import editors.Editor;
+import editors.GraphEditor;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -39,7 +44,7 @@ public class App extends Application {
 		stackPane.prefHeightProperty().bind(scene.heightProperty());
 
 		createNewCodeEditor("");
-		URL url = this.getClass().getResource("java-keywords.css");
+		URL url = this.getClass().getResource("../java-keywords.css");
 		String css = url.toExternalForm();
 		scene.getStylesheets().add(css);
 
@@ -62,7 +67,7 @@ public class App extends Application {
 
 	public void loadCodeEditor() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../Data/Programs"));
+		fileChooser.setInitialDirectory(new File("../../Data/Programs"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java source files", "*.java"));
 		File fileToOpen = fileChooser.showOpenDialog(null);
 
@@ -77,7 +82,7 @@ public class App extends Application {
 
 	public void loadGraphEditor() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../Data/Graphs"));
+		fileChooser.setInitialDirectory(new File("../../Data/Graphs"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph Files", "*.graph"));
 		File fileToOpen = fileChooser.showOpenDialog(null);
 		if (fileToOpen != null) {
@@ -95,7 +100,6 @@ public class App extends Application {
 	}
 	
 	public void ensureEditorSaved() {
-		System.out.println(currentEditor.modified);
 		if (currentEditor.modified) {
 			Alert saveEnquiry = new Alert(AlertType.NONE, "Do you want to save your progress?" , ButtonType.YES, ButtonType.NO);
 			saveEnquiry.showAndWait();

@@ -1,3 +1,4 @@
+package editors;
 import javafx.scene.Node;
 
 public abstract class Editor {
