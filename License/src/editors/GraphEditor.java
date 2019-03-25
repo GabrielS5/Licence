@@ -4,7 +4,10 @@ import graph.Edge;
 import graph.Graph;
 import graph.GraphNode;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import main.App;
 
 public class GraphEditor extends Editor {
@@ -13,6 +16,7 @@ public class GraphEditor extends Editor {
 	private Graph graph = new Graph();
 	private GraphEditMode editMode = GraphEditMode.AddingEdges;
 	private GraphNode selectedNode = null;
+	private VBox node;
 
 	public GraphEditor(App app, String name) {
 		this.app = app;
@@ -53,12 +57,23 @@ public class GraphEditor extends Editor {
 				}
 			}
 		});
+		
+		HBox hbox = new HBox();
+		hbox.setMaxHeight(100);
+		hbox.setMinHeight(100);
+		
+		Button button1 = new Button("Add edges");
+		Button button2 = new Button("Add nodes");
+		hbox.getChildren().addAll(button1, button2);
+		
+		this.node = new VBox();
+		node.getChildren().addAll(graph.getDisplay(), hbox);
 
 	}
 
 	@Override
 	public Node getDisplay() {
-		return this.graph.getDisplay();
+		return node;
 	}
 
 	@Override

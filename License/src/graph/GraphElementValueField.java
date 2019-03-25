@@ -21,14 +21,15 @@ public class GraphElementValueField extends TextField {
 				positionCaret(getCaretPosition());
 			});
 		});
+		DoubleBinding newX = Bindings.createDoubleBinding(() -> xBinding.get() - this.getWidth() / 2, xBinding,
+				this.lengthProperty());
+		DoubleBinding newY = Bindings.createDoubleBinding(() -> yBinding.get() - this.getHeight() / 2, yBinding,
+				this.lengthProperty());
 
-		setText(" ");
-		hideLater();
-		
-		DoubleBinding newX=  Bindings.createDoubleBinding(() -> xBinding.get() - this.getWidth()/2,xBinding);
-		DoubleBinding newY=  Bindings.createDoubleBinding(() -> yBinding.get() - this.getHeight()/2,yBinding);
 		translateXProperty().bind(newX);
 		translateYProperty().bind(newY);
+		setText(" ");
+		hideLater();
 	}
 
 	public void hideInput() {
@@ -39,7 +40,7 @@ public class GraphElementValueField extends TextField {
 		this.setVisible(true);
 		hideLater();
 	}
-	
+
 	private void hideLater() {
 		new java.util.Timer().schedule(new java.util.TimerTask() {
 			@Override

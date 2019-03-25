@@ -67,7 +67,7 @@ public class App extends Application {
 
 	public void loadCodeEditor() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../../Data/Programs"));
+		fileChooser.setInitialDirectory(new File("../Data/Programs"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java source files", "*.java"));
 		File fileToOpen = fileChooser.showOpenDialog(null);
 
@@ -82,7 +82,7 @@ public class App extends Application {
 
 	public void loadGraphEditor() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../../Data/Graphs"));
+		fileChooser.setInitialDirectory(new File("../Data/Graphs"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph Files", "*.graph"));
 		File fileToOpen = fileChooser.showOpenDialog(null);
 		if (fileToOpen != null) {

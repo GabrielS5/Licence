@@ -3,6 +3,7 @@ package graph;
 import java.util.ArrayList;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 
 public class Graph {
@@ -13,6 +14,8 @@ public class Graph {
 	public Graph() {
 		this.nodes = new ArrayList<GraphNode>();
 		this.edges = new ArrayList<Edge>();
+		
+		//canvas.maxHeight(600);
 
 		addGraphNode(new GraphNode(100, 100));
 		addGraphNode(new GraphNode(200, 100));
@@ -26,6 +29,7 @@ public class Graph {
 
 	public void addGraphNode(GraphNode graphNode) {
 		this.makeDraggable(graphNode);
+		//this.canvas.getChildrenUnmodifiable().add(arg0)
 		this.canvas.getChildren().add(graphNode);
 		this.nodes.add(graphNode);
 	}

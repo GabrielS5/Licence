@@ -17,7 +17,7 @@ public class Edge extends Group {
 
 		shape = new Line();
 		shape.startXProperty().bind(source.xProperty);
-		shape.startYProperty().bind( source.yProperty);
+		shape.startYProperty().bind(source.yProperty);
 		shape.endXProperty().bind(destination.xProperty);
 		shape.endYProperty().bind(destination.yProperty);
 		
