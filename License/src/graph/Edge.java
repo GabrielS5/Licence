@@ -40,4 +40,12 @@ public class Edge extends Group {
 	public void highlightOff() {
 		shape.setStroke(Color.BLACK);
 	}
+
+	public GraphNode getSource() {
+		return source;
+	}
+
+	public GraphNode getDestination() {
+		return destination;
+	}	
 }

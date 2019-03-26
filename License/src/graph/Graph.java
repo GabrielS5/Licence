@@ -49,4 +49,13 @@ public class Graph {
 
 		return null;
 	}
+
+	public ArrayList<GraphNode> getNodes() {
+		return nodes;
+	}
+
+	public ArrayList<Edge> getEdges() {
+		return edges;
+	}
+	
 }
