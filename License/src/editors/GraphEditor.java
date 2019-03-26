@@ -2,7 +2,11 @@ package editors;
 
 import graph.Edge;
 import graph.Graph;
+import graph.GraphElementValueField;
 import graph.GraphNode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +32,7 @@ public class GraphEditor extends Editor {
 		graph.getDisplay().addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
 			if (event.isStillSincePress() && editMode == GraphEditMode.AddingNodes) {
 				GraphNode node = new GraphNode(event.getX(), event.getY());
+				makeEditable(node, node.valueField);
 				graph.addGraphNode(node);
 			} else if (event.isStillSincePress() && editMode == GraphEditMode.AddingEdges) {
 				if (selectedNode == null) {
@@ -42,7 +47,11 @@ public class GraphEditor extends Editor {
 						selectedNode.highlightOff();
 						selectedNode = null;
 					} else if (secondNode != null) {
-						graph.addEdge(new Edge(selectedNode, secondNode));
+						Edge edge = new Edge(selectedNode, secondNode);
+						makeEditable(edge, edge.valueField);
+
+						graph.addEdge(edge);
+
 						secondNode.highlightOn();
 						selectedNode = null;
 
@@ -57,18 +66,51 @@ public class GraphEditor extends Editor {
 				}
 			}
 		});
-		
+
 		HBox hbox = new HBox();
 		hbox.setMaxHeight(100);
 		hbox.setMinHeight(100);
-		
+
 		Button button1 = new Button("Add edges");
 		Button button2 = new Button("Add nodes");
-		hbox.getChildren().addAll(button1, button2);
-		
+		Button button3 = new Button("Edit values");
+
+		button1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				editMode = GraphEditMode.AddingEdges;
+			}
+		});
+
+		button2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				editMode = GraphEditMode.AddingNodes;
+			}
+		});
+
+		button3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				editMode = GraphEditMode.EditingValues;
+			}
+		});
+
+		hbox.getChildren().addAll(button1, button2, button3);
+
 		this.node = new VBox();
+		this.graph.getDisplay().setPrefSize(2000, 2000);
+
 		node.getChildren().addAll(graph.getDisplay(), hbox);
 
+	}
+
+	private void makeEditable(Group group, GraphElementValueField valueField) {
+		group.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
+			if (event.isStillSincePress() && editMode == GraphEditMode.EditingValues) {
+				valueField.showInput();
+			}
+		});
 	}
 
 	@Override

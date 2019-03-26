@@ -7,6 +7,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -15,7 +16,7 @@ public class GraphNode extends Group {
 	private ArrayList<Edge> interiorEdges = new ArrayList<Edge>();
 	private ArrayList<Edge> exteriorEdges = new ArrayList<Edge>();
 	private Circle shape;
-	private GraphElementValueField valueField;
+	public GraphElementValueField valueField;
 
 	public DoubleProperty xProperty = new SimpleDoubleProperty();
 	public DoubleProperty yProperty = new SimpleDoubleProperty();
@@ -34,26 +35,25 @@ public class GraphNode extends Group {
 	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding);
 	    
 		this.getChildren().add(shape);
-		this.getChildren().add(valueField);	   
+	    this.getChildren().add(valueField);
 	}
 
 	public void setX(double x) {
-		xProperty.set(this.getLayoutX() + x);
-		this.setLayoutX(this.getLayoutX() + x);
+		xProperty.set(this.getTranslateX() + x);
+		this.setTranslateX(this.getTranslateX() + x);
 	}
 
 	public void setY(double y) {
-		yProperty.set(this.getLayoutY() + y);
-		this.setLayoutY(this.getLayoutY() + y);
+		yProperty.set(this.getTranslateY() + y);
+		this.setTranslateY(this.getTranslateY() + y);
 	}
 
 	public double getX() {
-		System.out.println(this.getLayoutX());
-		return this.getLayoutX();
+		return this.getLayoutX() + getTranslateX();
 	}
 
 	public double getY() {
-		return this.getLayoutY();
+		return this.getLayoutY() + getTranslateY();
 	}
 
 	public void addInteriorEdge(Edge edge) {

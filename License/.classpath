@@ -9,6 +9,6 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gabri/Desktop/Git 2/Licence/jars/richtextfx-fat-0.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/richtextfx-fat-0.9.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

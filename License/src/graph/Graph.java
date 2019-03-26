@@ -2,34 +2,18 @@ package graph;
 
 import java.util.ArrayList;
 
-import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Pane;
-
 public class Graph {
-	private Pane canvas = new Pane();
+	private FlexibleCanvas canvas = new FlexibleCanvas();
 	private ArrayList<GraphNode> nodes;
 	private ArrayList<Edge> edges;
 
 	public Graph() {
 		this.nodes = new ArrayList<GraphNode>();
-		this.edges = new ArrayList<Edge>();
-		
-		//canvas.maxHeight(600);
-
-		addGraphNode(new GraphNode(100, 100));
-		addGraphNode(new GraphNode(200, 100));
-
-		addGraphNode(new GraphNode(100, 300));
-		addGraphNode(new GraphNode(200, 500));
-		addGraphNode(new GraphNode(300, 500));
-		addGraphNode(new GraphNode(100, 400));
-		addGraphNode(new GraphNode(200, 400));
+		this.edges = new ArrayList<Edge>();	
 	}
 
 	public void addGraphNode(GraphNode graphNode) {
 		this.makeDraggable(graphNode);
-		//this.canvas.getChildrenUnmodifiable().add(arg0)
 		this.canvas.getChildren().add(graphNode);
 		this.nodes.add(graphNode);
 	}
@@ -39,7 +23,7 @@ public class Graph {
 		this.edges.add(edge);
 	}
 
-	public Node getDisplay() {
+	public FlexibleCanvas getDisplay() {
 		return canvas;
 	}
 
@@ -47,6 +31,7 @@ public class Graph {
 		graphNode.setOnMouseDragged(event -> {
 			graphNode.setX(event.getX());
 			graphNode.setY(event.getY());
+			event.consume();
 		});
 	}
 

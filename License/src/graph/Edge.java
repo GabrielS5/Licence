@@ -9,7 +9,7 @@ public class Edge extends Group {
 	private GraphNode source;
 	private GraphNode destination;
 	private Line shape;
-	private GraphElementValueField valueField;
+	public GraphElementValueField valueField;
 	
 	public Edge(GraphNode source, GraphNode destination) {		
 		this.source = source;
@@ -25,10 +25,6 @@ public class Edge extends Group {
 	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> (shape.startYProperty().get() + shape.endYProperty().get()) / 2,  shape.startYProperty(), shape.endYProperty());
 	    
 	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding);
-	    
-	    shape.setOnMouseReleased((event) -> {
-			this.valueField.showInput();
-			});
 		
 		this.getChildren().add(shape);
 		this.getChildren().add(valueField);
