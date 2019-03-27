@@ -9,6 +9,10 @@ import javafx.scene.text.Text;
 public class GraphElementValueField extends TextField {
 
 	public GraphElementValueField(DoubleBinding xBinding, DoubleBinding yBinding) {
+		this(xBinding, yBinding, " ");
+	}
+
+	public GraphElementValueField(DoubleBinding xBinding, DoubleBinding yBinding, String initialValue) {
 		super();
 
 		textProperty().addListener((ov, prevText, currText) -> {
@@ -28,7 +32,7 @@ public class GraphElementValueField extends TextField {
 
 		translateXProperty().bind(newX);
 		translateYProperty().bind(newY);
-		setText(" ");
+		setText(initialValue);
 		hideLater();
 	}
 

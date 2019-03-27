@@ -87,9 +87,11 @@ public class App extends Application {
 		File fileToOpen = fileChooser.showOpenDialog(null);
 		if (fileToOpen != null) {
 
-			String openFileName = fileToOpen.getAbsolutePath();
-			createNewGraphEditor(openFileName);
-			currentEditor.loadData(openFileName);
+			String path = fileToOpen.getAbsolutePath();
+			String name = Paths.get(path).getFileName().toString();
+			name = name.substring(0, name.lastIndexOf("."));
+			createNewGraphEditor(name);
+			currentEditor.loadData(path);
 		}
 	}
 

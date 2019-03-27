@@ -13,11 +13,11 @@ public class GraphNodeSerialization implements Serializable {
 
 	public double x;
 	public double y;
-	public GraphElementValueFieldSerialization valueField;
+	public String value;
 	
 	public GraphNodeSerialization(GraphNode graphNode) {
 	this.x = graphNode.getX();
 	this.y = graphNode.getY();
-	this.valueField = new GraphElementValueFieldSerialization(graphNode.valueField);
+	this.value = graphNode.valueField.getText();
 	}
 }

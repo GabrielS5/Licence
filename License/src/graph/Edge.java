@@ -12,6 +12,10 @@ public class Edge extends Group {
 	public GraphElementValueField valueField;
 	
 	public Edge(GraphNode source, GraphNode destination) {		
+		this(source, destination, " ");
+	}
+	
+	public Edge(GraphNode source, GraphNode destination, String valueFieldInitialValue) {
 		this.source = source;
 		this.destination = destination;
 
@@ -24,7 +28,7 @@ public class Edge extends Group {
 	    DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> (shape.startXProperty().get() + shape.endXProperty().get()) / 2,  shape.startXProperty(), shape.endXProperty());
 	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> (shape.startYProperty().get() + shape.endYProperty().get()) / 2,  shape.startYProperty(), shape.endYProperty());
 	    
-	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding);
+	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding,valueFieldInitialValue);
 		
 		this.getChildren().add(shape);
 		this.getChildren().add(valueField);

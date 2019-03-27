@@ -1,14 +1,24 @@
 package editors;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Optional;
+
 import graph.Edge;
 import graph.Graph;
 import graph.GraphElementValueField;
 import graph.GraphNode;
+import graph.serialization.GraphSerialization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,6 +35,8 @@ public class GraphEditor extends Editor {
 	public GraphEditor(App app, String name) {
 		this.app = app;
 		this.name = name;
+		this.modified = false;
+		
 		init();
 	}
 
@@ -120,14 +132,45 @@ public class GraphEditor extends Editor {
 
 	@Override
 	public void loadData(String path) {
-		// TODO Auto-generated method stub
-
+	      try {
+	         FileInputStream fileIn = new FileInputStream(path);
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         graph.load((GraphSerialization) in.readObject());
+	         in.close();
+	         fileIn.close();
+	      } catch (IOException | ClassNotFoundException i) {
+	         i.printStackTrace();
+	         return;
+	      }
 	}
 
 	@Override
 	public void saveData() {
-		// TODO Auto-generated method stub
+		File file = null;
 
+		if (name.equals("")) {
+			TextInputDialog dialog = new TextInputDialog("Graph");
+
+			dialog.setHeaderText("Enter the graph name:");
+			dialog.setContentText("Name:");
+
+			Optional<String> dialogResult = dialog.showAndWait();
+			name = dialogResult.get();
+		}
+		file = new File("../Data/Graphs/" + name + ".graph");
+		
+		try {
+	         FileOutputStream fileOut =
+	         new FileOutputStream(file);
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(new GraphSerialization(graph));
+	         out.close();
+	         fileOut.close();
+	      } catch (IOException i) {
+	         i.printStackTrace();
+	      }
+
+		modified = false;
 	}
 
 }

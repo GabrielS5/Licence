@@ -4,6 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -13,21 +16,29 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 import org.reactfx.Subscription;
+
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
-
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import main.App;
 
 public class CodeEditor extends Editor {
-	public Node node;
+	private VBox node;
 	public CodeArea codeArea;
 	private App app;
 
@@ -52,8 +63,60 @@ public class CodeEditor extends Editor {
 				modified = true;
 			}
 		});
+		
+		node = new VBox();
+		
+		HBox hBox = new HBox();
+		hBox.setMaxHeight(100);
+		hBox.setMinHeight(100);
 
-		node = new VirtualizedScrollPane<>(codeArea);
+		Button button1 = new Button("Compile");
+		Button button2 = new Button("Run");
+
+
+		button1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				String file = "../Data/Programs/" + name + ".java";
+				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			    compiler.run(null, null, null, file);
+			}
+		});
+		
+		button2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Class<?> clazz = null;
+				String file = "../Data/Programs/" + name + ".java";
+				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			    compiler.run(null, null, null, file);
+			    
+			    File directory = new File("../Data/Programs");
+			    try {
+			        URLClassLoader classLoader = new URLClassLoader( new URL[]{directory.toURL()});
+			        clazz = classLoader.loadClass(name);
+			        classLoader.close();
+			    } catch (Exception e1) {
+			        // something went wrong..
+			        e1.printStackTrace();
+			    }
+			    
+			    try {
+			        Object instance = clazz.newInstance(); // if there no default constructor you need to get constructors list and create a object
+			        Method method = clazz.getDeclaredMethod("run");
+			        method.setAccessible(true);
+			        method.invoke(instance);
+			    } catch (Exception e1) {
+			        // something went wrong..
+			        e1.printStackTrace();
+			    }
+			}
+		});
+		
+		hBox.getChildren().addAll(button1,button2);
+		
+		
+		node.getChildren().addAll( new VirtualizedScrollPane<>(codeArea), hBox);
 	}
 
 	public Node getDisplay() {
@@ -137,7 +200,7 @@ public class CodeEditor extends Editor {
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
 		}
-		file = new File("../../Data/Programs/" + name + ".java");
+		file = new File("../Data/Programs/" + name + ".java");
 
 		try (FileOutputStream fos = new FileOutputStream(file);
 				BufferedOutputStream bos = new BufferedOutputStream(fos)) {

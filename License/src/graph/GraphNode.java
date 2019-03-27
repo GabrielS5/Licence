@@ -22,6 +22,10 @@ public class GraphNode extends Group {
 	public DoubleProperty yProperty = new SimpleDoubleProperty();
 
 	public GraphNode(double x, double y) {
+		this(x, y, " ");
+	}
+	
+	public GraphNode(double x, double y, String valueFieldInitialValue) {
 		shape = new Circle(0, 0, 15);
 		shape.setStrokeWidth(2);
 		shape.setFill(Color.TRANSPARENT);
@@ -32,12 +36,12 @@ public class GraphNode extends Group {
 	    DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> shape.getCenterX(), this.xProperty);
 	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> shape.getCenterY(),   this.yProperty);
 	    
-	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding);
+	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding, valueFieldInitialValue);
 	    
 		this.getChildren().add(shape);
 	    this.getChildren().add(valueField);
 	}
-
+	
 	public void setX(double x) {
 		xProperty.set(this.getTranslateX() + x);
 		this.setTranslateX(this.getTranslateX() + x);
