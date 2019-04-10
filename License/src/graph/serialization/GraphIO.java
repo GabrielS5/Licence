@@ -88,16 +88,16 @@ public class GraphIO {
             
             for (GraphNode node : graph.getNodes()) {
             	Element xmlNode = document.createElement("node");
-            	xmlGraph.setAttribute("id", node.id);
+            	xmlNode.setAttribute("id", Integer.toString(node.hashCode()));
             	
             	xmlGraph.appendChild(xmlNode);
     		}
             
             for(Edge edge : graph.getEdges()) {
             	Element xmlEdge = document.createElement("edge");
-            	xmlGraph.setAttribute("id", edge.id);
-            	xmlGraph.setAttribute("source", edge.getSource().id);
-            	xmlGraph.setAttribute("target", edge.getDestination().id);
+            	xmlEdge.setAttribute("id", Integer.toString(edge.hashCode()));
+            	xmlEdge.setAttribute("source", Integer.toString(edge.getSource().hashCode()));
+            	xmlEdge.setAttribute("target", Integer.toString(edge.getDestination().hashCode()));
             	
             	xmlGraph.appendChild(xmlEdge);
             }
