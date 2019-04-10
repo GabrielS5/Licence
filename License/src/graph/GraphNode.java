@@ -17,9 +17,11 @@ public class GraphNode extends Group {
 	private ArrayList<Edge> exteriorEdges = new ArrayList<Edge>();
 	private Circle shape;
 	public GraphElementValueField valueField;
+	private String color = "black";
 
 	public DoubleProperty xProperty = new SimpleDoubleProperty();
 	public DoubleProperty yProperty = new SimpleDoubleProperty();
+	public String id;
 
 	public GraphNode(double x, double y) {
 		this(x, y, " ");
@@ -74,5 +76,13 @@ public class GraphNode extends Group {
 	
 	public void highlightOff() {
 		shape.setStroke(Color.BLACK);
+	}
+	
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
+	public String getColor() {
+		return this.color;
 	}
 }

@@ -12,6 +12,7 @@ import graph.Edge;
 import graph.Graph;
 import graph.GraphElementValueField;
 import graph.GraphNode;
+import graph.serialization.GraphIO;
 import graph.serialization.GraphSerialization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -146,7 +147,7 @@ public class GraphEditor extends Editor {
 
 	@Override
 	public void saveData() {
-		File file = null;
+
 
 		if (name.equals("")) {
 			TextInputDialog dialog = new TextInputDialog("Graph");
@@ -157,18 +158,11 @@ public class GraphEditor extends Editor {
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
 		}
-		file = new File("../Data/Graphs/" + name + ".graph");
 		
-		try {
-	         FileOutputStream fileOut =
-	         new FileOutputStream(file);
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(new GraphSerialization(graph));
-	         out.close();
-	         fileOut.close();
-	      } catch (IOException i) {
-	         i.printStackTrace();
-	      }
+		GraphIO graphIO = new GraphIO();
+		
+		graphIO.exportGraph2(this.graph, "../Data/Graphs/" + name + ".graphml");
+		//graphIO.importGraph("../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
 	}

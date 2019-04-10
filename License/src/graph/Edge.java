@@ -10,6 +10,7 @@ public class Edge extends Group {
 	private GraphNode destination;
 	private Line shape;
 	public GraphElementValueField valueField;
+	public String id;
 	
 	public Edge(GraphNode source, GraphNode destination) {		
 		this(source, destination, " ");
