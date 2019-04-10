@@ -1,4 +1,5 @@
 package editors;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -54,69 +55,30 @@ public class CodeEditor extends Editor {
 		codeArea = new CodeArea();
 		codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
 
-		Subscription cleanupWhenNoLongerNeedIt = codeArea.multiPlainChanges().successionEnds(Duration.ofMillis(500))
-				.subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
+		codeArea.multiPlainChanges().successionEnds(Duration.ofMillis(500))
+									.subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
 
-		this.codeArea.onKeyReleasedProperty().set(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent evt) {
-				modified = true;
-			}
-		});
-		
+		this.codeArea.onKeyReleasedProperty().set((event) -> modified = true);
+
 		node = new VBox();
 		
-		HBox hBox = new HBox();
-		hBox.setMaxHeight(100);
-		hBox.setMinHeight(100);
+		HBox buttonsBox = new HBox();
+		buttonsBox.setMaxHeight(100);
+		buttonsBox.setMinHeight(100);
 
-		Button button1 = new Button("Compile");
-		Button button2 = new Button("Run");
+		Button compileButton = new Button("Compile");
+		Button runButton = new Button("Run");
 
 
-		button1.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				String file = "../Data/Programs/" + name + ".java";
-				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			    compiler.run(null, null, null, file);
-			}
-		});
+		compileButton.setOnAction((event) -> compileCode());
 		
-		button2.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				Class<?> clazz = null;
-				String file = "../Data/Programs/" + name + ".java";
-				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			    compiler.run(null, null, null, file);
-			    
-			    File directory = new File("../Data/Programs");
-			    try {
-			        URLClassLoader classLoader = new URLClassLoader( new URL[]{directory.toURL()});
-			        clazz = classLoader.loadClass(name);
-			        classLoader.close();
-			    } catch (Exception e1) {
-			        // something went wrong..
-			        e1.printStackTrace();
-			    }
-			    
-			    try {
-			        Object instance = clazz.newInstance(); // if there no default constructor you need to get constructors list and create a object
-			        Method method = clazz.getDeclaredMethod("run");
-			        method.setAccessible(true);
-			        method.invoke(instance);
-			    } catch (Exception e1) {
-			        // something went wrong..
-			        e1.printStackTrace();
-			    }
-			}
-		});
+		runButton.setOnAction((event) -> runCode());
+	
+		buttonsBox.getChildren().addAll(compileButton,runButton);
 		
-		hBox.getChildren().addAll(button1,button2);
-		
-		
-		node.getChildren().addAll( new VirtualizedScrollPane<>(codeArea), hBox);
+		VirtualizedScrollPane pane = new VirtualizedScrollPane<>(codeArea);
+		pane.setPrefHeight(900);
+		node.getChildren().addAll(pane, buttonsBox);
 	}
 
 	public Node getDisplay() {
@@ -212,6 +174,39 @@ public class CodeEditor extends Editor {
 		}
 
 		modified = false;
+	}
+
+	public void compileCode() {
+		String file = "../Data/Programs/" + name + ".java";
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		compiler.run(null, null, null, file);
+	}
+	
+	public void runCode() {
+		Class<?> clazz = null;
+		String file = "../Data/Programs/" + name + ".java";
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+	    compiler.run(null, null, null, file);
+	    
+	    File directory = new File("../Data/Programs");
+	    try {
+	        URLClassLoader classLoader = new URLClassLoader( new URL[]{directory.toURL()});
+	        clazz = classLoader.loadClass(name);
+	        classLoader.close();
+	    } catch (Exception e1) {
+	        // something went wrong..
+	        e1.printStackTrace();
+	    }
+	    
+	    try {
+	        Object instance = clazz.newInstance();
+	        Method method = clazz.getDeclaredMethod("run");
+	        method.setAccessible(true);
+	        method.invoke(instance);
+	    } catch (Exception e1) {
+	        // something went wrong..
+	        e1.printStackTrace();
+	    }
 	}
 
 }
