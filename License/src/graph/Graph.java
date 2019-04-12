@@ -2,10 +2,6 @@ package graph;
 
 import java.util.ArrayList;
 
-import graph.serialization.EdgeSerialization;
-import graph.serialization.GraphNodeSerialization;
-import graph.serialization.GraphSerialization;
-
 public class Graph {
 	private FlexibleCanvas canvas = new FlexibleCanvas();
 	private ArrayList<GraphNode> nodes;
@@ -13,7 +9,7 @@ public class Graph {
 
 	public Graph() {
 		this.nodes = new ArrayList<GraphNode>();
-		this.edges = new ArrayList<Edge>();	
+		this.edges = new ArrayList<Edge>();
 	}
 
 	public void addGraphNode(GraphNode graphNode) {
@@ -38,20 +34,6 @@ public class Graph {
 			event.consume();
 		});
 	}
-	
-	public void load(GraphSerialization serialization) {
-		this.nodes.clear();
-		this.edges.clear();
-		
-		for (GraphNodeSerialization node : serialization.nodes) {
-			addGraphNode(new GraphNode(node.x, node.y, node.value));
-		}
-
-		for (EdgeSerialization edge : serialization.edges) {
-			addEdge(
-					new Edge(nodes.get(edge.sourceIndex), nodes.get(edge.destinationIndex), edge.value));
-		}
-	}
 
 	public GraphNode getNodeByCoordinates(double x, double y) {
 
@@ -75,5 +57,5 @@ public class Graph {
 	public ArrayList<Edge> getEdges() {
 		return edges;
 	}
-	
+
 }

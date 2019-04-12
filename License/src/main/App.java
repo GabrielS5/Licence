@@ -83,7 +83,7 @@ public class App extends Application {
 	public void loadGraphEditor() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(new File("../Data/Graphs"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph Files", "*.graph"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph Files", "*.graphml"));
 		File fileToOpen = fileChooser.showOpenDialog(null);
 		if (fileToOpen != null) {
 

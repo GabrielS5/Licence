@@ -21,7 +21,7 @@ public class GraphNode extends Group {
 
 	public DoubleProperty xProperty = new SimpleDoubleProperty();
 	public DoubleProperty yProperty = new SimpleDoubleProperty();
-	public String id;
+	private int id;
 
 	public GraphNode(double x, double y) {
 		this(x, y, " ");
@@ -31,6 +31,8 @@ public class GraphNode extends Group {
 		shape = new Circle(0, 0, 15);
 		shape.setStrokeWidth(2);
 		shape.setFill(Color.TRANSPARENT);
+		id = 0;
+		this.id = hashCode();
 		highlightOff();
 		this.setX(x);
 		this.setY(y);
@@ -84,5 +86,16 @@ public class GraphNode extends Group {
 	
 	public String getColor() {
 		return this.color;
+	}
+	
+	public int getUniqueId() {
+		if(id == 0) 
+			id = hashCode();
+		
+		return id;
+	}
+	
+	public void setUniqueId(int id) {
+		this.id = id;
 	}
 }

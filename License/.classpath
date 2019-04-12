@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_191">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_201">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -9,74 +9,6 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/richtextfx-fat-0.9.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/graphml-writer-0.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/blueprints-core-2.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/blueprints-sail-graph-2.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/common-1.8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-beanutils-1.7.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-beanutils-core-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-codec-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-configuration-1.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-digester-1.8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/hppc-0.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/httpclient-4.2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/httpclient-cache-4.2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/httpcore-4.2.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jackson-annotations-2.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jackson-core-2.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jackson-databind-2.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jettison-1.3.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jsonld-java-0.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/jsonld-java-sesame-0.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/linked-data-sail-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/org.restlet-2.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/repository-sail-1.8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/ripple-base-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/ripple-flow-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/ripple-flow-rdf-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/semargl-core-0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/semargl-rdf-0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/semargl-rdfa-0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/semargl-sesame-0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-http-client-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-http-protocol-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-model-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-query-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryalgebra-evaluation-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryalgebra-model-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryparser-api-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryparser-serql-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryparser-sparql-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryresultio-api-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-queryresultio-sparqlxml-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-repository-api-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-repository-sparql-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-api-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-binary-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-datatypes-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-languages-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-n3-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-nquads-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-ntriples-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-rdfjson-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-rdfxml-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-trig-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-trix-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-rio-turtle-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-sail-api-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-sail-inferencer-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-sail-memory-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-sail-nativerdf-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/sesame-util-2.7.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/slf4j-log4j12-1.7.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gabriel.schitcu/Desktop/Git Secundar/Licence/jars/blueprints/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gabri/Desktop/Git 2/Licence/jars/richtextfx-fat-0.9.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

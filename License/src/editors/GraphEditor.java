@@ -11,8 +11,8 @@ import java.util.Optional;
 import graph.Edge;
 import graph.Graph;
 import graph.GraphElementValueField;
+import graph.GraphIO;
 import graph.GraphNode;
-import graph.serialization.GraphIO;
 import graph.serialization.GraphSerialization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -133,16 +133,10 @@ public class GraphEditor extends Editor {
 
 	@Override
 	public void loadData(String path) {
-	      try {
-	         FileInputStream fileIn = new FileInputStream(path);
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         graph.load((GraphSerialization) in.readObject());
-	         in.close();
-	         fileIn.close();
-	      } catch (IOException | ClassNotFoundException i) {
-	         i.printStackTrace();
-	         return;
-	      }
+		GraphIO graphIO = new GraphIO();
+		
+		graphIO.importGraph(path, graph);
+
 	}
 
 	@Override
