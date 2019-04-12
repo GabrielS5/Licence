@@ -11,6 +11,7 @@ import java.util.Optional;
 import graph.Edge;
 import graph.Graph;
 import graph.GraphElementValueField;
+import graph.GraphIO;
 import graph.GraphNode;
 import graph.serialization.GraphSerialization;
 import javafx.event.ActionEvent;
@@ -132,21 +133,15 @@ public class GraphEditor extends Editor {
 
 	@Override
 	public void loadData(String path) {
-	      try {
-	         FileInputStream fileIn = new FileInputStream(path);
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         graph.load((GraphSerialization) in.readObject());
-	         in.close();
-	         fileIn.close();
-	      } catch (IOException | ClassNotFoundException i) {
-	         i.printStackTrace();
-	         return;
-	      }
+		GraphIO graphIO = new GraphIO();
+		
+		graphIO.importGraph(path, graph);
+
 	}
 
 	@Override
 	public void saveData() {
-		File file = null;
+
 
 		if (name.equals("")) {
 			TextInputDialog dialog = new TextInputDialog("Graph");
@@ -157,18 +152,11 @@ public class GraphEditor extends Editor {
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
 		}
-		file = new File("../Data/Graphs/" + name + ".graph");
 		
-		try {
-	         FileOutputStream fileOut =
-	         new FileOutputStream(file);
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(new GraphSerialization(graph));
-	         out.close();
-	         fileOut.close();
-	      } catch (IOException i) {
-	         i.printStackTrace();
-	      }
+		GraphIO graphIO = new GraphIO();
+		
+		graphIO.exportGraph2(this.graph, "../Data/Graphs/" + name + ".graphml");
+		//graphIO.importGraph("../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
 	}

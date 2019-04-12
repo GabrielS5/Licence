@@ -10,8 +10,9 @@ public class Edge extends Group {
 	private GraphNode destination;
 	private Line shape;
 	public GraphElementValueField valueField;
+	private int id;
 	
-	public Edge(GraphNode source, GraphNode destination) {		
+	public Edge(GraphNode source, GraphNode destination) {
 		this(source, destination, " ");
 	}
 	
@@ -51,5 +52,16 @@ public class Edge extends Group {
 
 	public GraphNode getDestination() {
 		return destination;
-	}	
+	}
+	
+	public int getUniqueId() {
+		if(id == 0) 
+			id = hashCode();
+		
+		return this.id;
+	}
+	
+	public void setUniqueId(int id) {
+		this.id = id;
+	}
 }
