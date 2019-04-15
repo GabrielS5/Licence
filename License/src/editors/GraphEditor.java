@@ -14,18 +14,15 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import main.App;
 
 public class GraphEditor extends Editor {
 
-	private App app;
 	private Graph graph = new Graph();
 	private GraphEditMode editMode = GraphEditMode.AddingEdges;
 	private GraphNode selectedNode = null;
 	private VBox node;
 
-	public GraphEditor(App app, String name) {
-		this.app = app;
+	public GraphEditor(String name) {
 		this.name = name;
 		this.modified = false;
 

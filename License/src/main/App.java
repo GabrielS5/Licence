@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import editors.CodeEditor;
 import editors.Editor;
+import editors.EditorType;
 import editors.GraphEditor;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -17,11 +18,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import panes.EditingPane;
+import panes.RunningPane;
 
 public class App extends Application {
 	private Stage primaryStage;
-	private StackPane stackPane = new StackPane();
+	private StackPane content = new StackPane();
+	private EditingPane editingPane;
+	private RunningPane runningPane;
 	private Editor currentEditor = null;
+	public AppMode appMode;
 
 	public Stage getStage() {
 		return primaryStage;
@@ -30,39 +36,77 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-
+		editingPane = new EditingPane();
+		runningPane = new RunningPane();
+		
 		AppMenu appMenu = new AppMenu(this);
 
 		VBox layout = new VBox(10);
-		layout.getChildren().addAll(appMenu, stackPane);
-
-		// display the scene
+		layout.getChildren().addAll(appMenu, content);
 		final Scene scene = new Scene(layout, 800, 600);
-		// Bind the tab pane width/height to the scene
 
-		stackPane.prefWidthProperty().bind(scene.widthProperty());
-		stackPane.prefHeightProperty().bind(scene.heightProperty());
+		content.prefWidthProperty().bind(scene.widthProperty());
+		content.prefHeightProperty().bind(scene.heightProperty());
+		editingPane.prefWidthProperty().bind(scene.widthProperty());
+		editingPane.prefHeightProperty().bind(scene.heightProperty());
+		runningPane.prefWidthProperty().bind(scene.widthProperty());
+		runningPane.prefHeightProperty().bind(scene.heightProperty());
+		
+		scene.getStylesheets().add(this.getClass().getResource("../java-keywords.css").toExternalForm());
 
-		createNewCodeEditor("");
-		URL url = this.getClass().getResource("../java-keywords.css");
-		String css = url.toExternalForm();
-		scene.getStylesheets().add(css);
-
+		this.changeAppMode(AppMode.Editing);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Simple Editor / Browser");
+		primaryStage.setTitle("Aplicatie");
 		primaryStage.show();
 	}
-
+	
+	public void handleSaveCommand() {
+		if(appMode == AppMode.Editing) {
+			editingPane.saveEditor();
+		}
+	}
+	
+	public void handleLoadCommand(EditorType editorType) {
+		if(appMode == AppMode.Editing) {
+			editingPane.loadEditor(editorType);
+		}
+	}
+	
+	public void handleCreateCommand(EditorType editorType) {
+		if(appMode == AppMode.Editing) {
+			editingPane.createEditor(editorType);
+		}
+	}
+	
+	public void handleExitCommand() {
+		if(appMode == AppMode.Editing) {
+			editingPane.ensureEditorSaved();
+			primaryStage.close();
+		}
+	}
+	
+	public void changeAppMode(AppMode appMode) {
+		this.content.getChildren().clear();
+		
+		if(appMode == AppMode.Editing) {
+			this.content.getChildren().add(editingPane);
+		} else {
+			this.content.getChildren().add(runningPane);
+		}
+		
+		this.appMode = appMode;
+	}
+	
 	public void createNewCodeEditor(String name) {
-		currentEditor = new CodeEditor(this, name);
-		stackPane.getChildren().clear();
-		stackPane.getChildren().add(currentEditor.getDisplay());
+		currentEditor = new CodeEditor( name);
+		content.getChildren().clear();
+		content.getChildren().add(currentEditor.getDisplay());
 	}
 
 	public void createNewGraphEditor(String name) {
-		currentEditor = new GraphEditor(this, name);
-		stackPane.getChildren().clear();
-		stackPane.getChildren().add(currentEditor.getDisplay());
+		currentEditor = new GraphEditor( name);
+		content.getChildren().clear();
+		content.getChildren().add(currentEditor.getDisplay());
 	}
 
 	public void loadCodeEditor() {

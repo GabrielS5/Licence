@@ -1,4 +1,5 @@
 package main;
+import editors.EditorType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
@@ -21,19 +22,8 @@ public class AppMenu extends MenuBar {
 		MenuItem newCodeEditorMenuItem = new MenuItem("New Program");
 		MenuItem newGraphEditorMenuItem = new MenuItem("New Graph");
 
-		newCodeEditorMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.ensureEditorSaved();
-				app.createNewCodeEditor("");
-			}
-		});
-
-		newGraphEditorMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.ensureEditorSaved();
-				app.createNewGraphEditor("");
-			}
-		});
+		newCodeEditorMenuItem.setOnAction((event) -> app.handleCreateCommand(EditorType.Code));
+		newGraphEditorMenuItem.setOnAction((event) -> app.handleCreateCommand(EditorType.Graph));
 
 		fileNewMenu.getItems().addAll(newCodeEditorMenuItem, newGraphEditorMenuItem);
 
@@ -41,39 +31,22 @@ public class AppMenu extends MenuBar {
 		MenuItem openCodeEditorMenuItem = new MenuItem("Open Program");
 		MenuItem openGraphEditorMenuItem = new MenuItem("Open Graph");
 
-		openCodeEditorMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.ensureEditorSaved();
-				app.loadCodeEditor();
-			}
-		});
-
-		openGraphEditorMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.ensureEditorSaved();
-				app.loadGraphEditor();
-			}
-		});
+		openCodeEditorMenuItem.setOnAction((event) -> app.handleLoadCommand(EditorType.Code));
+		openGraphEditorMenuItem.setOnAction((event) -> app.handleLoadCommand(EditorType.Graph));
 		
 		fileOpenMenu.getItems().addAll(openCodeEditorMenuItem, openGraphEditorMenuItem);
 
 		MenuItem saveMenuItem = new MenuItem("Save");
-		saveMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.saveEditor();
-			}
-		});
+		saveMenuItem.setOnAction((event) -> app.handleSaveCommand());
 
 		MenuItem exitMenuItem = new MenuItem("Exit");
-		exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
-				app.ensureEditorSaved();
-				app.getStage().close();
-			}
-		});
+		exitMenuItem.setOnAction((event) -> app.handleExitCommand());
 
 		fileMenu.getItems().addAll(fileNewMenu, fileOpenMenu, saveMenuItem, exitMenuItem);
+		
+		Menu runMenu = new Menu("Run");
+				runMenu.setOnAction((event) -> app.changeAppMode(AppMode.Running));
 
-		this.getMenus().addAll(fileMenu);
+		this.getMenus().addAll(fileMenu,runMenu);
 	}
 }

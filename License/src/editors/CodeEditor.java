@@ -34,11 +34,9 @@ import main.App;
 public class CodeEditor extends Editor {
 	private VBox node;
 	public CodeArea codeArea;
-	private App app;
 
-	public CodeEditor(App app, String name) {
+	public CodeEditor(String name) {
 		this.name = name;
-		this.app = app;
 		this.modified = false;
 
 		init();
