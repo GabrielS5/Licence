@@ -54,7 +54,7 @@ public class App extends Application {
 		
 		scene.getStylesheets().add(this.getClass().getResource("../java-keywords.css").toExternalForm());
 
-		this.changeAppMode(AppMode.Editing);
+		this.changeAppMode(AppMode.Running);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Aplicatie");
 		primaryStage.show();
@@ -95,65 +95,6 @@ public class App extends Application {
 		}
 		
 		this.appMode = appMode;
-	}
-	
-	public void createNewCodeEditor(String name) {
-		currentEditor = new CodeEditor( name);
-		content.getChildren().clear();
-		content.getChildren().add(currentEditor.getDisplay());
-	}
-
-	public void createNewGraphEditor(String name) {
-		currentEditor = new GraphEditor( name);
-		content.getChildren().clear();
-		content.getChildren().add(currentEditor.getDisplay());
-	}
-
-	public void loadCodeEditor() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../Data/Programs"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java source files", "*.java"));
-		File fileToOpen = fileChooser.showOpenDialog(null);
-
-		if (fileToOpen != null) {
-			String path = fileToOpen.getAbsolutePath();
-			String name = Paths.get(path).getFileName().toString();
-			name = name.substring(0, name.lastIndexOf("."));
-			createNewCodeEditor(name);
-			currentEditor.loadData(path);
-		}
-	}
-
-	public void loadGraphEditor() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialDirectory(new File("../Data/Graphs"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph Files", "*.graphml"));
-		File fileToOpen = fileChooser.showOpenDialog(null);
-		if (fileToOpen != null) {
-
-			String path = fileToOpen.getAbsolutePath();
-			String name = Paths.get(path).getFileName().toString();
-			name = name.substring(0, name.lastIndexOf("."));
-			createNewGraphEditor(name);
-			currentEditor.loadData(path);
-		}
-	}
-
-	public void saveEditor() {
-		if (currentEditor != null) {
-			currentEditor.saveData();
-		}
-	}
-	
-	public void ensureEditorSaved() {
-		if (currentEditor.modified) {
-			Alert saveEnquiry = new Alert(AlertType.NONE, "Do you want to save your progress?" , ButtonType.YES, ButtonType.NO);
-			saveEnquiry.showAndWait();
-
-			if (saveEnquiry.getResult() == ButtonType.YES) {
-			    this.saveEditor();
-			}
-		}
 	}
 
 	public static void main(String[] args) {
