@@ -1,9 +1,6 @@
 package graph;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +18,7 @@ import org.w3c.dom.NodeList;
 
 public class GraphIO {
 
-	public void exportGraph2(Graph graph, String path) {
+	public void exportGraph(Graph graph, String path) {
 		try {
 
 			DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();

@@ -1,7 +1,5 @@
 package main;
 import editors.EditorType;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -44,9 +42,6 @@ public class AppMenu extends MenuBar {
 
 		fileMenu.getItems().addAll(fileNewMenu, fileOpenMenu, saveMenuItem, exitMenuItem);
 		
-		Menu runMenu = new Menu("Run");
-				runMenu.setOnAction((event) -> app.changeAppMode(AppMode.Running));
-
-		this.getMenus().addAll(fileMenu,runMenu);
+		this.getMenus().addAll(fileMenu);
 	}
 }

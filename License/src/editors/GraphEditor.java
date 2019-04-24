@@ -33,8 +33,8 @@ public class GraphEditor extends Editor {
 		graph.getDisplay().addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> handleGraphInteraction(event));
 
 		HBox buttonsBox = new HBox();
-		buttonsBox.setMaxHeight(100);
-		buttonsBox.setMinHeight(100);
+		buttonsBox.setMaxHeight(50);
+		buttonsBox.setMinHeight(50);
 
 		Button addingEdgesButton = new Button("Add edges");
 		Button addingNodesButton = new Button("Add nodes");
@@ -56,6 +56,7 @@ public class GraphEditor extends Editor {
 		group.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
 			if (event.isStillSincePress() && editMode == GraphEditMode.EditingValues) {
 				valueField.showInput();
+				modified = true;
 			}
 		});
 	}
@@ -70,7 +71,8 @@ public class GraphEditor extends Editor {
 		GraphIO graphIO = new GraphIO();
 
 		graphIO.importGraph(path, graph);
-
+		
+		modified = false;
 	}
 
 	@Override
@@ -88,8 +90,7 @@ public class GraphEditor extends Editor {
 
 		GraphIO graphIO = new GraphIO();
 
-		graphIO.exportGraph2(this.graph, "../Data/Graphs/" + name + ".graphml");
-		// graphIO.importGraph("../Data/Graphs/" + name + ".graphml");
+		graphIO.exportGraph(this.graph, "../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
 	}
@@ -104,7 +105,8 @@ public class GraphEditor extends Editor {
 			GraphNode node = new GraphNode(event.getX(), event.getY());
 			makeEditable(node, node.valueField);
 			graph.addGraphNode(node);
-
+			
+			modified = true;
 		} else if (event.isStillSincePress() && editMode == GraphEditMode.AddingEdges) {
 
 			if (selectedNode == null) {
@@ -122,6 +124,9 @@ public class GraphEditor extends Editor {
 					Edge edge = new Edge(selectedNode, secondNode);
 					makeEditable(edge, edge.valueField);
 					graph.addEdge(edge);
+					
+					modified = true;
+					
 					secondNode.highlightOn();
 					selectedNode = null;
 

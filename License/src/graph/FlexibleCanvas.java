@@ -1,6 +1,5 @@
 package graph;
 
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -12,7 +11,7 @@ public class FlexibleCanvas extends Pane {
 
 	public FlexibleCanvas() {
 		super();
-		
+
 		setOnScroll((event) -> handleScroll(event));
 
 		setOnMousePressed((event) -> handleMousePressed(event));

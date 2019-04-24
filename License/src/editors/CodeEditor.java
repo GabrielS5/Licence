@@ -24,12 +24,14 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
+import com.google.googlejavaformat.java.Formatter;
+import com.google.googlejavaformat.java.FormatterException;
+
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import main.App;
 
 public class CodeEditor extends Editor {
 	private VBox node;
@@ -54,20 +56,19 @@ public class CodeEditor extends Editor {
 		node = new VBox();
 
 		HBox buttonsBox = new HBox();
-		buttonsBox.setMaxHeight(100);
-		buttonsBox.setMinHeight(100);
+		buttonsBox.setMaxHeight(50);
+		buttonsBox.setMinHeight(50);
 
 		Button compileButton = new Button("Compile");
-		Button runButton = new Button("Run");
+		Button formatButton = new Button("Format");
 
 		compileButton.setOnAction((event) -> compileCode());
+		formatButton.setOnAction((event) -> formatCode());
 
-		runButton.setOnAction((event) -> runCode());
-
-		buttonsBox.getChildren().addAll(compileButton, runButton);
+		buttonsBox.getChildren().addAll(compileButton, formatButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
-		pane.setPrefHeight(900);
+		pane.setPrefHeight(2000);
 		node.getChildren().addAll(pane, buttonsBox);
 	}
 
@@ -196,6 +197,17 @@ public class CodeEditor extends Editor {
 		} catch (Exception e1) {
 			// something went wrong..
 			e1.printStackTrace();
+		}
+	}
+
+	public void formatCode() {
+		Formatter formatter = new Formatter();
+
+		try {
+			this.setText(formatter.formatSource(getText()));
+		} catch (FormatterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
