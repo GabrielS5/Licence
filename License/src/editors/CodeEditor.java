@@ -9,13 +9,18 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.IntFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.tools.Diagnostic;
 import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
 
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -27,15 +32,23 @@ import org.fxmisc.richtext.model.StyleSpansBuilder;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import tools.LineArrowFactory;
+import tools.Program;
+import tools.ProgramCompiler;
 
 public class CodeEditor extends Editor {
 	private VBox node;
 	public CodeArea codeArea;
+	private IntegerProperty errorLine = new SimpleIntegerProperty(0);
 
 	public CodeEditor(String name) {
 		this.name = name;
@@ -51,7 +64,18 @@ public class CodeEditor extends Editor {
 		codeArea.multiPlainChanges().successionEnds(Duration.ofMillis(500))
 				.subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
 
-		this.codeArea.onKeyReleasedProperty().set((event) -> modified = true);
+		this.codeArea.onKeyReleasedProperty().set((event) -> this.setModified(true));
+
+		IntFunction<Node> lineNumbers = LineNumberFactory.get(codeArea);
+		IntFunction<Node> errorLines = new LineArrowFactory(errorLine);
+
+		IntFunction<Node> graphics = line -> {
+			HBox hbox = new HBox(lineNumbers.apply(line), errorLines.apply(line));
+			hbox.setAlignment(Pos.CENTER_LEFT);
+			return hbox;
+		};
+
+		codeArea.setParagraphGraphicFactory(graphics);
 
 		node = new VBox();
 
@@ -70,6 +94,7 @@ public class CodeEditor extends Editor {
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
 		pane.setPrefHeight(2000);
 		node.getChildren().addAll(pane, buttonsBox);
+		initializeProgram();
 	}
 
 	public Node getDisplay() {
@@ -138,6 +163,7 @@ public class CodeEditor extends Editor {
 		}
 
 		this.setText(stringBuffer.toString());
+		this.setModified(false);
 	}
 
 	@Override
@@ -152,6 +178,7 @@ public class CodeEditor extends Editor {
 
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
+			setText(getText().replace("ClassName", name));
 		}
 		file = new File("../Data/Programs/" + name + ".java");
 
@@ -164,17 +191,34 @@ public class CodeEditor extends Editor {
 			e.printStackTrace();
 		}
 
-		modified = false;
+		this.setModified(false);
+	}
+
+	private void initializeProgram() {
+		this.loadData("../Data/Programs/DefaultProgram.txt");
 	}
 
 	public void compileCode() {
-		String file = "../Data/Programs/" + name + ".java";
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		compiler.run(null, null, null, file);
+		ProgramCompiler compiler = new ProgramCompiler();
+		try {
+			List<Diagnostic<? extends JavaFileObject>> result = compiler
+					.compile(new File("../Data/Programs/" + name + ".java"));
+			if (result.size() == 0) {
+				return;
+			}
+
+			for (Diagnostic<?> diagnostic : result) {
+				System.out.println(diagnostic.getLineNumber());
+				this.errorLine.set((int) diagnostic.getLineNumber());
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void runCode() {
-		Class<?> clazz = null;
+		Class<?> programClass = null;
 		String file = "../Data/Programs/" + name + ".java";
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		compiler.run(null, null, null, file);
@@ -182,7 +226,7 @@ public class CodeEditor extends Editor {
 		File directory = new File("../Data/Programs");
 		try {
 			URLClassLoader classLoader = new URLClassLoader(new URL[] { directory.toURL() });
-			clazz = classLoader.loadClass(name);
+			programClass = classLoader.loadClass(name);
 			classLoader.close();
 		} catch (Exception e1) {
 			// something went wrong..
@@ -190,8 +234,10 @@ public class CodeEditor extends Editor {
 		}
 
 		try {
-			Object instance = clazz.newInstance();
-			Method method = clazz.getDeclaredMethod("run");
+			Object instance = programClass.newInstance();
+			System.out.println(instance instanceof Program);
+
+			Method method = programClass.getDeclaredMethod("run");
 			method.setAccessible(true);
 			method.invoke(instance);
 		} catch (Exception e1) {
@@ -209,6 +255,11 @@ public class CodeEditor extends Editor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setModified(boolean modified) {
+		this.errorLine.set(0);
+		this.modified = modified;
 	}
 
 }

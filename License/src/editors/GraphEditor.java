@@ -141,4 +141,8 @@ public class GraphEditor extends Editor {
 			}
 		}
 	}
+	
+	public Graph getGraph() {
+		return graph;
+	}
 }

@@ -1,11 +1,11 @@
 package panes;
 
 import java.nio.file.Paths;
+
 import editors.GraphEditor;
-import main.MiscTools;
+import tools.MiscTools;
 
 public class GraphPane extends EditorPane {
-
 
 	public void loadEditor() {
 		String path = MiscTools.getFileInput("../Data/Graphs", "*.graphml");
@@ -25,5 +25,7 @@ public class GraphPane extends EditorPane {
 		this.getChildren().add(editor.getDisplay());
 	}
 
-	
+	public GraphEditor getEditor() {
+		return (GraphEditor) editor;
+	}
 }

@@ -36,3 +36,7 @@
 .text-field:focused {
     -fx-background-color: #a9a9a9 , white , white;
 }
+
+.line-highlight {
+	-fx-background-color: red;
+}

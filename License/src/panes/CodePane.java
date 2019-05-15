@@ -3,7 +3,7 @@ package panes;
 import java.nio.file.Paths;
 
 import editors.CodeEditor;
-import main.MiscTools;
+import tools.MiscTools;
 
 public class CodePane extends EditorPane {
 
@@ -23,5 +23,9 @@ public class CodePane extends EditorPane {
 		editor = new CodeEditor(name);
 		this.getChildren().clear();
 		this.getChildren().add(editor.getDisplay());
+	}
+
+	public CodeEditor getEditor() {
+		return (CodeEditor) editor;
 	}
 }
