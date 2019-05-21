@@ -1,7 +1,7 @@
 import graph.Graph;
 import tools.Program;
 
-public class Program implements Program {
+public class Program2 implements Program {
 	
 	@Override
 	public void run(Graph graph) {

@@ -1,6 +1,10 @@
-public class ClassName{
+import graph.Graph;
+import tools.Program;
 
-	public void run() {
+public class ClassName implements Program {
+	
+	@Override
+	public void run(Graph graph) {
 		System.out.println("Heloo World!");
 	}
 }
