@@ -65,7 +65,7 @@ public class GraphIO {
 	public Graph importGraph(String path, Graph graph) {
 		graph.getEdges().clear();
 		graph.getNodes().clear();
-		
+
 		try {
 			File inputFile = new File(path);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -133,30 +133,29 @@ public class GraphIO {
 		Element nodeValue = document.createElement("data");
 		nodeValue.setAttribute("key", "d0");
 		nodeValue.setTextContent(node.valueField.getText());
-		
+
 		Element nodeX = document.createElement("data");
 		nodeX.setAttribute("key", "d1");
 		nodeX.setTextContent(Double.toString(node.getX()));
-		
+
 		Element nodeY = document.createElement("data");
 		nodeY.setAttribute("key", "d2");
 		nodeY.setTextContent(Double.toString(node.getY()));
-		
+
 		Element nodeColor = document.createElement("data");
 		nodeColor.setAttribute("key", "d3");
-		
+
 		Element redElement = document.createElement("red");
 		redElement.setTextContent(String.valueOf(node.getColor().getRed()));
 		nodeColor.appendChild(redElement);
-		
+
 		Element greenElement = document.createElement("green");
 		greenElement.setTextContent(String.valueOf(node.getColor().getGreen()));
 		nodeColor.appendChild(greenElement);
-		
+
 		Element blueElement = document.createElement("blue");
 		blueElement.setTextContent(String.valueOf(node.getColor().getBlue()));
 		nodeColor.appendChild(blueElement);
-
 
 		xmlNode.appendChild(nodeValue);
 		xmlNode.appendChild(nodeX);
@@ -202,7 +201,7 @@ public class GraphIO {
 				y = Float.parseFloat(childrens.item(i).getTextContent());
 				break;
 			case "d3":
-				NodeList colors =  childrens.item(i).getChildNodes();
+				NodeList colors = childrens.item(i).getChildNodes();
 				red = Double.parseDouble(colors.item(0).getTextContent());
 				green = Double.parseDouble(colors.item(1).getTextContent());
 				blue = Double.parseDouble(colors.item(2).getTextContent());
@@ -212,7 +211,7 @@ public class GraphIO {
 			}
 
 			graphNode = new GraphNode(x, y, valueField);
-			graphNode.setColor(new Color(red,green,blue,1));
+			graphNode.setColor(new Color(red, green, blue, 1));
 			graphNode.setUniqueId(id);
 		}
 		return graphNode;

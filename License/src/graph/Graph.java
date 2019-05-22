@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Graph {
 	private FlexibleCanvas canvas = new FlexibleCanvas();
-	private ArrayList<GraphNode> nodes;
-	private ArrayList<Edge> edges;
+	protected ArrayList<GraphNode> nodes;
+	protected ArrayList<Edge> edges;
 
 	public Graph() {
 		this.nodes = new ArrayList<GraphNode>();
@@ -58,4 +58,11 @@ public class Graph {
 		return edges;
 	}
 
+	public void setNodes(ArrayList<GraphNode> nodes) {
+		this.nodes = nodes;
+	}
+
+	public void setEdges(ArrayList<Edge> edges) {
+		this.edges = edges;
+	}
 }

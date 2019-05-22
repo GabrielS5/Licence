@@ -208,7 +208,6 @@ public class CodeEditor extends Editor {
 			}
 
 			for (Diagnostic<?> diagnostic : result) {
-				System.out.println(diagnostic.getLineNumber());
 				this.errorLine.set((int) diagnostic.getLineNumber());
 			}
 		} catch (Exception e) {

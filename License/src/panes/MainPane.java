@@ -1,14 +1,5 @@
 package panes;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
-import editors.CodeEditor;
 import editors.EditorType;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
@@ -16,7 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import tools.Program;
+import tools.GraphWrapper;
 import tools.ProgramRunner;
 
 public class MainPane extends VBox {
@@ -40,7 +31,7 @@ public class MainPane extends VBox {
 		buttonsBox.setMaxHeight(50);
 		buttonsBox.setMinHeight(50);
 		Button runButton = new Button("Run");
-		
+
 		runButton.setOnAction((event) -> runProgram());
 
 		buttonsBox.getChildren().add(runButton);
@@ -51,28 +42,28 @@ public class MainPane extends VBox {
 		this.getChildren().addAll(buttonsBox, display);
 
 	}
-	
+
 	public void save() {
 		codePane.saveEditor();
 		graphPane.saveEditor();
 	}
-	
+
 	public void load(EditorType editorType) {
-		if(editorType == EditorType.Code) {
+		if (editorType == EditorType.Code) {
 			codePane.loadEditor();
 		} else {
 			graphPane.loadEditor();
 		}
 	}
-	
+
 	public void create(EditorType editorType) {
-		if(editorType == EditorType.Code) {
+		if (editorType == EditorType.Code) {
 			codePane.createEditor("");
 		} else {
 			graphPane.createEditor("");
 		}
 	}
-	
+
 	public void exit() {
 		codePane.ensureEditorSaved();
 		graphPane.ensureEditorSaved();
@@ -89,10 +80,12 @@ public class MainPane extends VBox {
 			}
 		}
 	}
-	
+
 	private void runProgram() {
 		ProgramRunner programRunner = new ProgramRunner();
 		
+		GraphWrapper graphWrapper = new GraphWrapper(graphPane.getEditor().getGraph());
+
 		programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
 	}
 }

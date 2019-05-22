@@ -6,11 +6,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Edge extends Group {
-	private GraphNode source;
-	private GraphNode destination;
+	protected GraphNode source;
+	protected GraphNode destination;
 	private Line shape;
 	public GraphElementValueField valueField;
-	private int id;
+	protected int id;
 	
 	public Edge(GraphNode source, GraphNode destination) {
 		this(source, destination, " ");
@@ -63,5 +63,9 @@ public class Edge extends Group {
 	
 	public void setUniqueId(int id) {
 		this.id = id;
+	}
+	
+	public Line getShape() {
+		return shape;
 	}
 }
