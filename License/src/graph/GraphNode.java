@@ -1,6 +1,8 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -27,6 +29,9 @@ public class GraphNode extends Group {
 	}
 	
 	public GraphNode(double x, double y, String valueFieldInitialValue) {
+		Random rand = new Random();
+		List<Color> lista = new ArrayList<Color>();
+		lista.add( new Color(rand.nextInt(255)/255.0,rand.nextInt(255)/255.0,rand.nextInt(255)/255.0,1));
 		shape = new Circle(0, 0, 15);
 		shape.setStrokeWidth(2);
 		shape.setFill(color);
@@ -97,5 +102,39 @@ public class GraphNode extends Group {
 	
 	public void setUniqueId(int id) {
 		this.id = id;
+	}
+
+	public ArrayList<Edge> getInteriorEdges() {
+		return interiorEdges;
+	}
+
+	public void setInteriorEdges(ArrayList<Edge> interiorEdges) {
+		this.interiorEdges = interiorEdges;
+	}
+
+	public ArrayList<Edge> getExteriorEdges() {
+		return exteriorEdges;
+	}
+
+	public void setExteriorEdges(ArrayList<Edge> exteriorEdges) {
+		this.exteriorEdges = exteriorEdges;
+	}
+	
+	public List<GraphNode> getNeighbours(){
+		List<GraphNode> result = new ArrayList<GraphNode>();
+		
+		for(Edge edge : interiorEdges) {
+			result.add(edge.getSource());
+		}
+		
+		for(Edge edge : exteriorEdges) {
+			result.add(edge.getDestination());
+		}
+		
+		return result;
+	}
+	
+	public boolean isNeighbour(GraphNode node) {
+		return getNeighbours().contains(node);
 	}
 }
