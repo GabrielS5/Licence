@@ -1,56 +1,44 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import commands.Command;
 
 public class Graph {
-	private FlexibleCanvas canvas = new FlexibleCanvas();
-	private ArrayList<GraphNode> nodes;
-	private ArrayList<Edge> edges;
+	private static int commandOrder = 0;
+	private List<Command> commands = new ArrayList<Command>();
+	
+	private ArrayList<Node> nodes = new ArrayList<Node>();
+	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
-	public Graph() {
-		this.nodes = new ArrayList<GraphNode>();
-		this.edges = new ArrayList<Edge>();
+	public Graph(GraphicGraph graph) {
+		for (GraphicNode graphicNode : graph.getNodes()) {
+			if (getNodeById(graphicNode.getUniqueId()) == null) {
+				Node node = new Node(graphicNode, this);
+				this.addNode(node);
+				node.initialize(graphicNode, this);
+			}
+		}
+
+		for (GraphicEdge graphicEdge : graph.getEdges()) {
+			if (getEdgeById(graphicEdge.getUniqueId()) == null) {
+				Edge edge = new Edge(graphicEdge, this);
+				this.addEdge(edge);
+				edge.initialize(graphicEdge, this);
+			}
+		}
 	}
 
-	public void addGraphNode(GraphNode graphNode) {
-		this.makeDraggable(graphNode);
-		this.canvas.getChildren().add(graphNode);
+	public void addNode(Node graphNode) {
 		this.nodes.add(graphNode);
 	}
 
 	public void addEdge(Edge edge) {
-		this.canvas.getChildren().add(edge);
 		this.edges.add(edge);
 	}
 
-	public FlexibleCanvas getDisplay() {
-		return canvas;
-	}
-
-	public void makeDraggable(GraphNode graphNode) {
-		graphNode.setOnMouseDragged(event -> {
-			graphNode.setX(event.getX());
-			graphNode.setY(event.getY());
-			event.consume();
-		});
-	}
-
-	public GraphNode getNodeByCoordinates(double x, double y) {
-
-		for (int i = 0; i < nodes.size(); i++) {
-			double radius = 20;
-			double distance = Math
-					.sqrt(Math.pow((x - nodes.get(i).getX()), 2) + Math.pow((y - nodes.get(i).getY()), 2));
-
-			if (distance <= radius) {
-				return nodes.get(i);
-			}
-		}
-
-		return null;
-	}
-
-	public ArrayList<GraphNode> getNodes() {
+	public ArrayList<Node> getNodes() {
 		return nodes;
 	}
 
@@ -58,4 +46,43 @@ public class Graph {
 		return edges;
 	}
 
+	public Node getNodeById(int id) {
+		for (Node node : nodes) {
+			if (node.getUniqueId() == id)
+				return node;
+		}
+
+		return null;
+	}
+
+	public Edge getEdgeById(int id) {
+		for (Edge edge : edges) {
+			if (edge.getUniqueId() == id)
+				return edge;
+		}
+
+		return null;
+	}
+	
+	public List<Command> getCommands(){
+		List<Command> result = new ArrayList<Command>();
+		
+		result.addAll(commands);
+		
+		for(Node node : nodes) {
+			result.addAll(node.getCommands());
+		}
+		
+		for(Edge edge : edges) {
+			result.addAll(edge.getCommands());
+		}
+		
+		return result;
+	}
+	
+	public static int getCommandOrder() {
+		commandOrder++;
+		
+		return commandOrder;
+	}
 }

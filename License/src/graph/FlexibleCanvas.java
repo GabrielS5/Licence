@@ -52,8 +52,8 @@ public class FlexibleCanvas extends Pane {
 		yStart = event.getY();
 
 		for (Node node : getChildren()) {
-			if (node instanceof GraphNode) {
-				GraphNode gNode = ((GraphNode) node);
+			if (node instanceof GraphicNode) {
+				GraphicNode gNode = ((GraphicNode) node);
 
 				gNode.setX(xDistance);
 				gNode.setY(yDistance);

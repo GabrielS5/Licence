@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 
 public class GraphIO {
 
-	public void exportGraph(Graph graph, String path) {
+	public void exportGraph(GraphicGraph graph, String path) {
 		try {
 
 			DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
@@ -38,12 +38,12 @@ public class GraphIO {
 			xmlGraph.setAttribute("id", "G");
 			xmlGraph.setAttribute("edgedefault", "directed");
 
-			for (GraphNode node : graph.getNodes()) {
+			for (GraphicNode node : graph.getNodes()) {
 				Element xmlNode = getXmlNode(document, node);
 				xmlGraph.appendChild(xmlNode);
 			}
 
-			for (Edge edge : graph.getEdges()) {
+			for (GraphicEdge edge : graph.getEdges()) {
 				Element xmlEdge = getXmlEdge(document, edge);
 				xmlGraph.appendChild(xmlEdge);
 			}
@@ -62,7 +62,7 @@ public class GraphIO {
 		}
 	}
 
-	public Graph importGraph(String path, Graph graph) {
+	public GraphicGraph importGraph(String path, GraphicGraph graph) {
 		graph.getEdges().clear();
 		graph.getNodes().clear();
 		
@@ -75,14 +75,14 @@ public class GraphIO {
 			NodeList nodes = document.getElementsByTagName("node");
 
 			for (int i = 0; i < nodes.getLength(); i++) {
-				GraphNode graphNode = parseXmlNode(nodes.item(i));
-				graph.addGraphNode(graphNode);
+				GraphicNode graphNode = parseXmlNode(nodes.item(i));
+				graph.addNode(graphNode);
 			}
 
 			NodeList edges = document.getElementsByTagName("edge");
 
 			for (int i = 0; i < edges.getLength(); i++) {
-				Edge edge = parseXmlEdge(edges.item(i), graph);
+				GraphicEdge edge = parseXmlEdge(edges.item(i), graph);
 				graph.addEdge(edge);
 			}
 
@@ -126,7 +126,7 @@ public class GraphIO {
 		root.appendChild(xmlEdgeValue);
 	}
 
-	private Element getXmlNode(Document document, GraphNode node) {
+	private Element getXmlNode(Document document, GraphicNode node) {
 		Element xmlNode = document.createElement("node");
 		xmlNode.setAttribute("id", Integer.toString(node.getUniqueId()));
 
@@ -166,7 +166,7 @@ public class GraphIO {
 		return xmlNode;
 	}
 
-	private Element getXmlEdge(Document document, Edge edge) {
+	private Element getXmlEdge(Document document, GraphicEdge edge) {
 		Element xmlEdge = document.createElement("edge");
 		xmlEdge.setAttribute("id", Integer.toString(edge.getUniqueId()));
 		xmlEdge.setAttribute("source", Integer.toString(edge.getSource().getUniqueId()));
@@ -181,8 +181,8 @@ public class GraphIO {
 		return xmlEdge;
 	}
 
-	private GraphNode parseXmlNode(Node node) {
-		GraphNode graphNode = null;
+	private GraphicNode parseXmlNode(Node node) {
+		GraphicNode graphNode = null;
 		int id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
 		float x = 0, y = 0;
 		String valueField = null;
@@ -211,15 +211,15 @@ public class GraphIO {
 				break;
 			}
 
-			graphNode = new GraphNode(x, y, valueField);
+			graphNode = new GraphicNode(x, y, valueField);
 			graphNode.setColor(new Color(red,green,blue,1));
 			graphNode.setUniqueId(id);
 		}
 		return graphNode;
 	}
 
-	private Edge parseXmlEdge(Node node, Graph graph) {
-		Edge edge = null;
+	private GraphicEdge parseXmlEdge(Node node, GraphicGraph graph) {
+		GraphicEdge edge = null;
 		int id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
 		int sourceId = Integer.parseInt(node.getAttributes().getNamedItem("source").getNodeValue());
 		int targetId = Integer.parseInt(node.getAttributes().getNamedItem("target").getNodeValue());
@@ -236,10 +236,10 @@ public class GraphIO {
 				break;
 			}
 
-			GraphNode source = getGraphNodeById(graph, sourceId);
-			GraphNode destination = getGraphNodeById(graph, targetId);
+			GraphicNode source = getGraphNodeById(graph, sourceId);
+			GraphicNode destination = getGraphNodeById(graph, targetId);
 
-			edge = new Edge(source, destination, valueField);
+			edge = new GraphicEdge(source, destination, valueField);
 
 			source.addExteriorEdge(edge);
 			destination.addInteriorEdge(edge);
@@ -248,8 +248,8 @@ public class GraphIO {
 		return edge;
 	}
 
-	private GraphNode getGraphNodeById(Graph graph, int id) {
-		for (GraphNode node : graph.getNodes()) {
+	private GraphicNode getGraphNodeById(GraphicGraph graph, int id) {
+		for (GraphicNode node : graph.getNodes()) {
 			if (node.getUniqueId() == id)
 				return node;
 		}

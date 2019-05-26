@@ -2,11 +2,11 @@ package editors;
 
 import java.util.Optional;
 
-import graph.Edge;
-import graph.Graph;
+import graph.GraphicEdge;
+import graph.GraphicGraph;
 import graph.GraphElementValueField;
 import graph.GraphIO;
-import graph.GraphNode;
+import graph.GraphicNode;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,9 +17,9 @@ import javafx.scene.layout.VBox;
 
 public class GraphEditor extends Editor {
 
-	private Graph graph = new Graph();
+	private GraphicGraph graph = new GraphicGraph();
 	private GraphEditMode editMode = GraphEditMode.AddingEdges;
-	private GraphNode selectedNode = null;
+	private GraphicNode selectedNode = null;
 	private VBox node;
 
 	public GraphEditor(String name) {
@@ -102,9 +102,9 @@ public class GraphEditor extends Editor {
 	private void handleGraphInteraction(MouseEvent event) {
 		if (event.isStillSincePress() && editMode == GraphEditMode.AddingNodes) {
 
-			GraphNode node = new GraphNode(event.getX(), event.getY());
+			GraphicNode node = new GraphicNode(event.getX(), event.getY());
 			makeEditable(node, node.valueField);
-			graph.addGraphNode(node);
+			graph.addNode(node);
 			
 			modified = true;
 		} else if (event.isStillSincePress() && editMode == GraphEditMode.AddingEdges) {
@@ -115,13 +115,13 @@ public class GraphEditor extends Editor {
 					selectedNode.highlightOn();
 			} else {
 
-				GraphNode secondNode = graph.getNodeByCoordinates(event.getX(), event.getY());
-				GraphNode firstNode = selectedNode;
+				GraphicNode secondNode = graph.getNodeByCoordinates(event.getX(), event.getY());
+				GraphicNode firstNode = selectedNode;
 				if (secondNode == firstNode) {
 					selectedNode.highlightOff();
 					selectedNode = null;
 				} else if (secondNode != null) {
-					Edge edge = new Edge(selectedNode, secondNode);
+					GraphicEdge edge = new GraphicEdge(selectedNode, secondNode);
 					makeEditable(edge, edge.valueField);
 					graph.addEdge(edge);
 					
@@ -142,7 +142,7 @@ public class GraphEditor extends Editor {
 		}
 	}
 	
-	public Graph getGraph() {
+	public GraphicGraph getGraph() {
 		return graph;
 	}
 }

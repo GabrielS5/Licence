@@ -1,67 +1,73 @@
 package graph;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 
-public class Edge extends Group {
-	private GraphNode source;
-	private GraphNode destination;
-	private Line shape;
-	public GraphElementValueField valueField;
+import java.util.ArrayList;
+import java.util.List;
+
+import commands.Command;
+
+public class Edge {
+	private Graph graph;
+	private List<Command> commands = new ArrayList<Command>();
+	private Node source;
+	private Node destination;
+	private double value;
 	private int id;
-	
-	public Edge(GraphNode source, GraphNode destination) {
-		this(source, destination, " ");
-	}
-	
-	public Edge(GraphNode source, GraphNode destination, String valueFieldInitialValue) {
-		this.source = source;
-		this.destination = destination;
 
-		shape = new Line();
-		shape.startXProperty().bind(source.xProperty);
-		shape.startYProperty().bind(source.yProperty);
-		shape.endXProperty().bind(destination.xProperty);
-		shape.endYProperty().bind(destination.yProperty);
-		
-	    DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> (shape.startXProperty().get() + shape.endXProperty().get()) / 2,  shape.startXProperty(), shape.endXProperty());
-	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> (shape.startYProperty().get() + shape.endYProperty().get()) / 2,  shape.startYProperty(), shape.endYProperty());
-	    
-	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding,valueFieldInitialValue);
-		
-		this.getChildren().add(shape);
-		this.getChildren().add(valueField);
-		
-		this.source.addExteriorEdge(this);
-		this.destination.addInteriorEdge(this);
-	}
-	
-	public void highlightOn() {
-		shape.setStroke(Color.RED);
-	}
-	
-	public void highlightOff() {
-		shape.setStroke(Color.BLACK);
+	public Edge(GraphicEdge edge, Graph graph) {
+		value = 0;
+		id = edge.getUniqueId();
+		this.graph = graph;
 	}
 
-	public GraphNode getSource() {
+	public void initialize(GraphicEdge edge, Graph graph) {
+
+		Node sourceNode = graph.getNodeById(edge.getSource().getUniqueId());
+		if (sourceNode == null) {
+			sourceNode = new Node(edge.getSource(), graph);
+			graph.addNode(sourceNode);
+			sourceNode.initialize(edge.getSource(), graph);
+		}
+		this.source = sourceNode;
+
+		Node destinationNode = graph.getNodeById(edge.getDestination().getUniqueId());
+		if (destinationNode == null) {
+			destinationNode = new Node(edge.getDestination(), graph);
+			graph.addNode(destinationNode);
+			destinationNode.initialize(edge.getDestination(), graph);
+		}
+		this.destination = destinationNode;
+	}
+
+	public Node getSource() {
 		return source;
 	}
 
-	public GraphNode getDestination() {
+	public Node getDestination() {
 		return destination;
 	}
-	
+
 	public int getUniqueId() {
-		if(id == 0) 
+		if (id == 0)
 			id = hashCode();
-		
+
 		return this.id;
 	}
-	
+
 	public void setUniqueId(int id) {
 		this.id = id;
 	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+
+	public List<Command> getCommands() {
+		return commands;
+	}
+	
+	
 }

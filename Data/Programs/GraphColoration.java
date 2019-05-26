@@ -1,12 +1,12 @@
 import graph.Graph;
-import graph.GraphNode;
+import graph.Node;
 import tools.Program;
 import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphColoration implements Program {
+public class GraphColoration extends Program {
 
   private Color generateColor() {
     Random rand = new Random();
@@ -24,11 +24,12 @@ public class GraphColoration implements Program {
     return result;
   }
 
-  private Color findUnusedColor(List<GraphNode> nodes, List<Color> colors) {
+  private Color findUnusedColor(List<Node> nodes, List<Color> colors) {
+
     for (Color color : colors) {
       boolean isUnused = true;
 
-      for (GraphNode node : nodes) {
+      for (Node node : nodes) {
         if (color.equals(node.getColor())) {
           isUnused = false;
           break;
@@ -49,11 +50,11 @@ public class GraphColoration implements Program {
   public void run(Graph graph) {
     List<Color> colors = generateColors();
 
-    for (GraphNode node : graph.getNodes()) {
-      List<GraphNode> neighbours = node.getNeighbours();
-
+    for (Node node : graph.getNodes()) {
+      List<Node> neighbours = node.getNeighbours();
       Color color = findUnusedColor(neighbours, colors);
       node.setColor(color);
+	println("Ceva printat");
     }
   }
 }

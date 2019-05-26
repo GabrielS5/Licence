@@ -12,10 +12,10 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class GraphNode extends Group {
+public class GraphicNode extends Group {
 
-	private ArrayList<Edge> interiorEdges = new ArrayList<Edge>();
-	private ArrayList<Edge> exteriorEdges = new ArrayList<Edge>();
+	private ArrayList<GraphicEdge> interiorEdges = new ArrayList<GraphicEdge>();
+	private ArrayList<GraphicEdge> exteriorEdges = new ArrayList<GraphicEdge>();
 	private Circle shape;
 	public GraphElementValueField valueField;
 	private Color color = Color.WHITE;
@@ -24,14 +24,14 @@ public class GraphNode extends Group {
 	public DoubleProperty yProperty = new SimpleDoubleProperty();
 	private int id;
 
-	public GraphNode(double x, double y) {
+	public GraphicNode(double x, double y) {
 		this(x, y, " ");
 	}
-	
-	public GraphNode(double x, double y, String valueFieldInitialValue) {
+
+	public GraphicNode(double x, double y, String valueFieldInitialValue) {
 		Random rand = new Random();
 		List<Color> lista = new ArrayList<Color>();
-		lista.add( new Color(rand.nextInt(255)/255.0,rand.nextInt(255)/255.0,rand.nextInt(255)/255.0,1));
+		lista.add(new Color(rand.nextInt(255) / 255.0, rand.nextInt(255) / 255.0, rand.nextInt(255) / 255.0, 1));
 		shape = new Circle(0, 0, 15);
 		shape.setStrokeWidth(2);
 		shape.setFill(color);
@@ -40,16 +40,16 @@ public class GraphNode extends Group {
 		highlightOff();
 		this.setX(x);
 		this.setY(y);
-		
-	    DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> shape.getCenterX(), this.xProperty);
-	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> shape.getCenterY(),   this.yProperty);
-	    
-	    valueField = new GraphElementValueField(valueFieldXBinding,valueFieldYBinding, valueFieldInitialValue);
-	    
+
+		DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> shape.getCenterX(), this.xProperty);
+		DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> shape.getCenterY(), this.yProperty);
+
+		valueField = new GraphElementValueField(valueFieldXBinding, valueFieldYBinding, valueFieldInitialValue);
+
 		this.getChildren().add(shape);
-	    this.getChildren().add(valueField);
+		this.getChildren().add(valueField);
 	}
-	
+
 	public void setX(double x) {
 		xProperty.set(this.getTranslateX() + x);
 		this.setTranslateX(this.getTranslateX() + x);
@@ -68,73 +68,77 @@ public class GraphNode extends Group {
 		return this.getLayoutY() + getTranslateY();
 	}
 
-	public void addInteriorEdge(Edge edge) {
+	public void addInteriorEdge(GraphicEdge edge) {
 		this.interiorEdges.add(edge);
 	}
 
-	public void addExteriorEdge(Edge edge) {
+	public void addExteriorEdge(GraphicEdge edge) {
 		this.exteriorEdges.add(edge);
 	}
-	
+
 	public void highlightOn() {
 		shape.setStroke(Color.RED);
 	}
-	
+
 	public void highlightOff() {
 		shape.setStroke(Color.BLACK);
 	}
-	
+
 	public void setColor(Color color) {
 		this.color = color;
 		this.shape.setFill(color);
 	}
-	
+
 	public Color getColor() {
 		return this.color;
 	}
-	
+
 	public int getUniqueId() {
-		if(id == 0) 
+		if (id == 0)
 			id = hashCode();
-		
+
 		return id;
 	}
-	
+
 	public void setUniqueId(int id) {
 		this.id = id;
 	}
 
-	public ArrayList<Edge> getInteriorEdges() {
+	public ArrayList<GraphicEdge> getInteriorEdges() {
 		return interiorEdges;
 	}
 
-	public void setInteriorEdges(ArrayList<Edge> interiorEdges) {
+	public void setInteriorEdges(ArrayList<GraphicEdge> interiorEdges) {
 		this.interiorEdges = interiorEdges;
 	}
 
-	public ArrayList<Edge> getExteriorEdges() {
+	public ArrayList<GraphicEdge> getExteriorEdges() {
 		return exteriorEdges;
 	}
 
-	public void setExteriorEdges(ArrayList<Edge> exteriorEdges) {
+	public void setExteriorEdges(ArrayList<GraphicEdge> exteriorEdges) {
 		this.exteriorEdges = exteriorEdges;
 	}
-	
-	public List<GraphNode> getNeighbours(){
-		List<GraphNode> result = new ArrayList<GraphNode>();
-		
-		for(Edge edge : interiorEdges) {
+
+	public List<GraphicNode> getNeighbours() {
+		List<GraphicNode> result = new ArrayList<GraphicNode>();
+
+		for (GraphicEdge edge : interiorEdges) {
 			result.add(edge.getSource());
 		}
-		
-		for(Edge edge : exteriorEdges) {
+
+		for (GraphicEdge edge : exteriorEdges) {
 			result.add(edge.getDestination());
 		}
-		
+
 		return result;
 	}
-	
-	public boolean isNeighbour(GraphNode node) {
+
+	public boolean isNeighbour(GraphicNode node) {
 		return getNeighbours().contains(node);
+	}
+
+	public Circle getShape() {
+		return shape;
 	}
 }
