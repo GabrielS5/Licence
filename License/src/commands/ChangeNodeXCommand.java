@@ -2,6 +2,8 @@ package commands;
 
 import graph.GraphicGraph;
 import graph.GraphicNode;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 public class ChangeNodeXCommand extends Command {
 	int id;
@@ -17,7 +19,11 @@ public class ChangeNodeXCommand extends Command {
 	public void run(GraphicGraph graph, int duration) {
 		GraphicNode node = graph.getNodeById(id);
 
-		node.setX(x);
-
+		//node.setX(x);
+	     TranslateTransition tt = new TranslateTransition(Duration.millis(duration), node.getShape());
+	     tt.setByX(x - node.getX());
+	     tt.setCycleCount(10);
+	 
+	     tt.play();
 	}
 }

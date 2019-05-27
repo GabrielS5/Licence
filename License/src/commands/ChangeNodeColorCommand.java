@@ -20,10 +20,10 @@ public class ChangeNodeColorCommand extends Command {
 	public void run(GraphicGraph graph, int duration) {
 		GraphicNode node = graph.getNodeById(id);
 
-		// node.setColor(color);
-
 		FillTransition fill = new FillTransition(Duration.millis(duration), node.getShape(), node.getColor(), color);
-
+		
+		node.setColor(color);
+		
 		fill.play();
 
 	}

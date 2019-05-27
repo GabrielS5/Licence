@@ -3,7 +3,9 @@ package graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import commands.ChangeEdgeColorCommand;
 import commands.Command;
+import javafx.scene.paint.Color;
 
 public class Edge {
 	private Graph graph;
@@ -12,11 +14,13 @@ public class Edge {
 	private Node destination;
 	private double value;
 	private int id;
+	private Color color;
 
 	public Edge(GraphicEdge edge, Graph graph) {
 		value = 0;
 		id = edge.getUniqueId();
 		this.graph = graph;
+		this.color = edge.getColor();
 	}
 
 	public void initialize(GraphicEdge edge, Graph graph) {
@@ -68,6 +72,13 @@ public class Edge {
 	public List<Command> getCommands() {
 		return commands;
 	}
-	
-	
+
+	public void setColor(Color color) {
+		commands.add(new ChangeEdgeColorCommand(Graph.getCommandOrder(), id, color));
+		this.color = color;
+	}
+
+	public Color getColor() {
+		return color;
+	}
 }

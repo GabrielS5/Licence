@@ -11,6 +11,7 @@ public class GraphicEdge extends Group {
 	private Line shape;
 	public GraphElementValueField valueField;
 	private int id;
+	private Color color = Color.BLACK;
 	
 	public GraphicEdge(GraphicNode source, GraphicNode destination) {
 		this(source, destination, " ");
@@ -25,6 +26,7 @@ public class GraphicEdge extends Group {
 		shape.startYProperty().bind(source.yProperty);
 		shape.endXProperty().bind(destination.xProperty);
 		shape.endYProperty().bind(destination.yProperty);
+		shape.setStroke(color);
 		
 	    DoubleBinding valueFieldXBinding = Bindings.createDoubleBinding(() -> (shape.startXProperty().get() + shape.endXProperty().get()) / 2,  shape.startXProperty(), shape.endXProperty());
 	    DoubleBinding valueFieldYBinding = Bindings.createDoubleBinding(() -> (shape.startYProperty().get() + shape.endYProperty().get()) / 2,  shape.startYProperty(), shape.endYProperty());
@@ -63,5 +65,17 @@ public class GraphicEdge extends Group {
 	
 	public void setUniqueId(int id) {
 		this.id = id;
+	}
+	
+	public Line getShape() {
+		return shape;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 }

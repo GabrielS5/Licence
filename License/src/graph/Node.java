@@ -7,6 +7,7 @@ import commands.ChangeNodeColorCommand;
 import commands.ChangeNodeXCommand;
 import commands.ChangeNodeYCommand;
 import commands.Command;
+import commands.GetNodeNeighboursCommand;
 import javafx.scene.paint.Color;
 
 public class Node {
@@ -55,13 +56,13 @@ public class Node {
 	}
 
 	public void setX(double x) {
-		commands.add(new ChangeNodeXCommand(Graph.getCommandOrder(),this.id, x));
-		
+		commands.add(new ChangeNodeXCommand(Graph.getCommandOrder(), this.id, x));
+
 		this.x = x;
 	}
 
 	public void setY(double y) {
-		commands.add(new ChangeNodeYCommand(Graph.getCommandOrder(),this.id, y));
+		commands.add(new ChangeNodeYCommand(Graph.getCommandOrder(), this.id, y));
 
 		this.y = y;
 	}
@@ -83,8 +84,8 @@ public class Node {
 	}
 
 	public void setColor(Color color) {
-		commands.add(new ChangeNodeColorCommand(Graph.getCommandOrder(),this.id, color));
-		
+		commands.add(new ChangeNodeColorCommand(Graph.getCommandOrder(), this.id, color));
+
 		this.color = color;
 	}
 
@@ -129,6 +130,8 @@ public class Node {
 		for (Edge edge : exteriorEdges) {
 			result.add(edge.getDestination());
 		}
+
+		commands.add(new GetNodeNeighboursCommand(Graph.getCommandOrder(), result));
 
 		return result;
 	}

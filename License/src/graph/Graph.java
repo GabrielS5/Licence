@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import commands.Command;
+import commands.GetGraphEdgesCommand;
+import commands.GetGraphNodesCommand;
 
 public class Graph {
 	private static int commandOrder = 0;
 	private List<Command> commands = new ArrayList<Command>();
-	
+
 	private ArrayList<Node> nodes = new ArrayList<Node>();
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
@@ -39,10 +41,14 @@ public class Graph {
 	}
 
 	public ArrayList<Node> getNodes() {
+		commands.add(new GetGraphNodesCommand(Graph.getCommandOrder(), nodes));
+		
 		return nodes;
 	}
 
 	public ArrayList<Edge> getEdges() {
+		commands.add(new GetGraphEdgesCommand(Graph.getCommandOrder(), edges));
+
 		return edges;
 	}
 
@@ -63,26 +69,26 @@ public class Graph {
 
 		return null;
 	}
-	
-	public List<Command> getCommands(){
+
+	public List<Command> getCommands() {
 		List<Command> result = new ArrayList<Command>();
-		
+
 		result.addAll(commands);
-		
-		for(Node node : nodes) {
+
+		for (Node node : nodes) {
 			result.addAll(node.getCommands());
 		}
-		
-		for(Edge edge : edges) {
+
+		for (Edge edge : edges) {
 			result.addAll(edge.getCommands());
 		}
-		
+
 		return result;
 	}
-	
+
 	public static int getCommandOrder() {
 		commandOrder++;
-		
+
 		return commandOrder;
 	}
 }
