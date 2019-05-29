@@ -28,4 +28,11 @@ public class GraphPane extends EditorPane {
 	public GraphEditor getEditor() {
 		return (GraphEditor) editor;
 	}
+
+	public void loadLastSave() {
+		createEditor(this.editor.name);
+		editor.loadData("../Data/Graphs/" + this.editor.name + ".graphml");
+		this.getChildren().clear();
+		this.getChildren().add(editor.getDisplay());
+	}
 }

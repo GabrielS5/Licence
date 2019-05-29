@@ -27,13 +27,15 @@ public class CommandsRunner extends Thread {
 		runningControlPane.getPauseButton().setOnAction((event) -> setRunningMode(RunningMode.Pause));
 		runningControlPane.getPlayButton().setOnAction((event) -> setRunningMode(RunningMode.Automatic));
 		runningControlPane.getStepButton().setOnAction((event) -> setRunningMode(RunningMode.Manual));
+		runningControlPane.getExitButton().setOnAction((event) -> setRunningMode(RunningMode.Exit));
+
 		speed.bind(runningControlPane.getSliderValue());
 	}
 
 	public void run() {
+		double dap = 3.0 * Math.cos(2.0);
 		try {
 			for (Command command : commands) {
-				System.out.println(runningMode);
 				if (runningMode == RunningMode.Automatic) {
 					Thread.sleep((long) (1000 * speed.get()));
 				} else if (runningMode == RunningMode.Pause) {
@@ -42,25 +44,24 @@ public class CommandsRunner extends Thread {
 					}
 				}
 
+				if (runningMode == RunningMode.Exit) {
+					break;
+				}
+
 				if (runningMode != RunningMode.Automatic) {
 					setRunningMode(RunningMode.Pause);
 				}
 
-				command.run(graph,(int) (1000 * speed.get()));
+				command.run(graph, (int) (1000 * speed.get()));
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			Platform.runLater(new Thread(() -> {
+				mainPane.endRunPreparation();
+			}));
 
-			Thread taskThread = new Thread(() -> {
-				Platform.runLater(new Thread(() -> {
-					mainPane.endRunPreparation();
-				}));
-
-			});
-
-			taskThread.start();
 		}
 	}
 

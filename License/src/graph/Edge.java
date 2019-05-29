@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import commands.ChangeEdgeColorCommand;
+import commands.ChangeEdgeValueCommand;
 import commands.Command;
 import javafx.scene.paint.Color;
 
@@ -17,7 +18,7 @@ public class Edge {
 	private Color color;
 
 	public Edge(GraphicEdge edge, Graph graph) {
-		value = 0;
+		value = edge.getValue();
 		id = edge.getUniqueId();
 		this.graph = graph;
 		this.color = edge.getColor();
@@ -66,6 +67,7 @@ public class Edge {
 	}
 
 	public void setValue(double value) {
+		commands.add(new ChangeEdgeValueCommand(Graph.getCommandOrder(), id, value));
 		this.value = value;
 	}
 

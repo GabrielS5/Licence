@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import commands.ChangeNodeColorCommand;
+import commands.ChangeNodeValueCommand;
 import commands.ChangeNodeXCommand;
 import commands.ChangeNodeYCommand;
 import commands.Command;
@@ -24,8 +25,10 @@ public class Node {
 	public Node(GraphicNode node, Graph graph) {
 		this.color = node.getColor();
 		this.id = node.getUniqueId();
-		this.value = 0;
+		this.value = node.getValue();
 		this.graph = graph;
+		this.x = node.getX();
+		this.y = node.getY();
 	}
 
 	public void initialize(GraphicNode node, Graph graph) {
@@ -91,6 +94,15 @@ public class Node {
 
 	public Color getColor() {
 		return this.color;
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		commands.add(new ChangeNodeValueCommand(Graph.getCommandOrder(), id, value));
+		this.value = value;
 	}
 
 	public int getUniqueId() {

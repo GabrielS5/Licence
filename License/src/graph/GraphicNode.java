@@ -141,4 +141,17 @@ public class GraphicNode extends Group {
 	public Circle getShape() {
 		return shape;
 	}
+
+	public double getValue() {
+		try {
+			return Double.parseDouble(valueField.getText());
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+	
+	public void setValue(double value) {
+		this.valueField.showInput();
+		this.valueField.setText(String.valueOf(value));
+	}
 }

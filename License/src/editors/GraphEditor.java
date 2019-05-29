@@ -2,10 +2,10 @@ package editors;
 
 import java.util.Optional;
 
-import graph.GraphicEdge;
-import graph.GraphicGraph;
 import graph.GraphElementValueField;
 import graph.GraphIO;
+import graph.GraphicEdge;
+import graph.GraphicGraph;
 import graph.GraphicNode;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -21,6 +21,9 @@ public class GraphEditor extends Editor {
 	private GraphEditMode editMode = GraphEditMode.AddingEdges;
 	private GraphicNode selectedNode = null;
 	private VBox node;
+	private Button addingEdgesButton;
+	private Button addingNodesButton;
+	private Button editingValuesButton;
 
 	public GraphEditor(String name) {
 		this.name = name;
@@ -36,9 +39,9 @@ public class GraphEditor extends Editor {
 		buttonsBox.setMaxHeight(50);
 		buttonsBox.setMinHeight(50);
 
-		Button addingEdgesButton = new Button("Add edges");
-		Button addingNodesButton = new Button("Add nodes");
-		Button editingValuesButton = new Button("Edit values");
+		addingEdgesButton = new Button("Add edges");
+		addingNodesButton = new Button("Add nodes");
+		editingValuesButton = new Button("Edit values");
 
 		addingEdgesButton.setOnAction((event) -> setEditMode(GraphEditMode.AddingEdges));
 		addingNodesButton.setOnAction((event) -> setEditMode(GraphEditMode.AddingNodes));
@@ -71,7 +74,7 @@ public class GraphEditor extends Editor {
 		GraphIO graphIO = new GraphIO();
 
 		graphIO.importGraph(path, graph);
-		
+
 		modified = false;
 	}
 
@@ -105,7 +108,7 @@ public class GraphEditor extends Editor {
 			GraphicNode node = new GraphicNode(event.getX(), event.getY());
 			makeEditable(node, node.valueField);
 			graph.addNode(node);
-			
+
 			modified = true;
 		} else if (event.isStillSincePress() && editMode == GraphEditMode.AddingEdges) {
 
@@ -124,9 +127,9 @@ public class GraphEditor extends Editor {
 					GraphicEdge edge = new GraphicEdge(selectedNode, secondNode);
 					makeEditable(edge, edge.valueField);
 					graph.addEdge(edge);
-					
+
 					modified = true;
-					
+
 					secondNode.highlightOn();
 					selectedNode = null;
 
@@ -141,8 +144,21 @@ public class GraphEditor extends Editor {
 			}
 		}
 	}
-	
+
 	public GraphicGraph getGraph() {
 		return graph;
 	}
+
+	public void disableButtons() {
+		addingEdgesButton.setDisable(true);
+		addingNodesButton.setDisable(true);
+		editingValuesButton.setDisable(true);
+	}
+
+	public void enableButtons() {
+		addingEdgesButton.setDisable(false);
+		addingNodesButton.setDisable(false);
+		editingValuesButton.setDisable(false);
+	}
+
 }

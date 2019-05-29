@@ -1,5 +1,5 @@
 package tools;
 
 public enum RunningMode {
-	Manual, Automatic, Pause
+	Manual, Automatic, Pause, Exit
 }

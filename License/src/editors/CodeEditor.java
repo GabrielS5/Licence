@@ -49,6 +49,8 @@ public class CodeEditor extends Editor {
 	private VBox node;
 	public CodeArea codeArea;
 	private IntegerProperty errorLine = new SimpleIntegerProperty(0);
+	private Button compileButton;
+	private Button formatButton;
 
 	public CodeEditor(String name) {
 		this.name = name;
@@ -83,8 +85,8 @@ public class CodeEditor extends Editor {
 		buttonsBox.setMaxHeight(50);
 		buttonsBox.setMinHeight(50);
 
-		Button compileButton = new Button("Compile");
-		Button formatButton = new Button("Format");
+		compileButton = new Button("Compile");
+		formatButton = new Button("Format");
 
 		compileButton.setOnAction((event) -> compileCode());
 		formatButton.setOnAction((event) -> formatCode());
@@ -260,6 +262,16 @@ public class CodeEditor extends Editor {
 	public void setModified(boolean modified) {
 		this.errorLine.set(0);
 		this.modified = modified;
+	}
+	
+	public void disableButtons() {
+		compileButton.setDisable(true);
+		formatButton.setDisable(true);
+	}
+	
+	public void enableButtons() {
+		compileButton.setDisable(false);
+		formatButton.setDisable(false);
 	}
 
 }
