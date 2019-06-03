@@ -2,6 +2,10 @@ package tools;
 
 import java.io.File;
 
+import graph.generation.constraints.Constraint;
+import graph.generation.constraints.EdgesNumberConstraint;
+import graph.generation.constraints.MaximumEdgesPerNodeConstraint;
+import graph.generation.constraints.NodesNumberConstraint;
 import graph.graphic.GraphicNode;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -17,6 +21,19 @@ public final class MiscTools {
 		File fileToOpen = fileChooser.showOpenDialog(null);
 
 		return fileToOpen.getAbsolutePath();
+	}
+
+	public static Constraint getConstraintFromInput(String name, int input) {
+		switch (name) {
+		case "Number of Nodes":
+			return new NodesNumberConstraint(input);
+		case "Number of Edges":
+			return new EdgesNumberConstraint(input);
+		case "Maximum number of Edges per Node":
+			return new MaximumEdgesPerNodeConstraint(input);
+		default:
+			return null;
+		}
 	}
 
 	public static Pair<Line, Line> createArrowHead(GraphicNode source, GraphicNode destination) {

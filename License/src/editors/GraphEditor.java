@@ -133,21 +133,15 @@ public class GraphEditor extends Editor {
 		graphIO.exportGraph(this.graph, "../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
-		//generateGraph();
-		GenerationDialog dialog = new GenerationDialog();
+		GenerationDialog dialog = new GenerationDialog(this);
 	}
 
-	public void generateGraph() {
+	public void generateGraph(List<Constraint> constraints) {
 		directedSwitch.resetSwitch();
 		clearGraph();
 
 		GraphGenerator graphGenerator = new GraphGenerator();
-		List<Constraint> constraints = new ArrayList<Constraint>();
-
-		constraints.add(new NodesNumberConstraint(30));
-		constraints.add(new EdgesNumberConstraint(50));
-		constraints.add(new MaximumEdgesPerNodeConstraint(10));
-
+		
 		graphGenerator.generate(graph, constraints);
 
 		for (GraphicNode node : graph.getNodes()) {

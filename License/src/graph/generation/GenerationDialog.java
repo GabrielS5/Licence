@@ -1,43 +1,56 @@
 package graph.generation;
 
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
+import java.util.ArrayList;
+import java.util.List;
+
+import editors.GraphEditor;
+import graph.generation.constraints.Constraint;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import tools.MiscTools;
 
 public class GenerationDialog extends Stage {
 
-	public GenerationDialog() {
-		final TextField name = new TextField() ;
-        final TextField addr = new TextField() ;
-        final TextField wp = new TextField() ;
-        final Label labelUsername = new Label("Username");
-        final Label labelAddress = new Label("Address");
-        final Label labelWebPage = new Label("Web Page");
-        final Button btn = new Button("Add");
+	private GraphEditor graphEditor;
+	private List<GenerationOption> options;
 
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(10);
-        gridPane.setHgap(10);
-        gridPane.setPadding(new Insets(10));
+	public GenerationDialog(GraphEditor graphEditor) {
 
-        gridPane.add(labelUsername, 0, 0);
-        gridPane.add(name, 1, 0);
-        gridPane.add(labelAddress, 0, 1);
-        gridPane.add(addr, 1, 1);
-        gridPane.add(labelWebPage, 0, 2);
-        gridPane.add(wp, 1, 2);
-        gridPane.add(btn, 0, 3, 2, 1);
-        GridPane.setHalignment(btn, HPos.CENTER);
+		this.graphEditor = graphEditor;
 
-        this.initStyle(StageStyle.UTILITY);
-        Scene scene = new Scene(gridPane);
-        this.setScene(scene);
-        this.show();
+		options = new ArrayList<GenerationOption>();
+
+		options.add(new GenerationOption("Number of Nodes"));
+		options.add(new GenerationOption("Number of Edges"));
+		options.add(new GenerationOption("Maximum number of Edges per Node"));
+
+		Button generateButton = new Button("Generate");
+
+		generateButton.setOnAction((event) -> startGeneration());
+
+		VBox vBox = new VBox();
+		vBox.getChildren().addAll(options);
+		vBox.getChildren().add(generateButton);
+		vBox.setSpacing(2);
+
+		this.initStyle(StageStyle.UTILITY);
+		Scene scene = new Scene(vBox, 600, 400);
+		this.setScene(scene);
+		this.show();
+	}
+
+	private void startGeneration() {
+		List<Constraint> constraints = new ArrayList<Constraint>();
+
+		for (GenerationOption option : options) {
+			if (option.isSelected())
+				constraints.add(MiscTools.getConstraintFromInput(option.getType(), option.getValue()));
+		}
+		
+		this.close();
+		graphEditor.generateGraph(constraints);
 	}
 }
