@@ -29,12 +29,8 @@
     -fx-background-color: #f2f9fc;
 }
 
-.text-field {
-    -fx-background-color: #a9a9a9 , white , white;
-}
-
-.text-field:focused {
-    -fx-background-color: #a9a9a9 , white , white;
+.text-field.value-field {
+    -fx-background-color: rgba(0,0,0,0.10);
 }
 
 .line-highlight {

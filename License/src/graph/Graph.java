@@ -6,8 +6,12 @@ import java.util.List;
 import commands.Command;
 import commands.GetGraphEdgesCommand;
 import commands.GetGraphNodesCommand;
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicGraph;
+import graph.graphic.GraphicNode;
 
 public class Graph {
+	private boolean directed;
 	private static int commandOrder = 0;
 	private List<Command> commands = new ArrayList<Command>();
 
@@ -15,6 +19,8 @@ public class Graph {
 	private ArrayList<Edge> edges = new ArrayList<Edge>();
 
 	public Graph(GraphicGraph graph) {
+		this.directed = graph.isDirected();
+		
 		for (GraphicNode graphicNode : graph.getNodes()) {
 			if (getNodeById(graphicNode.getUniqueId()) == null) {
 				Node node = new Node(graphicNode, this);
@@ -90,5 +96,9 @@ public class Graph {
 		commandOrder++;
 
 		return commandOrder;
+	}
+	
+	public boolean isDirected() {
+		return directed;
 	}
 }

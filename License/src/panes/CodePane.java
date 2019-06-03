@@ -6,7 +6,6 @@ import editors.CodeEditor;
 import tools.MiscTools;
 
 public class CodePane extends EditorPane {
-
 	public void loadEditor() {
 		String path = MiscTools.getFileInput("../Data/Programs", "*.java");
 

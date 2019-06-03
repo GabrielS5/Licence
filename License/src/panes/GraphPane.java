@@ -6,7 +6,6 @@ import editors.GraphEditor;
 import tools.MiscTools;
 
 public class GraphPane extends EditorPane {
-
 	public void loadEditor() {
 		String path = MiscTools.getFileInput("../Data/Graphs", "*.graphml");
 

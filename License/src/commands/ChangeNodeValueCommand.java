@@ -1,7 +1,7 @@
 package commands;
 
-import graph.GraphicGraph;
-import graph.GraphicNode;
+import graph.graphic.GraphicGraph;
+import graph.graphic.GraphicNode;
 
 public class ChangeNodeValueCommand extends Command{
 

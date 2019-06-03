@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import graph.Edge;
-import graph.GraphicEdge;
-import graph.GraphicGraph;
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicGraph;
 import javafx.animation.FillTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;

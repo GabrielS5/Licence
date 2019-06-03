@@ -3,9 +3,9 @@ package commands;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import graph.GraphicGraph;
-import graph.GraphicNode;
 import graph.Node;
+import graph.graphic.GraphicGraph;
+import graph.graphic.GraphicNode;
 import javafx.animation.FillTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;

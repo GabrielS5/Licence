@@ -5,11 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -19,9 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.tools.Diagnostic;
-import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
-import javax.tools.ToolProvider;
 
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
@@ -34,15 +28,14 @@ import com.google.googlejavaformat.java.FormatterException;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import tools.LineArrowFactory;
-import tools.Program;
 import tools.ProgramCompiler;
 
 public class CodeEditor extends Editor {
@@ -51,6 +44,8 @@ public class CodeEditor extends Editor {
 	private IntegerProperty errorLine = new SimpleIntegerProperty(0);
 	private Button compileButton;
 	private Button formatButton;
+	private Button saveButton;
+	private TextField nameField;
 
 	public CodeEditor(String name) {
 		this.name = name;
@@ -82,16 +77,20 @@ public class CodeEditor extends Editor {
 		node = new VBox();
 
 		HBox buttonsBox = new HBox();
-		buttonsBox.setMaxHeight(50);
-		buttonsBox.setMinHeight(50);
+		buttonsBox.setMaxHeight(40);
+		buttonsBox.setMinHeight(40);
+		buttonsBox.setSpacing(5);
 
 		compileButton = new Button("Compile");
 		formatButton = new Button("Format");
+		saveButton = new Button("Save");
+		nameField = new TextField(this.name);
 
 		compileButton.setOnAction((event) -> compileCode());
 		formatButton.setOnAction((event) -> formatCode());
+		saveButton.setOnAction((event) -> saveData());
 
-		buttonsBox.getChildren().addAll(compileButton, formatButton);
+		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
 		pane.setPrefHeight(2000);
@@ -180,8 +179,12 @@ public class CodeEditor extends Editor {
 
 			Optional<String> dialogResult = dialog.showAndWait();
 			name = dialogResult.get();
-			setText(getText().replace("ClassName", name));
+
+			replaceName(name);
+		} else if (!nameField.getText().equals(name)) {
+			replaceName(nameField.getText());
 		}
+
 		file = new File("../Data/Programs/" + name + ".java");
 
 		try (FileOutputStream fos = new FileOutputStream(file);
@@ -219,35 +222,6 @@ public class CodeEditor extends Editor {
 		}
 	}
 
-	public void runCode() {
-		Class<?> programClass = null;
-		String file = "../Data/Programs/" + name + ".java";
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		compiler.run(null, null, null, file);
-
-		File directory = new File("../Data/Programs");
-		try {
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { directory.toURL() });
-			programClass = classLoader.loadClass(name);
-			classLoader.close();
-		} catch (Exception e1) {
-			// something went wrong..
-			e1.printStackTrace();
-		}
-
-		try {
-			Object instance = programClass.newInstance();
-			System.out.println(instance instanceof Program);
-
-			Method method = programClass.getDeclaredMethod("run");
-			method.setAccessible(true);
-			method.invoke(instance);
-		} catch (Exception e1) {
-			// something went wrong..
-			e1.printStackTrace();
-		}
-	}
-
 	public void formatCode() {
 		Formatter formatter = new Formatter();
 
@@ -263,15 +237,32 @@ public class CodeEditor extends Editor {
 		this.errorLine.set(0);
 		this.modified = modified;
 	}
-	
+
 	public void disableButtons() {
 		compileButton.setDisable(true);
 		formatButton.setDisable(true);
 	}
-	
+
 	public void enableButtons() {
 		compileButton.setDisable(false);
 		formatButton.setDisable(false);
+	}
+
+	private void replaceName(String name) {
+
+		String[] words = getText().split(" ");
+		String currentClassName = null;
+
+		for (int i = 0; i < words.length; i++) {
+			if (words[i].equals("class")) {
+				currentClassName = words[i + 1];
+				break;
+			}
+		}
+
+		this.name = name;
+		this.nameField.setText(name);
+		setText(getText().replace(currentClassName, name));
 	}
 
 }

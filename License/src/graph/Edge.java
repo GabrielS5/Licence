@@ -6,10 +6,12 @@ import java.util.List;
 import commands.ChangeEdgeColorCommand;
 import commands.ChangeEdgeValueCommand;
 import commands.Command;
+import graph.graphic.GraphicEdge;
 import javafx.scene.paint.Color;
 
 public class Edge {
 	private Graph graph;
+	private boolean doubleEdged = false;
 	private List<Command> commands = new ArrayList<Command>();
 	private Node source;
 	private Node destination;
@@ -22,6 +24,7 @@ public class Edge {
 		id = edge.getUniqueId();
 		this.graph = graph;
 		this.color = edge.getColor();
+		this.doubleEdged = edge.isDoubleEdged();
 	}
 
 	public void initialize(GraphicEdge edge, Graph graph) {
@@ -82,5 +85,9 @@ public class Edge {
 
 	public Color getColor() {
 		return color;
+	}
+	
+	public boolean isDoubleEdged() {
+		return doubleEdged || ! graph.isDirected();
 	}
 }

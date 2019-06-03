@@ -1,11 +1,14 @@
-package graph;
+package graph.graphic;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GraphicGraph {
+	private boolean directed = true;
 	private FlexibleCanvas canvas = new FlexibleCanvas();
-	private ArrayList<GraphicNode> nodes;
-	private ArrayList<GraphicEdge> edges;
+	private List<GraphicNode> nodes;
+	private List<GraphicEdge> edges;
 
 	public GraphicGraph() {
 		this.nodes = new ArrayList<GraphicNode>();
@@ -36,7 +39,6 @@ public class GraphicGraph {
 	}
 
 	public GraphicNode getNodeByCoordinates(double x, double y) {
-
 		for (int i = 0; i < nodes.size(); i++) {
 			double radius = 20;
 			double distance = Math
@@ -50,14 +52,14 @@ public class GraphicGraph {
 		return null;
 	}
 
-	public ArrayList<GraphicNode> getNodes() {
+	public List<GraphicNode> getNodes() {
 		return nodes;
 	}
 
-	public ArrayList<GraphicEdge> getEdges() {
+	public List<GraphicEdge> getEdges() {
 		return edges;
 	}
-	
+
 	public GraphicNode getNodeById(int id) {
 		for (GraphicNode node : nodes) {
 			if (node.getUniqueId() == id)
@@ -74,5 +76,52 @@ public class GraphicGraph {
 		}
 
 		return null;
+	}
+
+	public void removeNode(GraphicNode node) {
+		this.getNodes().remove(node);
+
+		edges = edges.stream().filter((f) -> !f.getDestination().equals(node) && f.getSource().equals(node))
+				.collect(Collectors.toList());
+	}
+	
+	public void removeEdge(GraphicEdge edge) {
+		
+	}
+
+	public GraphicEdge createEdge(GraphicNode source, GraphicNode destination) {
+		if (source.equals(destination))
+			return null;
+
+		for (GraphicEdge edge : edges) {
+			if (edge.getSource().equals(source) && edge.getDestination().equals(destination))
+				return null;
+			else if (edge.getSource().equals(destination) && edge.getDestination().equals(source)) {
+				edge.changeToDoubleEdge();
+				return null;
+			}
+		}
+		GraphicEdge edge = new GraphicEdge(this, source, destination);
+		addEdge(edge);
+
+		return edge;
+	}
+
+	public void setDirected(boolean directed) {
+		this.directed = directed;
+
+		if (directed) {
+			for (GraphicEdge edge : edges) {
+				edge.setArrowsVisibility(true);
+			}
+		} else {
+			for (GraphicEdge edge : edges) {
+				edge.setArrowsVisibility(false);
+			}
+		}
+	}
+
+	public boolean isDirected() {
+		return directed;
 	}
 }

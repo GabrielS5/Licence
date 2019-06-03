@@ -16,6 +16,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicGraph;
+import graph.graphic.GraphicNode;
 import javafx.scene.paint.Color;
 
 public class GraphIO {
@@ -63,9 +66,7 @@ public class GraphIO {
 	}
 
 	public GraphicGraph importGraph(String path, GraphicGraph graph) {
-		graph.getEdges().clear();
-		graph.getNodes().clear();
-		
+
 		try {
 			File inputFile = new File(path);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -133,30 +134,29 @@ public class GraphIO {
 		Element nodeValue = document.createElement("data");
 		nodeValue.setAttribute("key", "d0");
 		nodeValue.setTextContent(node.valueField.getText());
-		
+
 		Element nodeX = document.createElement("data");
 		nodeX.setAttribute("key", "d1");
 		nodeX.setTextContent(Double.toString(node.getX()));
-		
+
 		Element nodeY = document.createElement("data");
 		nodeY.setAttribute("key", "d2");
 		nodeY.setTextContent(Double.toString(node.getY()));
-		
+
 		Element nodeColor = document.createElement("data");
 		nodeColor.setAttribute("key", "d3");
-		
+
 		Element redElement = document.createElement("red");
 		redElement.setTextContent(String.valueOf(node.getColor().getRed()));
 		nodeColor.appendChild(redElement);
-		
+
 		Element greenElement = document.createElement("green");
 		greenElement.setTextContent(String.valueOf(node.getColor().getGreen()));
 		nodeColor.appendChild(greenElement);
-		
+
 		Element blueElement = document.createElement("blue");
 		blueElement.setTextContent(String.valueOf(node.getColor().getBlue()));
 		nodeColor.appendChild(blueElement);
-
 
 		xmlNode.appendChild(nodeValue);
 		xmlNode.appendChild(nodeX);
@@ -171,6 +171,7 @@ public class GraphIO {
 		xmlEdge.setAttribute("id", Integer.toString(edge.getUniqueId()));
 		xmlEdge.setAttribute("source", Integer.toString(edge.getSource().getUniqueId()));
 		xmlEdge.setAttribute("target", Integer.toString(edge.getDestination().getUniqueId()));
+		xmlEdge.setAttribute("doubleEdged", Boolean.toString(edge.isDoubleEdged()));
 
 		Element edgeValue = document.createElement("data");
 		edgeValue.setAttribute("key", "d4");
@@ -202,7 +203,7 @@ public class GraphIO {
 				y = Float.parseFloat(childrens.item(i).getTextContent());
 				break;
 			case "d3":
-				NodeList colors =  childrens.item(i).getChildNodes();
+				NodeList colors = childrens.item(i).getChildNodes();
 				red = Double.parseDouble(colors.item(0).getTextContent());
 				green = Double.parseDouble(colors.item(1).getTextContent());
 				blue = Double.parseDouble(colors.item(2).getTextContent());
@@ -212,7 +213,7 @@ public class GraphIO {
 			}
 
 			graphNode = new GraphicNode(x, y, valueField);
-			graphNode.setColor(new Color(red,green,blue,1));
+			graphNode.setColor(new Color(red, green, blue, 1));
 			graphNode.setUniqueId(id);
 		}
 		return graphNode;
@@ -223,6 +224,8 @@ public class GraphIO {
 		int id = Integer.parseInt(node.getAttributes().getNamedItem("id").getNodeValue());
 		int sourceId = Integer.parseInt(node.getAttributes().getNamedItem("source").getNodeValue());
 		int targetId = Integer.parseInt(node.getAttributes().getNamedItem("target").getNodeValue());
+		boolean doubleEdged = Boolean.parseBoolean(node.getAttributes().getNamedItem("doubleEdged").getNodeValue());
+
 		String valueField = null;
 
 		NodeList childrens = node.getChildNodes();
@@ -239,10 +242,11 @@ public class GraphIO {
 			GraphicNode source = getGraphNodeById(graph, sourceId);
 			GraphicNode destination = getGraphNodeById(graph, targetId);
 
-			edge = new GraphicEdge(source, destination, valueField);
+			edge = new GraphicEdge(graph, source, destination, valueField);
 
-			source.addExteriorEdge(edge);
-			destination.addInteriorEdge(edge);
+			if (doubleEdged)
+				edge.changeToDoubleEdge();
+
 			edge.setUniqueId(id);
 		}
 		return edge;

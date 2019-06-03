@@ -1,8 +1,9 @@
-package graph;
+package graph.graphic;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -32,7 +33,7 @@ public class GraphicNode extends Group {
 		Random rand = new Random();
 		List<Color> lista = new ArrayList<Color>();
 		lista.add(new Color(rand.nextInt(255) / 255.0, rand.nextInt(255) / 255.0, rand.nextInt(255) / 255.0, 1));
-		shape = new Circle(0, 0, 15);
+		shape = new Circle(0, 0, 20);
 		shape.setStrokeWidth(2);
 		shape.setFill(color);
 		id = 0;
@@ -120,22 +121,69 @@ public class GraphicNode extends Group {
 		this.exteriorEdges = exteriorEdges;
 	}
 
-	public List<GraphicNode> getNeighbours() {
+	public List<GraphicNode> getAllNeighbours() {
 		List<GraphicNode> result = new ArrayList<GraphicNode>();
 
 		for (GraphicEdge edge : interiorEdges) {
 			result.add(edge.getSource());
-		}
-
-		for (GraphicEdge edge : exteriorEdges) {
 			result.add(edge.getDestination());
 		}
 
+		for (GraphicEdge edge : exteriorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+		
+		return result;
+	}
+	
+	public List<GraphicNode> getIncomingNeighbours() {
+		List<GraphicNode> result = new ArrayList<GraphicNode>();
+
+		for (GraphicEdge edge : interiorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+
+		for (GraphicEdge edge : exteriorEdges) {
+			if(edge.isDoubleEdged()) {
+				result.add(edge.getSource());
+				result.add(edge.getDestination());
+			}
+		}
+
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+		
+		return result;
+	}
+	
+	public List<GraphicNode> getOutgoingNeighbours() {
+		List<GraphicNode> result = new ArrayList<GraphicNode>();
+
+		for (GraphicEdge edge : interiorEdges) {
+			if(edge.isDoubleEdged()) {
+				result.add(edge.getSource());
+				result.add(edge.getDestination());
+			}
+		}
+
+		for (GraphicEdge edge : exteriorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+		
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+		
 		return result;
 	}
 
 	public boolean isNeighbour(GraphicNode node) {
-		return getNeighbours().contains(node);
+		return getAllNeighbours().contains(node);
 	}
 
 	public Circle getShape() {

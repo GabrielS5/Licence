@@ -3,7 +3,7 @@ package tools;
 import java.util.List;
 
 import commands.Command;
-import graph.GraphicGraph;
+import graph.graphic.GraphicGraph;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

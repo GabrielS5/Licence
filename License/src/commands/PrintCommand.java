@@ -1,6 +1,6 @@
 package commands;
 
-import graph.GraphicGraph;
+import graph.graphic.GraphicGraph;
 import panes.MainPane;
 
 public class PrintCommand extends Command {

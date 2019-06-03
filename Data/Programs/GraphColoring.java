@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphColoration extends Program {
+public class GraphColoring extends Program {
 
   private Color generateColor() {
     Random rand = new Random();
@@ -51,7 +51,7 @@ public class GraphColoration extends Program {
     List<Color> colors = generateColors();
 
     for (Node node : graph.getNodes()) {
-      List<Node> neighbours = node.getNeighbours();
+      List<Node> neighbours = node.getAllNeighbours();
       Color color = findUnusedColor(neighbours, colors);
       node.setColor(color);
 	println("Ceva printat");

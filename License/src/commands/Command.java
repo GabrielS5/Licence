@@ -1,6 +1,6 @@
 package commands;
 
-import graph.GraphicGraph;
+import graph.graphic.GraphicGraph;
 
 public abstract class Command {
 	int commandOrder = 0;

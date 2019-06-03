@@ -1,4 +1,4 @@
-package graph;
+package graph.graphic;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -9,11 +9,13 @@ import javafx.scene.text.Text;
 public class GraphElementValueField extends TextField {
 
 	public GraphElementValueField(DoubleBinding xBinding, DoubleBinding yBinding) {
-		this(xBinding, yBinding, " ");
+		this(xBinding, yBinding, "");
 	}
 
 	public GraphElementValueField(DoubleBinding xBinding, DoubleBinding yBinding, String initialValue) {
 		super();
+		
+		this.getStyleClass().add("value-field");
 
 		textProperty().addListener((ov, prevText, currText) -> {
 			Platform.runLater(() -> {
@@ -33,7 +35,8 @@ public class GraphElementValueField extends TextField {
 		translateXProperty().bind(newX);
 		translateYProperty().bind(newY);
 		setText(initialValue);
-		hideLater();
+		if (initialValue.isEmpty() || initialValue.equals(" "))
+			hideInput();
 	}
 
 	public void hideInput() {
@@ -52,6 +55,6 @@ public class GraphElementValueField extends TextField {
 				if (getText().equals(" "))
 					hideInput();
 			}
-		}, 5000);
+		}, 10000);
 	}
 }

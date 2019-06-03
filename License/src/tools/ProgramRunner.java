@@ -11,7 +11,7 @@ import java.util.List;
 
 import commands.Command;
 import graph.Graph;
-import graph.GraphicGraph;
+import graph.graphic.GraphicGraph;
 
 public class ProgramRunner {
 	@SuppressWarnings("unchecked")

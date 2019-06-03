@@ -1,7 +1,7 @@
 package commands;
 
-import graph.GraphicEdge;
-import graph.GraphicGraph;
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicGraph;
 import javafx.animation.FillTransition;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;

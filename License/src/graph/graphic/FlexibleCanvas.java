@@ -1,4 +1,4 @@
-package graph;
+package graph.graphic;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;

@@ -1,7 +1,7 @@
 package commands;
 
-import graph.GraphicEdge;
-import graph.GraphicGraph;
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicGraph;
 
 public class ChangeEdgeValueCommand extends Command {
 	private int id;

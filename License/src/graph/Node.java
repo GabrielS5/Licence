@@ -2,6 +2,7 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import commands.ChangeNodeColorCommand;
 import commands.ChangeNodeValueCommand;
@@ -9,6 +10,8 @@ import commands.ChangeNodeXCommand;
 import commands.ChangeNodeYCommand;
 import commands.Command;
 import commands.GetNodeNeighboursCommand;
+import graph.graphic.GraphicEdge;
+import graph.graphic.GraphicNode;
 import javafx.scene.paint.Color;
 
 public class Node {
@@ -132,24 +135,75 @@ public class Node {
 		this.exteriorEdges = exteriorEdges;
 	}
 
-	public List<Node> getNeighbours() {
+	public List<Node> getAllNeighbours() {
 		List<Node> result = new ArrayList<Node>();
 
 		for (Edge edge : interiorEdges) {
 			result.add(edge.getSource());
-		}
-
-		for (Edge edge : exteriorEdges) {
 			result.add(edge.getDestination());
 		}
 
-		commands.add(new GetNodeNeighboursCommand(Graph.getCommandOrder(), result));
+		for (Edge edge : exteriorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+
+		commands.add(new GetNodeNeighboursCommand(Graph.getCommandOrder(), result, this.id));
+
+		return result;
+	}
+	
+	public List<Node> getIncomingNeighbours() {
+		List<Node> result = new ArrayList<Node>();
+
+		for (Edge edge : interiorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+
+		for (Edge edge : exteriorEdges) {
+			if(edge.isDoubleEdged()) {
+				result.add(edge.getSource());
+				result.add(edge.getDestination());
+			}
+		}
+
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+
+		commands.add(new GetNodeNeighboursCommand(Graph.getCommandOrder(), result, this.id));
+
+		return result;
+	}
+	
+	public List<Node> getOutgoingNeighbours() {
+		List<Node> result = new ArrayList<Node>();
+
+		for (Edge edge : interiorEdges) {
+			if(edge.isDoubleEdged()) {
+				result.add(edge.getSource());
+				result.add(edge.getDestination());
+			}
+		}
+
+		for (Edge edge : exteriorEdges) {
+			result.add(edge.getSource());
+			result.add(edge.getDestination());
+		}
+
+		result = result.stream().distinct().collect(Collectors.toList());
+		result.remove(this);
+
+		commands.add(new GetNodeNeighboursCommand(Graph.getCommandOrder(), result, this.id));
 
 		return result;
 	}
 
 	public boolean isNeighbour(Node node) {
-		return getNeighbours().contains(node);
+		return getAllNeighbours().contains(node);
 	}
 
 	public List<Command> getCommands() {
