@@ -17,6 +17,7 @@ public class MaximumEdgesPerNodeConstraint extends Constraint {
 		boolean response = true;
 
 		for (GraphicNode node : graph.getNodes()) {
+			
 			if (node.getExteriorEdges().size() + node.getInteriorEdges().size() > number)
 				return false;
 		}

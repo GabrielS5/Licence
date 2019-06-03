@@ -24,8 +24,8 @@ public class GraphGenerator {
 			IStep step = getRandomStep();
 
 			boolean executionResult = step.execute(graph);
-			
-			if(!executionResult)
+
+			if (!executionResult)
 				continue;
 
 			boolean illegalStep = false;
@@ -36,7 +36,7 @@ public class GraphGenerator {
 					break;
 				}
 			}
-			
+
 			if (illegalStep)
 				step.revert(graph);
 			else
@@ -48,12 +48,14 @@ public class GraphGenerator {
 	}
 
 	private boolean checkConstraints(GraphicGraph graph, List<Constraint> constraints) {
+		boolean response = true;
+
 		for (Constraint constraint : constraints) {
 			if (!constraint.check(graph))
-				return false;
+				response = false;
 		}
 
-		return true;
+		return response;
 	}
 
 	private IStep getRandomStep() {

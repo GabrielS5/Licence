@@ -41,6 +41,6 @@ public class AddEdgeStep implements IStep {
 	public void revert(GraphicGraph graph) {
 		GraphicEdge edge = graph.getEdgeById(id);
 
-		graph.getEdges().remove(edge);
+		graph.removeEdge(edge);
 	}
 }

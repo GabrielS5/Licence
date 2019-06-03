@@ -2,7 +2,6 @@ package graph.graphic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GraphicGraph {
 	private boolean directed = true;
@@ -79,14 +78,25 @@ public class GraphicGraph {
 	}
 
 	public void removeNode(GraphicNode node) {
-		this.getNodes().remove(node);
 
-		edges = edges.stream().filter((f) -> !f.getDestination().equals(node) && f.getSource().equals(node))
-				.collect(Collectors.toList());
+		List<GraphicEdge> edges = new ArrayList<GraphicEdge>();
+		edges.addAll(node.getExteriorEdges());
+		edges.addAll(node.getInteriorEdges());
+
+		for (GraphicEdge edge : edges)
+			removeEdge(edge);
+
+		this.getNodes().remove(node);
+		resetCanvas();
 	}
-	
+
 	public void removeEdge(GraphicEdge edge) {
-		
+		this.getEdges().remove(edge);
+
+		edge.getSource().removeEdge(edge);
+		edge.getDestination().removeEdge(edge);
+
+		resetCanvas();
 	}
 
 	public GraphicEdge createEdge(GraphicNode source, GraphicNode destination) {
@@ -98,7 +108,7 @@ public class GraphicGraph {
 				return null;
 			else if (edge.getSource().equals(destination) && edge.getDestination().equals(source)) {
 				edge.changeToDoubleEdge();
-				return null;
+				return edge;
 			}
 		}
 		GraphicEdge edge = new GraphicEdge(this, source, destination);
@@ -123,5 +133,11 @@ public class GraphicGraph {
 
 	public boolean isDirected() {
 		return directed;
+	}
+
+	private void resetCanvas() {
+		canvas.getChildren().clear();
+		canvas.getChildren().addAll(nodes);
+		canvas.getChildren().addAll(edges);
 	}
 }

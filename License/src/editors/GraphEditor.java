@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import graph.GraphIO;
+import graph.generation.GenerationDialog;
 import graph.generation.GraphGenerator;
 import graph.generation.constraints.Constraint;
 import graph.generation.constraints.EdgesNumberConstraint;
@@ -95,7 +96,7 @@ public class GraphEditor extends Editor {
 	public void loadData(String path) {
 		directedSwitch.resetSwitch();
 		clearGraph();
-		
+
 		GraphIO graphIO = new GraphIO();
 
 		graphIO.importGraph(path, graph);
@@ -132,22 +133,23 @@ public class GraphEditor extends Editor {
 		graphIO.exportGraph(this.graph, "../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
-		generateGraph();
+		//generateGraph();
+		GenerationDialog dialog = new GenerationDialog();
 	}
-	
+
 	public void generateGraph() {
 		directedSwitch.resetSwitch();
 		clearGraph();
-		
+
 		GraphGenerator graphGenerator = new GraphGenerator();
 		List<Constraint> constraints = new ArrayList<Constraint>();
-		
-		constraints.add(new NodesNumberConstraint(10));
-		constraints.add(new EdgesNumberConstraint(15));
-		constraints.add(new MaximumEdgesPerNodeConstraint(3));
-		
+
+		constraints.add(new NodesNumberConstraint(30));
+		constraints.add(new EdgesNumberConstraint(50));
+		constraints.add(new MaximumEdgesPerNodeConstraint(10));
+
 		graphGenerator.generate(graph, constraints);
-		
+
 		for (GraphicNode node : graph.getNodes()) {
 			makeEditable(node, node.valueField);
 		}
@@ -191,7 +193,8 @@ public class GraphEditor extends Editor {
 					GraphicEdge edge = graph.createEdge(firstNode, secondNode);
 
 					if (edge != null) {
-						makeEditable(edge, edge.valueField);
+						if (!edge.isDoubleEdged())
+							makeEditable(edge, edge.valueField);
 						edge.valueField.showInput();
 						modified = true;
 						secondNode.highlightOn();

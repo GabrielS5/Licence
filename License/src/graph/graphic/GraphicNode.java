@@ -121,6 +121,11 @@ public class GraphicNode extends Group {
 		this.exteriorEdges = exteriorEdges;
 	}
 
+	public void removeEdge(GraphicEdge edge) {
+		this.exteriorEdges.remove(edge);
+		this.interiorEdges.remove(edge);
+	}
+
 	public List<GraphicNode> getAllNeighbours() {
 		List<GraphicNode> result = new ArrayList<GraphicNode>();
 
@@ -136,10 +141,10 @@ public class GraphicNode extends Group {
 
 		result = result.stream().distinct().collect(Collectors.toList());
 		result.remove(this);
-		
+
 		return result;
 	}
-	
+
 	public List<GraphicNode> getIncomingNeighbours() {
 		List<GraphicNode> result = new ArrayList<GraphicNode>();
 
@@ -149,7 +154,7 @@ public class GraphicNode extends Group {
 		}
 
 		for (GraphicEdge edge : exteriorEdges) {
-			if(edge.isDoubleEdged()) {
+			if (edge.isDoubleEdged()) {
 				result.add(edge.getSource());
 				result.add(edge.getDestination());
 			}
@@ -157,15 +162,15 @@ public class GraphicNode extends Group {
 
 		result = result.stream().distinct().collect(Collectors.toList());
 		result.remove(this);
-		
+
 		return result;
 	}
-	
+
 	public List<GraphicNode> getOutgoingNeighbours() {
 		List<GraphicNode> result = new ArrayList<GraphicNode>();
 
 		for (GraphicEdge edge : interiorEdges) {
-			if(edge.isDoubleEdged()) {
+			if (edge.isDoubleEdged()) {
 				result.add(edge.getSource());
 				result.add(edge.getDestination());
 			}
@@ -175,10 +180,10 @@ public class GraphicNode extends Group {
 			result.add(edge.getSource());
 			result.add(edge.getDestination());
 		}
-		
+
 		result = result.stream().distinct().collect(Collectors.toList());
 		result.remove(this);
-		
+
 		return result;
 	}
 
@@ -197,7 +202,7 @@ public class GraphicNode extends Group {
 			return 0;
 		}
 	}
-	
+
 	public void setValue(double value) {
 		this.valueField.showInput();
 		this.valueField.setText(String.valueOf(value));

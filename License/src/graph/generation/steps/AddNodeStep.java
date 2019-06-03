@@ -27,7 +27,7 @@ public class AddNodeStep implements IStep {
 	public void revert(GraphicGraph graph) {
 		GraphicNode node = graph.getNodeById(id);
 		
-		graph.getNodes().remove(node);
+		graph.removeNode(node);
 		
 	}
 
