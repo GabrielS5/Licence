@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import graph.generation.constraints.Constraint;
+import graph.generation.constraints.ConstraintFeedback;
+import graph.generation.constraints.implementations.EdgesValueConstraint;
+import graph.generation.constraints.implementations.NodesValueConstraint;
 import graph.generation.steps.AddEdgeStep;
+import graph.generation.steps.AddEdgesValueStep;
 import graph.generation.steps.AddNodeStep;
+import graph.generation.steps.AddNodesValueStep;
 import graph.generation.steps.IStep;
 import graph.graphic.GraphicGraph;
 
@@ -18,7 +23,8 @@ public class GraphGenerator {
 	}
 
 	public GraphicGraph generate(GraphicGraph graph, List<Constraint> constraints) {
-		List<IStep> steps = new ArrayList<IStep>();
+		List<IStep> postSteps = getPostSteps(constraints);
+		int tries = 0;
 
 		while (!checkConstraints(graph, constraints)) {
 			IStep step = getRandomStep();
@@ -31,7 +37,7 @@ public class GraphGenerator {
 			boolean illegalStep = false;
 
 			for (Constraint constraint : constraints) {
-				if (constraint.isAlreadyCompleted() && !constraint.check(graph)) {
+				if (constraint.check(graph) == ConstraintFeedback.Revert) {
 					illegalStep = true;
 					break;
 				}
@@ -39,9 +45,13 @@ public class GraphGenerator {
 
 			if (illegalStep)
 				step.revert(graph);
-			else
-				steps.add(step);
 
+			if (tries++ == 1000)
+				break;
+		}
+
+		for (IStep step : postSteps) {
+			step.execute(graph);
 		}
 
 		return graph;
@@ -51,11 +61,29 @@ public class GraphGenerator {
 		boolean response = true;
 
 		for (Constraint constraint : constraints) {
-			if (!constraint.check(graph))
+			if (constraint.check(graph) != ConstraintFeedback.Complete)
 				response = false;
 		}
 
 		return response;
+	}
+
+	private List<IStep> getPostSteps(List<Constraint> constraints) {
+		List<IStep> postSteps = new ArrayList<IStep>();
+
+		for (int i = constraints.size() - 1; i >= 0; i--) {
+			if (constraints.get(i) instanceof NodesValueConstraint) {
+
+				postSteps.add(new AddNodesValueStep((NodesValueConstraint) constraints.get(i)));
+				constraints.remove(i);
+			} else if (constraints.get(i) instanceof EdgesValueConstraint) {
+
+				postSteps.add(new AddEdgesValueStep((EdgesValueConstraint) constraints.get(i)));
+				constraints.remove(i);
+			}
+		}
+
+		return postSteps;
 	}
 
 	private IStep getRandomStep() {

@@ -33,7 +33,6 @@ public class CommandsRunner extends Thread {
 	}
 
 	public void run() {
-		double dap = 3.0 * Math.cos(2.0);
 		try {
 			for (Command command : commands) {
 				if (runningMode == RunningMode.Automatic) {
@@ -53,6 +52,11 @@ public class CommandsRunner extends Thread {
 				}
 
 				command.run(graph, (int) (1000 * speed.get()));
+			}
+
+			synchronized (pauseLock) {
+				while (runningMode != RunningMode.Exit)
+					pauseLock.wait();
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

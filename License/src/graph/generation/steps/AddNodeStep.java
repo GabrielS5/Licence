@@ -30,5 +30,4 @@ public class AddNodeStep implements IStep {
 		graph.removeNode(node);
 		
 	}
-
 }

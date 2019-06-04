@@ -3,9 +3,9 @@ package tools;
 import java.io.File;
 
 import graph.generation.constraints.Constraint;
-import graph.generation.constraints.EdgesNumberConstraint;
-import graph.generation.constraints.MaximumEdgesPerNodeConstraint;
-import graph.generation.constraints.NodesNumberConstraint;
+import graph.generation.constraints.implementations.EdgesNumberConstraint;
+import graph.generation.constraints.implementations.EdgesPerNodeConstraint;
+import graph.generation.constraints.implementations.NodesNumberConstraint;
 import graph.graphic.GraphicNode;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -23,27 +23,24 @@ public final class MiscTools {
 		return fileToOpen.getAbsolutePath();
 	}
 
-	public static Constraint getConstraintFromInput(String name, int input) {
-		switch (name) {
-		case "Number of Nodes":
-			return new NodesNumberConstraint(input);
-		case "Number of Edges":
-			return new EdgesNumberConstraint(input);
-		case "Maximum number of Edges per Node":
-			return new MaximumEdgesPerNodeConstraint(input);
-		default:
-			return null;
-		}
-	}
-
 	public static Pair<Line, Line> createArrowHead(GraphicNode source, GraphicNode destination) {
 		Line arrowLine1 = new Line(), arrowLine2 = new Line();
+
+		
+		DoubleBinding arrowLine1XEndBinding = Bindings.createDoubleBinding(() -> {
+			return destination.xProperty.get() + (destination.xProperty.get() / 10);
+		}, destination.xProperty);
+		
+		DoubleBinding arrowLine1YEndBinding = Bindings.createDoubleBinding(() -> {
+			return destination.yProperty.get() + (destination.yProperty.get() / 10);
+		}, destination.yProperty);
+
 
 		DoubleBinding arrowLine1YBinding = Bindings.createDoubleBinding(() -> {
 			double lineHypot = Math.hypot(source.xProperty.get() - destination.xProperty.get(),
 					source.yProperty.get() - destination.yProperty.get());
 
-			double dy = (source.yProperty.get() - destination.yProperty.get()) * 10 / lineHypot;
+			double dy = (source.yProperty.get() - (destination.yProperty.get() - destination.yProperty.get() /10)) * 10 / lineHypot;
 			double ox = (source.xProperty.get() - destination.xProperty.get()) * 5 / lineHypot;
 
 			return destination.yProperty.get() + dy + ox;

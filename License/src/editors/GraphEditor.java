@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import graph.GraphIO;
-import graph.generation.GenerationDialog;
 import graph.generation.GraphGenerator;
 import graph.generation.constraints.Constraint;
-import graph.generation.constraints.EdgesNumberConstraint;
-import graph.generation.constraints.MaximumEdgesPerNodeConstraint;
-import graph.generation.constraints.NodesNumberConstraint;
+import graph.generation.constraints.implementations.EdgesNumberConstraint;
+import graph.generation.constraints.implementations.EdgesPerNodeConstraint;
+import graph.generation.constraints.implementations.NodesNumberConstraint;
+import graph.generation.gui.GenerationDialog;
 import graph.graphic.GraphElementValueField;
 import graph.graphic.GraphicEdge;
 import graph.graphic.GraphicGraph;
@@ -216,12 +216,16 @@ public class GraphEditor extends Editor {
 		addingEdgesButton.setDisable(true);
 		addingNodesButton.setDisable(true);
 		editingValuesButton.setDisable(true);
+		saveButton.setDisable(true);
+		directedSwitch.setDisable(true);
 	}
 
 	public void enableButtons() {
 		addingEdgesButton.setDisable(false);
 		addingNodesButton.setDisable(false);
 		editingValuesButton.setDisable(false);
+		saveButton.setDisable(false);
+		directedSwitch.setDisable(false);
 	}
 
 	private void replaceName(String name) {

@@ -21,7 +21,7 @@ public class RunningControlPane extends Pane {
 
 		HBox box = new HBox();
 		box.setSpacing(10);
-		slider = new Slider(0, 2, 1);
+		slider = new Slider(0.10, 2, 1);
 		slider.setShowTickLabels(true);
 		slider.setMinWidth(200);
 		slider.setMajorTickUnit(0.25);

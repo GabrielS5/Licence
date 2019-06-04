@@ -28,11 +28,15 @@ import com.google.googlejavaformat.java.FormatterException;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import tools.LineArrowFactory;
@@ -76,20 +80,36 @@ public class CodeEditor extends Editor {
 
 		node = new VBox();
 
+		Image compileImage = new Image(getClass().getResourceAsStream("/resources/compile.png"));
+		Image saveImage = new Image(getClass().getResourceAsStream("/resources/save.png"));
+		Image formatImage = new Image(getClass().getResourceAsStream("/resources/format.png"));
+
 		HBox buttonsBox = new HBox();
 		buttonsBox.setMaxHeight(40);
 		buttonsBox.setMinHeight(40);
 		buttonsBox.setSpacing(5);
 
-		compileButton = new Button("Compile");
-		formatButton = new Button("Format");
-		saveButton = new Button("Save");
+		compileButton = new Button("");
+		compileButton.setGraphic(new ImageView(compileImage));
+		compileButton.setTooltip(new Tooltip("Compile"));
+
+		formatButton = new Button("");
+		formatButton.setGraphic(new ImageView(formatImage));
+		formatButton.setTooltip(new Tooltip("Format code"));
+
+		saveButton = new Button("");
+		saveButton.setGraphic(new ImageView(saveImage));
+		saveButton.setTooltip(new Tooltip("Save"));
+
 		nameField = new TextField(this.name);
+		nameField.setMinWidth(180);
 
 		compileButton.setOnAction((event) -> compileCode());
 		formatButton.setOnAction((event) -> formatCode());
 		saveButton.setOnAction((event) -> saveData());
 
+		buttonsBox.setAlignment(Pos.CENTER_LEFT);
+		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
 		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
@@ -178,7 +198,11 @@ public class CodeEditor extends Editor {
 			dialog.setContentText("Name:");
 
 			Optional<String> dialogResult = dialog.showAndWait();
-			name = dialogResult.get();
+			try {
+				name = dialogResult.get();
+			} catch (Exception e) {
+				return;
+			}
 
 			replaceName(name);
 		} else if (!nameField.getText().equals(name)) {
@@ -241,11 +265,13 @@ public class CodeEditor extends Editor {
 	public void disableButtons() {
 		compileButton.setDisable(true);
 		formatButton.setDisable(true);
+		saveButton.setDisable(true);
 	}
 
 	public void enableButtons() {
 		compileButton.setDisable(false);
 		formatButton.setDisable(false);
+		saveButton.setDisable(false);
 	}
 
 	private void replaceName(String name) {

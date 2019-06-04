@@ -1,7 +1,6 @@
 package graph.graphic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javafx.beans.binding.Bindings;
@@ -106,11 +105,11 @@ public class GraphicEdge extends Group {
 	}
 
 	public boolean isDoubleEdged() {
-		return doubleEdged || ! graph.isDirected();
+		return doubleEdged || !graph.isDirected();
 	}
-	
+
 	public void setArrowsVisibility(boolean visibility) {
-		for(Line arrow : arrows) {
+		for (Line arrow : arrows) {
 			arrow.setVisible(visibility);
 		}
 	}
