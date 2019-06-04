@@ -21,6 +21,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -53,13 +56,30 @@ public class GraphEditor extends Editor {
 		buttonsBox.setMaxHeight(40);
 		buttonsBox.setMinHeight(40);
 		buttonsBox.setSpacing(5);
+		
+		Image saveImage = new Image(getClass().getResourceAsStream("/resources/save.png"));
+		Image addEdgeImage = new Image(getClass().getResourceAsStream("/resources/add-edge.png"));
+		Image addNodeImage = new Image(getClass().getResourceAsStream("/resources/add-node.png"));
 
-		addingEdgesButton = new Button("Add edges");
-		addingNodesButton = new Button("Add nodes");
+
+		addingEdgesButton = new Button("");
+		addingEdgesButton.setGraphic(new ImageView(addEdgeImage));
+		addingEdgesButton.setTooltip(new Tooltip("Add edges"));
+		
+		addingNodesButton = new Button("");
+		addingNodesButton.setGraphic(new ImageView(addNodeImage));
+		addingNodesButton.setTooltip(new Tooltip("Add nodes"));
+		
 		editingValuesButton = new Button("Edit values");
+		
 		nameField = new TextField(this.name);
-		saveButton = new Button("Save");
+		
+		saveButton = new Button("");
+		saveButton.setGraphic(new ImageView(saveImage));
+		saveButton.setTooltip(new Tooltip("Save"));
+		
 		directedSwitch = new SwitchButton("Directed", "Undirected");
+		
 
 		directedSwitch.getButton().setOnAction((event) -> handleDirectedSwitch());
 
@@ -241,5 +261,6 @@ public class GraphEditor extends Editor {
 	private void clearGraph() {
 		this.graph.getNodes().clear();
 		this.graph.getEdges().clear();
+		this.graph.resetCanvas();
 	}
 }

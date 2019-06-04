@@ -135,7 +135,7 @@ public class GraphicGraph {
 		return directed;
 	}
 
-	private void resetCanvas() {
+	public void resetCanvas() {
 		canvas.getChildren().clear();
 		canvas.getChildren().addAll(nodes);
 		canvas.getChildren().addAll(edges);
