@@ -5,12 +5,13 @@ import java.util.List;
 
 import editors.GraphEditor;
 import graph.generation.constraints.Constraint;
+import graph.generation.constraints.implementations.ConexGraphConstraint;
 import graph.generation.constraints.implementations.EdgesNumberConstraint;
 import graph.generation.constraints.implementations.EdgesPerNodeConstraint;
 import graph.generation.constraints.implementations.EdgesValueConstraint;
+import graph.generation.constraints.implementations.LargestCycleConstraint;
 import graph.generation.constraints.implementations.NodesNumberConstraint;
 import graph.generation.constraints.implementations.NodesValueConstraint;
-import graph.generation.constraints.implementations.TreeGraphConstraint;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -48,7 +49,8 @@ public class GenerationDialog extends Stage {
 		options.add(new DoubleValueGenerationOption("Number of Edges", new EdgesNumberConstraint()));
 		options.add(new DoubleValueGenerationOption("Nodes value range", new NodesValueConstraint()));
 		options.add(new DoubleValueGenerationOption("Edges value range", new EdgesValueConstraint()));
-		options.add(new BooleanGenerationOption("Tree Graph", new TreeGraphConstraint()));
+		options.add(new BooleanGenerationOption("Is conex Graph", new ConexGraphConstraint()));
+		options.add(new SingleValueGenerationOption("Maximum cycle length in the graph", new LargestCycleConstraint()));
 		options.add(new DoubleValueGenerationOption("Number of Edges per Node", new EdgesPerNodeConstraint()));
 
 		Button generateButton = new Button("Generate");

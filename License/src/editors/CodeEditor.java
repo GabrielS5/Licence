@@ -49,6 +49,7 @@ public class CodeEditor extends Editor {
 	private Button compileButton;
 	private Button formatButton;
 	private Button saveButton;
+	private Button runButton;
 	private TextField nameField;
 
 	public CodeEditor(String name) {
@@ -83,6 +84,7 @@ public class CodeEditor extends Editor {
 		Image compileImage = new Image(getClass().getResourceAsStream("/resources/compile.png"));
 		Image saveImage = new Image(getClass().getResourceAsStream("/resources/save.png"));
 		Image formatImage = new Image(getClass().getResourceAsStream("/resources/format.png"));
+		Image runImage = new Image(getClass().getResourceAsStream("/resources/run.png"));
 
 		HBox buttonsBox = new HBox();
 		buttonsBox.setMaxHeight(40);
@@ -93,6 +95,9 @@ public class CodeEditor extends Editor {
 		compileButton.setGraphic(new ImageView(compileImage));
 		compileButton.setTooltip(new Tooltip("Compile"));
 
+		runButton = new Button("");
+		runButton.setGraphic(new ImageView(runImage));
+
 		formatButton = new Button("");
 		formatButton.setGraphic(new ImageView(formatImage));
 		formatButton.setTooltip(new Tooltip("Format code"));
@@ -102,7 +107,8 @@ public class CodeEditor extends Editor {
 		saveButton.setTooltip(new Tooltip("Save"));
 
 		nameField = new TextField(this.name);
-		nameField.setMinWidth(180);
+		nameField.setMinWidth(160);
+		nameField.setMinHeight(28);
 
 		compileButton.setOnAction((event) -> compileCode());
 		formatButton.setOnAction((event) -> formatCode());
@@ -110,7 +116,7 @@ public class CodeEditor extends Editor {
 
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
-		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton);
+		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton, runButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
 		pane.setPrefHeight(2000);
@@ -237,7 +243,6 @@ public class CodeEditor extends Editor {
 			}
 
 			for (Diagnostic<?> diagnostic : result) {
-				System.out.println(diagnostic.getLineNumber());
 				this.errorLine.set((int) diagnostic.getLineNumber());
 			}
 		} catch (Exception e) {
@@ -266,12 +271,18 @@ public class CodeEditor extends Editor {
 		compileButton.setDisable(true);
 		formatButton.setDisable(true);
 		saveButton.setDisable(true);
+		runButton.setDisable(true);
 	}
 
 	public void enableButtons() {
 		compileButton.setDisable(false);
 		formatButton.setDisable(false);
 		saveButton.setDisable(false);
+		runButton.setDisable(false);
+	}
+
+	public Button getRunButton() {
+		return runButton;
 	}
 
 	private void replaceName(String name) {
@@ -290,5 +301,4 @@ public class CodeEditor extends Editor {
 		this.nameField.setText(name);
 		setText(getText().replace(currentClassName, name));
 	}
-
 }

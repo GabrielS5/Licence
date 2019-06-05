@@ -63,6 +63,8 @@ public class DirectedConexComponents extends Program {
         conexGroup = new ArrayList<Node>();
         transposedDfsStep(node, conexGroup, visitedNodes);
         colorConexGroup(conexGroup);
+        print("da");
+        println(i);
       }
     }
   }

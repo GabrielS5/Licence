@@ -3,6 +3,9 @@ package tools;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class SwitchButton extends HBox {
@@ -18,11 +21,16 @@ public class SwitchButton extends HBox {
 		this.setStyle("-fx-padding-left: 10;");
 		this.firstValue = firstValue;
 		this.secondValue = secondValue;
+		
+		Image switchImage = new Image(getClass().getResourceAsStream("/resources/switch.png"));
 
 		currentValue = new TextField(firstValue);
 		currentValue.setEditable(false);
-		currentValue.setMaxWidth(100);
-		button = new Button("Change");
+		currentValue.setMaxWidth(80);
+		currentValue.setMinHeight(28);
+		button = new Button("");
+		button.setGraphic(new ImageView(switchImage));
+		button.setTooltip(new Tooltip("Change"));
 
 		this.getChildren().addAll(currentValue, button);
 	}

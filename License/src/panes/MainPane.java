@@ -4,7 +4,6 @@ import java.util.List;
 
 import commands.Command;
 import editors.EditorType;
-import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
@@ -47,11 +46,8 @@ public class MainPane extends VBox {
 		buttonsBox = new HBox();
 		buttonsBox.setMaxHeight(50);
 		buttonsBox.setMinHeight(50);
-		Button runButton = new Button("Run");
 
-		runButton.setOnAction((event) -> runProgram());
-
-		buttonsBox.getChildren().add(runButton);
+		this.codePane.getEditor().getRunButton().setOnAction((event) -> runProgram());
 
 		controls.getChildren().addAll(buttonsBox, runningControlPane);
 
@@ -70,6 +66,7 @@ public class MainPane extends VBox {
 	public void load(EditorType editorType) {
 		if (editorType == EditorType.Code) {
 			codePane.loadEditor();
+			this.codePane.getEditor().getRunButton().setOnAction((event) -> runProgram());
 		} else {
 			graphPane.loadEditor();
 		}
@@ -138,6 +135,7 @@ public class MainPane extends VBox {
 	}
 
 	private void addOutputConsole() {
+		consoleOutputArea.setText("");
 		display.getItems().clear();
 		VBox vBox = new VBox();
 		vBox.getChildren().addAll(consoleOutputArea, graphPane);

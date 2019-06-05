@@ -1,20 +1,17 @@
 package editors;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import graph.GraphIO;
 import graph.generation.GraphGenerator;
 import graph.generation.constraints.Constraint;
-import graph.generation.constraints.implementations.EdgesNumberConstraint;
-import graph.generation.constraints.implementations.EdgesPerNodeConstraint;
-import graph.generation.constraints.implementations.NodesNumberConstraint;
 import graph.generation.gui.GenerationDialog;
 import graph.graphic.GraphElementValueField;
 import graph.graphic.GraphicEdge;
 import graph.graphic.GraphicGraph;
 import graph.graphic.GraphicNode;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -41,6 +38,7 @@ public class GraphEditor extends Editor {
 	private TextField nameField;
 	private Button saveButton;
 	private SwitchButton directedSwitch;
+	private Button generateButton;
 
 	public GraphEditor(String name) {
 		this.name = name;
@@ -56,45 +54,54 @@ public class GraphEditor extends Editor {
 		buttonsBox.setMaxHeight(40);
 		buttonsBox.setMinHeight(40);
 		buttonsBox.setSpacing(5);
-		
+
 		Image saveImage = new Image(getClass().getResourceAsStream("/resources/save.png"));
 		Image addEdgeImage = new Image(getClass().getResourceAsStream("/resources/add-edge.png"));
 		Image addNodeImage = new Image(getClass().getResourceAsStream("/resources/add-node.png"));
-
+		Image editImage = new Image(getClass().getResourceAsStream("/resources/edit.png"));
+		Image generateImage = new Image(getClass().getResourceAsStream("/resources/generate.png"));
 
 		addingEdgesButton = new Button("");
 		addingEdgesButton.setGraphic(new ImageView(addEdgeImage));
 		addingEdgesButton.setTooltip(new Tooltip("Add edges"));
-		
+
 		addingNodesButton = new Button("");
 		addingNodesButton.setGraphic(new ImageView(addNodeImage));
 		addingNodesButton.setTooltip(new Tooltip("Add nodes"));
-		
-		editingValuesButton = new Button("Edit values");
-		
+
+		editingValuesButton = new Button("");
+		editingValuesButton.setGraphic(new ImageView(editImage));
+		editingValuesButton.setTooltip(new Tooltip("Edit values"));
+
 		nameField = new TextField(this.name);
-		
+		nameField.setMinWidth(160);
+		nameField.setMinHeight(28);
+
 		saveButton = new Button("");
 		saveButton.setGraphic(new ImageView(saveImage));
 		saveButton.setTooltip(new Tooltip("Save"));
-		
-		directedSwitch = new SwitchButton("Directed", "Undirected");
-		
 
+		generateButton = new Button();
+		generateButton.setGraphic(new ImageView(generateImage));
+		generateButton.setTooltip(new Tooltip("Generate a graph"));
+
+		directedSwitch = new SwitchButton("Directed", "Undirected");
 		directedSwitch.getButton().setOnAction((event) -> handleDirectedSwitch());
 
 		addingEdgesButton.setOnAction((event) -> setEditMode(GraphEditMode.AddingEdges));
 		addingNodesButton.setOnAction((event) -> setEditMode(GraphEditMode.AddingNodes));
 		editingValuesButton.setOnAction((event) -> setEditMode(GraphEditMode.EditingValues));
 		saveButton.setOnAction((event) -> saveData());
+		generateButton.setOnAction((event) -> new GenerationDialog(this));
 
 		buttonsBox.getChildren().addAll(nameField, addingEdgesButton, addingNodesButton, editingValuesButton,
-				saveButton, directedSwitch);
+				directedSwitch, generateButton, saveButton);
 
 		this.node = new VBox();
 		this.graph.getDisplay().setPrefSize(2000, 2000);
 
-		buttonsBox.setAlignment(Pos.CENTER);
+		buttonsBox.setAlignment(Pos.CENTER_LEFT);
+		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
 		node.getChildren().addAll(graph.getDisplay(), buttonsBox);
 	}
 
@@ -153,7 +160,6 @@ public class GraphEditor extends Editor {
 		graphIO.exportGraph(this.graph, "../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
-		GenerationDialog dialog = new GenerationDialog(this);
 	}
 
 	public void generateGraph(List<Constraint> constraints) {
@@ -161,7 +167,7 @@ public class GraphEditor extends Editor {
 		clearGraph();
 
 		GraphGenerator graphGenerator = new GraphGenerator();
-		
+
 		graphGenerator.generate(graph, constraints);
 
 		for (GraphicNode node : graph.getNodes()) {
@@ -238,6 +244,7 @@ public class GraphEditor extends Editor {
 		editingValuesButton.setDisable(true);
 		saveButton.setDisable(true);
 		directedSwitch.setDisable(true);
+		generateButton.setDisable(true);
 	}
 
 	public void enableButtons() {
@@ -246,6 +253,7 @@ public class GraphEditor extends Editor {
 		editingValuesButton.setDisable(false);
 		saveButton.setDisable(false);
 		directedSwitch.setDisable(false);
+		generateButton.setDisable(false);
 	}
 
 	private void replaceName(String name) {

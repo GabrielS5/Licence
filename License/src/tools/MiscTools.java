@@ -2,10 +2,6 @@ package tools;
 
 import java.io.File;
 
-import graph.generation.constraints.Constraint;
-import graph.generation.constraints.implementations.EdgesNumberConstraint;
-import graph.generation.constraints.implementations.EdgesPerNodeConstraint;
-import graph.generation.constraints.implementations.NodesNumberConstraint;
 import graph.graphic.GraphicNode;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -26,60 +22,42 @@ public final class MiscTools {
 	public static Pair<Line, Line> createArrowHead(GraphicNode source, GraphicNode destination) {
 		Line arrowLine1 = new Line(), arrowLine2 = new Line();
 
-		
-		DoubleBinding arrowLine1XEndBinding = Bindings.createDoubleBinding(() -> {
-			return destination.xProperty.get() + (destination.xProperty.get() / 10);
-		}, destination.xProperty);
-		
-		DoubleBinding arrowLine1YEndBinding = Bindings.createDoubleBinding(() -> {
-			return destination.yProperty.get() + (destination.yProperty.get() / 10);
-		}, destination.yProperty);
+		DoubleBinding arrowLineXEndBinding = Bindings.createDoubleBinding(() -> {
+			double distance = (source.xProperty.get() - destination.xProperty.get()) / 10;
 
+			return destination.xProperty.get() + distance;
+		}, destination.xProperty, source.xProperty);
+
+		DoubleBinding arrowLineYEndBinding = Bindings.createDoubleBinding(() -> {
+			double distance = (source.yProperty.get() - destination.yProperty.get()) / 10;
+
+			return destination.yProperty.get() + distance;
+		}, destination.yProperty, source.yProperty);
 
 		DoubleBinding arrowLine1YBinding = Bindings.createDoubleBinding(() -> {
-			double lineHypot = Math.hypot(source.xProperty.get() - destination.xProperty.get(),
-					source.yProperty.get() - destination.yProperty.get());
-
-			double dy = (source.yProperty.get() - (destination.yProperty.get() - destination.yProperty.get() /10)) * 10 / lineHypot;
-			double ox = (source.xProperty.get() - destination.xProperty.get()) * 5 / lineHypot;
-
-			return destination.yProperty.get() + dy + ox;
+			return calculateArrowY(source.xProperty.get(), source.yProperty.get(), destination.xProperty.get(),
+					destination.yProperty.get(), 1);
 		}, source.xProperty, destination.xProperty, source.yProperty, destination.yProperty);
 
 		DoubleBinding arrowLine1XBinding = Bindings.createDoubleBinding(() -> {
-			double lineHypot = Math.hypot(source.xProperty.get() - destination.xProperty.get(),
-					source.yProperty.get() - destination.yProperty.get());
-
-			double dx = (source.xProperty.get() - destination.xProperty.get()) * 10 / lineHypot;
-			double oy = (source.yProperty.get() - destination.yProperty.get()) * 5 / lineHypot;
-
-			return destination.xProperty.get() + dx - oy;
+			return calculateArrowX(source.xProperty.get(), source.yProperty.get(), destination.xProperty.get(),
+					destination.yProperty.get(), -1);
 		}, source.xProperty, destination.xProperty, source.yProperty, destination.yProperty);
 
 		DoubleBinding arrowLine2YBinding = Bindings.createDoubleBinding(() -> {
-			double lineHypot = Math.hypot(source.xProperty.get() - destination.xProperty.get(),
-					source.yProperty.get() - destination.yProperty.get());
-
-			double dy = (source.yProperty.get() - destination.yProperty.get()) * 10 / lineHypot;
-			double ox = (source.xProperty.get() - destination.xProperty.get()) * 5 / lineHypot;
-
-			return destination.yProperty.get() + dy - ox;
+			return calculateArrowY(source.xProperty.get(), source.yProperty.get(), destination.xProperty.get(),
+					destination.yProperty.get(), -1);
 		}, source.xProperty, destination.xProperty, source.yProperty, destination.yProperty);
 
 		DoubleBinding arrowLine2XBinding = Bindings.createDoubleBinding(() -> {
-			double lineHypot = Math.hypot(source.xProperty.get() - destination.xProperty.get(),
-					source.yProperty.get() - destination.yProperty.get());
-
-			double dx = (source.xProperty.get() - destination.xProperty.get()) * 10 / lineHypot;
-			double oy = (source.yProperty.get() - destination.yProperty.get()) * 5 / lineHypot;
-
-			return destination.xProperty.get() + dx + oy;
+			return calculateArrowX(source.xProperty.get(), source.yProperty.get(), destination.xProperty.get(),
+					destination.yProperty.get(), 1);
 		}, source.xProperty, destination.xProperty, source.yProperty, destination.yProperty);
 
-		arrowLine1.endXProperty().bind(destination.xProperty);
-		arrowLine1.endYProperty().bind(destination.yProperty);
-		arrowLine2.endXProperty().bind(destination.xProperty);
-		arrowLine2.endYProperty().bind(destination.yProperty);
+		arrowLine1.endXProperty().bind(arrowLineXEndBinding);
+		arrowLine1.endYProperty().bind(arrowLineYEndBinding);
+		arrowLine2.endXProperty().bind(arrowLineXEndBinding);
+		arrowLine2.endYProperty().bind(arrowLineYEndBinding);
 
 		arrowLine1.startXProperty().bind(arrowLine1XBinding);
 		arrowLine1.startYProperty().bind(arrowLine1YBinding);
@@ -87,5 +65,29 @@ public final class MiscTools {
 		arrowLine2.startYProperty().bind(arrowLine2YBinding);
 
 		return new Pair<Line, Line>(arrowLine1, arrowLine2);
+	}
+
+	private static double calculateArrowX(double sourceX, double sourceY, double destinationX, double destinationY,
+			double orientation) {
+		double lineHypot = Math.hypot(sourceX - destinationX, sourceY - destinationY);
+		destinationX = destinationX + (sourceX - destinationX) / 10;
+		destinationY = destinationY + (sourceY - destinationY) / 10;
+
+		double dx = (sourceX - destinationX) * 10 / lineHypot;
+		double oy = (sourceY - destinationY) * 5 / lineHypot;
+
+		return destinationX + dx + oy * orientation;
+	}
+
+	private static double calculateArrowY(double sourceX, double sourceY, double destinationX, double destinationY,
+			double orientation) {
+		double lineHypot = Math.hypot(sourceX - destinationX, sourceY - destinationY);
+		destinationX = destinationX + (sourceX - destinationX) / 10;
+		destinationY = destinationY + (sourceY - destinationY) / 10;
+
+		double dy = (sourceY - destinationY) * 10 / lineHypot;
+		double ox = (sourceX - destinationX) * 5 / lineHypot;
+
+		return destinationY + dy + ox * orientation;
 	}
 }
