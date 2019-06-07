@@ -46,7 +46,7 @@ public class GraphGenerator {
 			if (illegalStep)
 				step.revert(graph);
 
-			if (tries++ == 1000)
+			if (tries++ == 5000)
 				break;
 		}
 

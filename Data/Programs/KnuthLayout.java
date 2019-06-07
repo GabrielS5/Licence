@@ -17,8 +17,8 @@ public class KnuthLayout extends Program {
       layout(neighbours.get(0), depth + 1);
     }
 
-    node.setX(xPosition*40);
-    node.setY(depth*80);
+    node.setX(xPosition * 40);
+    node.setY(depth * 60);
     xPosition++;
 
     if (neighbours.size() == 2) {
@@ -29,11 +29,11 @@ public class KnuthLayout extends Program {
   @Override
   public void run(Graph graph) {
 
-for(Node node : graph.getNodes()){
-	if(node.getAllNeighbours().size() < 3){
-	    layout(node, 1);
-return;
-	}
-}
+    for (Node node : graph.getNodes()) {
+      if (node.getAllNeighbours().size() < 3) {
+        layout(node, 1);
+        return;
+      }
+    }
   }
 }

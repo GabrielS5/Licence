@@ -55,6 +55,7 @@ public class GraphicEdge extends Group {
 		this.arrows.add(arrowHead.getKey());
 		this.arrows.add(arrowHead.getValue());
 		this.getChildren().addAll(shape, valueField, arrowHead.getKey(), arrowHead.getValue());
+		setArrowsVisibility(graph.isDirected());
 	}
 
 	public void highlightOn() {
@@ -129,6 +130,7 @@ public class GraphicEdge extends Group {
 		this.arrows.add(arrowHead.getKey());
 		this.arrows.add(arrowHead.getValue());
 		this.getChildren().addAll(arrowHead.getKey(), arrowHead.getValue());
+		setArrowsVisibility(graph.isDirected());
 	}
 
 }

@@ -24,7 +24,7 @@ public class App extends Application {
 
 		VBox layout = new VBox(10);
 		layout.getChildren().addAll(appMenu, mainPane);
-		final Scene scene = new Scene(layout, 1280, 800);
+		final Scene scene = new Scene(layout, 1400, 920);
 
 		mainPane.prefWidthProperty().bind(scene.widthProperty());
 		mainPane.prefHeightProperty().bind(scene.heightProperty());

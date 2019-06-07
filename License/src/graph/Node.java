@@ -33,6 +33,14 @@ public class Node {
 		this.x = node.getX();
 		this.y = node.getY();
 	}
+	
+	public Node(Graph graph, double x, double y) {
+		this.graph = graph;
+		this.x = x;
+		this.y = y;
+		this.id = getUniqueId();
+		this.color = Color.WHITE;
+	}
 
 	public void initialize(GraphicNode node, Graph graph) {
 		for (GraphicEdge graphicEdge : node.getInteriorEdges()) {
@@ -155,7 +163,7 @@ public class Node {
 
 		return result;
 	}
-	
+
 	public List<Node> getIncomingNeighbours() {
 		List<Node> result = new ArrayList<Node>();
 
@@ -165,7 +173,7 @@ public class Node {
 		}
 
 		for (Edge edge : exteriorEdges) {
-			if(edge.isDoubleEdged()) {
+			if (edge.isDoubleEdged()) {
 				result.add(edge.getSource());
 				result.add(edge.getDestination());
 			}
@@ -178,12 +186,12 @@ public class Node {
 
 		return result;
 	}
-	
+
 	public List<Node> getOutgoingNeighbours() {
 		List<Node> result = new ArrayList<Node>();
 
 		for (Edge edge : interiorEdges) {
-			if(edge.isDoubleEdged()) {
+			if (edge.isDoubleEdged()) {
 				result.add(edge.getSource());
 				result.add(edge.getDestination());
 			}
@@ -208,5 +216,10 @@ public class Node {
 
 	public List<Command> getCommands() {
 		return commands;
+	}
+
+	public void removeEdge(Edge edge) {
+		this.exteriorEdges.remove(edge);
+		this.interiorEdges.remove(edge);
 	}
 }

@@ -27,6 +27,7 @@ public class SwitchButton extends HBox {
 		currentValue = new TextField(firstValue);
 		currentValue.setEditable(false);
 		currentValue.setMaxWidth(80);
+		currentValue.setMinWidth(80);
 		currentValue.setMinHeight(28);
 		button = new Button("");
 		button.setGraphic(new ImageView(switchImage));

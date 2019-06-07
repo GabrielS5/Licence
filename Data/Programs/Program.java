@@ -5,6 +5,6 @@ public class Program extends Program {
 	
 	@Override
 	public void run(Graph graph) {
-		System.out.println("Heloo World!");
+		graph.createEdge(graph.getNodes().get(0), graph.getNodes().get(1));
 	}
 }

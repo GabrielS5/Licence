@@ -3,9 +3,14 @@ package graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import commands.AddEdgeCommand;
+import commands.AddNodeCommand;
+import commands.ChangeToDoubleEdgeCommand;
 import commands.Command;
-import commands.GetGraphEdgesCommand;
+import commands.GetEdgeCommand;
 import commands.GetGraphNodesCommand;
+import commands.RemoveEdgeCommand;
+import commands.RemoveNodeCommand;
 import graph.graphic.GraphicEdge;
 import graph.graphic.GraphicGraph;
 import graph.graphic.GraphicNode;
@@ -20,7 +25,7 @@ public class Graph {
 
 	public Graph(GraphicGraph graph) {
 		this.directed = graph.isDirected();
-		
+
 		for (GraphicNode graphicNode : graph.getNodes()) {
 			if (getNodeById(graphicNode.getUniqueId()) == null) {
 				Node node = new Node(graphicNode, this);
@@ -48,13 +53,11 @@ public class Graph {
 
 	public ArrayList<Node> getNodes() {
 		commands.add(new GetGraphNodesCommand(Graph.getCommandOrder(), nodes));
-		
+
 		return nodes;
 	}
 
 	public ArrayList<Edge> getEdges() {
-		commands.add(new GetGraphEdgesCommand(Graph.getCommandOrder(), edges));
-
 		return edges;
 	}
 
@@ -74,6 +77,74 @@ public class Graph {
 		}
 
 		return null;
+	}
+
+	public void removeNode(Node node) {
+
+		List<Edge> edges = new ArrayList<Edge>();
+		edges.addAll(node.getExteriorEdges());
+		edges.addAll(node.getInteriorEdges());
+
+		for (Edge edge : edges)
+			removeEdge(edge);
+
+		commands.add(new RemoveNodeCommand(Graph.getCommandOrder(), node));
+
+		nodes.remove(node);
+	}
+
+	public Edge createEdge(Node source, Node destination) {
+		if (source.equals(destination))
+			return null;
+
+		for (Edge edge : edges) {
+			if (edge.getSource().equals(source) && edge.getDestination().equals(destination))
+				return null;
+			else if (edge.getSource().equals(destination) && edge.getDestination().equals(source)) {
+				edge.changeToDoubleEdge();
+
+				commands.add(new ChangeToDoubleEdgeCommand(Graph.getCommandOrder(), edge));
+				return edge;
+			}
+		}
+		Edge edge = new Edge(this, source, destination);
+		addEdge(edge);
+
+		commands.add(new AddEdgeCommand(Graph.getCommandOrder(), edge));
+
+		return edge;
+	}
+
+	public Edge getEdge(Node source, Node destination) {
+		for (Edge edge : edges) {
+			if ((edge.getSource().equals(source) && edge.getDestination().equals(destination))
+					|| (edge.getSource().equals(destination) && edge.getDestination().equals(source)
+							&& edge.isDoubleEdged())) {
+				commands.add(new GetEdgeCommand(Graph.getCommandOrder(), edge));
+				
+				return edge;
+			}
+		}
+
+		return null;
+	}
+
+	public Node createNode(double x, double y) {
+		Node node = new Node(this, x, y);
+		addNode(node);
+
+		commands.add(new AddNodeCommand(Graph.getCommandOrder(), node));
+
+		return node;
+	}
+
+	public void removeEdge(Edge edge) {
+
+		commands.add(new RemoveEdgeCommand(Graph.getCommandOrder(), edge));
+		this.getEdges().remove(edge);
+
+		edge.getSource().removeEdge(edge);
+		edge.getDestination().removeEdge(edge);
 	}
 
 	public List<Command> getCommands() {
@@ -97,7 +168,7 @@ public class Graph {
 
 		return commandOrder;
 	}
-	
+
 	public boolean isDirected() {
 		return directed;
 	}

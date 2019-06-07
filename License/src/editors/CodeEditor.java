@@ -37,8 +37,15 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import tools.LineArrowFactory;
 import tools.ProgramCompiler;
 
@@ -107,7 +114,7 @@ public class CodeEditor extends Editor {
 		saveButton.setTooltip(new Tooltip("Save"));
 
 		nameField = new TextField(this.name);
-		nameField.setMinWidth(160);
+		nameField.setMinWidth(150);
 		nameField.setMinHeight(28);
 
 		compileButton.setOnAction((event) -> compileCode());
@@ -116,6 +123,10 @@ public class CodeEditor extends Editor {
 
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
+		buttonsBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		buttonsBox.setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
+				BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+				CornerRadii.EMPTY, BorderStroke.THIN, Insets.EMPTY)));
 		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton, runButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);

@@ -26,6 +26,16 @@ public class Edge {
 		this.color = edge.getColor();
 		this.doubleEdged = edge.isDoubleEdged();
 	}
+	
+	public Edge(Graph graph, Node source, Node destination) {
+		this.graph = graph;
+		this.source = source;
+		this.destination = destination;
+		this.id = getUniqueId();
+		this.color = Color.BLACK;
+		this.source.addExteriorEdge(this);
+		this.destination.addInteriorEdge(this);
+	}
 
 	public void initialize(GraphicEdge edge, Graph graph) {
 
@@ -89,5 +99,10 @@ public class Edge {
 	
 	public boolean isDoubleEdged() {
 		return doubleEdged || ! graph.isDirected();
+	}
+
+	public void changeToDoubleEdge() {
+		this.doubleEdged = true;
+		
 	}
 }

@@ -40,16 +40,13 @@ public class MainPane extends VBox {
 		display.getItems().addAll(codePane, graphPane);
 
 		HBox controls = new HBox();
-
+		controls.setMaxHeight(50);
+		controls.setMinHeight(50);
 		runningControlPane = new RunningControlPane();
-
-		buttonsBox = new HBox();
-		buttonsBox.setMaxHeight(50);
-		buttonsBox.setMinHeight(50);
 
 		this.codePane.getEditor().getRunButton().setOnAction((event) -> runProgram());
 
-		controls.getChildren().addAll(buttonsBox, runningControlPane);
+		controls.getChildren().addAll(runningControlPane);
 
 		this.graphPane.setOnMouseClicked((event) -> this.hideShowEditor(event, graphPane));
 		this.codePane.setOnMouseClicked((event) -> this.hideShowEditor(event, codePane));
@@ -86,7 +83,7 @@ public class MainPane extends VBox {
 	}
 
 	private void hideShowEditor(MouseEvent event, EditorPane editorPane) {
-		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 3) {
 			if (display.getItems().size() == 1) {
 				display.getItems().clear();
 				display.getItems().addAll(codePane, graphPane);
@@ -113,7 +110,7 @@ public class MainPane extends VBox {
 	}
 
 	private void startRunPreparation() {
-		runningControlPane.setVisible(true);
+		runningControlPane.setDisable(false);
 
 		graphPane.getEditor().disableButtons();
 		codePane.getEditor().disableButtons();
@@ -122,7 +119,7 @@ public class MainPane extends VBox {
 	}
 
 	public void endRunPreparation() {
-		runningControlPane.setVisible(false);
+		runningControlPane.setDisable(true);
 		runningControlPane.getPauseButton().setOnAction(null);
 		runningControlPane.getPlayButton().setOnAction(null);
 		runningControlPane.getStepButton().setOnAction(null);

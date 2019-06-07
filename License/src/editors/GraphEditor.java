@@ -7,13 +7,11 @@ import graph.GraphIO;
 import graph.generation.GraphGenerator;
 import graph.generation.constraints.Constraint;
 import graph.generation.gui.GenerationDialog;
-import graph.graphic.GraphElementValueField;
 import graph.graphic.GraphicEdge;
 import graph.graphic.GraphicGraph;
 import graph.graphic.GraphicNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -21,9 +19,17 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import tools.SwitchButton;
 
 public class GraphEditor extends Editor {
@@ -39,6 +45,7 @@ public class GraphEditor extends Editor {
 	private Button saveButton;
 	private SwitchButton directedSwitch;
 	private Button generateButton;
+	private Button deleteButton;
 
 	public GraphEditor(String name) {
 		this.name = name;
@@ -60,6 +67,7 @@ public class GraphEditor extends Editor {
 		Image addNodeImage = new Image(getClass().getResourceAsStream("/resources/add-node.png"));
 		Image editImage = new Image(getClass().getResourceAsStream("/resources/edit.png"));
 		Image generateImage = new Image(getClass().getResourceAsStream("/resources/generate.png"));
+		Image deleteImage = new Image(getClass().getResourceAsStream("/resources/delete.png"));
 
 		addingEdgesButton = new Button("");
 		addingEdgesButton.setGraphic(new ImageView(addEdgeImage));
@@ -74,7 +82,7 @@ public class GraphEditor extends Editor {
 		editingValuesButton.setTooltip(new Tooltip("Edit values"));
 
 		nameField = new TextField(this.name);
-		nameField.setMinWidth(160);
+		nameField.setMinWidth(150);
 		nameField.setMinHeight(28);
 
 		saveButton = new Button("");
@@ -85,6 +93,10 @@ public class GraphEditor extends Editor {
 		generateButton.setGraphic(new ImageView(generateImage));
 		generateButton.setTooltip(new Tooltip("Generate a graph"));
 
+		deleteButton = new Button("");
+		deleteButton.setGraphic(new ImageView(deleteImage));
+		deleteButton.setTooltip(new Tooltip("Delete components"));
+
 		directedSwitch = new SwitchButton("Directed", "Undirected");
 		directedSwitch.getButton().setOnAction((event) -> handleDirectedSwitch());
 
@@ -93,22 +105,50 @@ public class GraphEditor extends Editor {
 		editingValuesButton.setOnAction((event) -> setEditMode(GraphEditMode.EditingValues));
 		saveButton.setOnAction((event) -> saveData());
 		generateButton.setOnAction((event) -> new GenerationDialog(this));
+		deleteButton.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> handleDeleteButton(event));
 
 		buttonsBox.getChildren().addAll(nameField, addingEdgesButton, addingNodesButton, editingValuesButton,
-				directedSwitch, generateButton, saveButton);
+				deleteButton, directedSwitch, generateButton, saveButton);
 
 		this.node = new VBox();
 		this.graph.getDisplay().setPrefSize(2000, 2000);
 
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
+		buttonsBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		buttonsBox.setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
+				BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+				CornerRadii.EMPTY, BorderStroke.THIN, Insets.EMPTY)));
 		node.getChildren().addAll(graph.getDisplay(), buttonsBox);
 	}
 
-	private void makeEditable(Group group, GraphElementValueField valueField) {
-		group.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
+	private void handleDeleteButton(MouseEvent event) {
+		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+			clearGraph();
+		} else {
+			this.setEditMode(GraphEditMode.Deleting);
+		}
+	}
+
+	private void addEdgeHandlers(GraphicEdge edge) {
+		edge.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
 			if (event.isStillSincePress() && editMode == GraphEditMode.EditingValues) {
-				valueField.showInput();
+				edge.valueField.showInput();
+				modified = true;
+			} else if (event.isStillSincePress() && editMode == GraphEditMode.Deleting) {
+				graph.removeEdge(edge);
+				modified = true;
+			}
+		});
+	}
+
+	private void addNodeHandlers(GraphicNode node) {
+		node.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> {
+			if (event.isStillSincePress() && editMode == GraphEditMode.EditingValues) {
+				node.valueField.showInput();
+				modified = true;
+			} else if (event.isStillSincePress() && editMode == GraphEditMode.Deleting) {
+				graph.removeNode(node);
 				modified = true;
 			}
 		});
@@ -121,7 +161,6 @@ public class GraphEditor extends Editor {
 
 	@Override
 	public void loadData(String path) {
-		directedSwitch.resetSwitch();
 		clearGraph();
 
 		GraphIO graphIO = new GraphIO();
@@ -129,13 +168,15 @@ public class GraphEditor extends Editor {
 		graphIO.importGraph(path, graph);
 
 		for (GraphicNode node : graph.getNodes()) {
-			makeEditable(node, node.valueField);
+			addNodeHandlers(node);
 		}
 
 		for (GraphicEdge edge : graph.getEdges()) {
-			makeEditable(edge, edge.valueField);
+			addEdgeHandlers(edge);
 		}
 
+		graph.setDirected(true);
+		directedSwitch.resetSwitch();
 		modified = false;
 	}
 
@@ -163,7 +204,6 @@ public class GraphEditor extends Editor {
 	}
 
 	public void generateGraph(List<Constraint> constraints) {
-		directedSwitch.resetSwitch();
 		clearGraph();
 
 		GraphGenerator graphGenerator = new GraphGenerator();
@@ -171,13 +211,15 @@ public class GraphEditor extends Editor {
 		graphGenerator.generate(graph, constraints);
 
 		for (GraphicNode node : graph.getNodes()) {
-			makeEditable(node, node.valueField);
+			addNodeHandlers(node);
 		}
 
 		for (GraphicEdge edge : graph.getEdges()) {
-			makeEditable(edge, edge.valueField);
+			addEdgeHandlers(edge);
 		}
 
+		graph.setDirected(true);
+		directedSwitch.resetSwitch();
 		modified = false;
 	}
 
@@ -187,49 +229,55 @@ public class GraphEditor extends Editor {
 
 	private void handleGraphInteraction(MouseEvent event) {
 		if (event.isStillSincePress() && editMode == GraphEditMode.AddingNodes) {
-
-			GraphicNode node = new GraphicNode(event.getX(), event.getY());
-			makeEditable(node, node.valueField);
-			graph.addNode(node);
-			node.valueField.showInput();
-
-			modified = true;
-
+			handleAddingNodes(event);
 		} else if (event.isStillSincePress() && editMode == GraphEditMode.AddingEdges) {
+			handleAddingEdges(event);
+		}
+	}
 
-			if (selectedNode == null) {
-				selectedNode = graph.getNodeByCoordinates(event.getX(), event.getY());
-				if (selectedNode != null)
-					selectedNode.highlightOn();
-			} else {
+	private void handleAddingNodes(MouseEvent event) {
 
-				GraphicNode secondNode = graph.getNodeByCoordinates(event.getX(), event.getY());
-				GraphicNode firstNode = selectedNode;
-				if (secondNode == firstNode) {
-					selectedNode.highlightOff();
-					selectedNode = null;
-				} else if (secondNode != null) {
+		GraphicNode node = new GraphicNode(event.getX(), event.getY());
+		addNodeHandlers(node);
+		graph.addNode(node);
+		node.valueField.showInput();
 
-					GraphicEdge edge = graph.createEdge(firstNode, secondNode);
+		modified = true;
+	}
 
-					if (edge != null) {
-						if (!edge.isDoubleEdged())
-							makeEditable(edge, edge.valueField);
-						edge.valueField.showInput();
-						modified = true;
-						secondNode.highlightOn();
-					}
+	private void handleAddingEdges(MouseEvent event) {
+		if (selectedNode == null) {
+			selectedNode = graph.getNodeByCoordinates(event.getX(), event.getY());
+			if (selectedNode != null)
+				selectedNode.highlightOn();
+		} else {
 
-					selectedNode = null;
+			GraphicNode secondNode = graph.getNodeByCoordinates(event.getX(), event.getY());
+			GraphicNode firstNode = selectedNode;
+			if (secondNode == firstNode) {
+				selectedNode.highlightOff();
+				selectedNode = null;
+			} else if (secondNode != null) {
 
-					new java.util.Timer().schedule(new java.util.TimerTask() {
-						@Override
-						public void run() {
-							firstNode.highlightOff();
-							secondNode.highlightOff();
-						}
-					}, 500);
+				GraphicEdge edge = graph.createEdge(firstNode, secondNode);
+
+				if (edge != null) {
+					if (!edge.isDoubleEdged())
+						addEdgeHandlers(edge);
+					edge.valueField.showInput();
+					modified = true;
+					secondNode.highlightOn();
 				}
+
+				selectedNode = null;
+
+				new java.util.Timer().schedule(new java.util.TimerTask() {
+					@Override
+					public void run() {
+						firstNode.highlightOff();
+						secondNode.highlightOff();
+					}
+				}, 500);
 			}
 		}
 	}
@@ -245,6 +293,7 @@ public class GraphEditor extends Editor {
 		saveButton.setDisable(true);
 		directedSwitch.setDisable(true);
 		generateButton.setDisable(true);
+		deleteButton.setDisable(true);
 	}
 
 	public void enableButtons() {
@@ -254,6 +303,7 @@ public class GraphEditor extends Editor {
 		saveButton.setDisable(false);
 		directedSwitch.setDisable(false);
 		generateButton.setDisable(false);
+		deleteButton.setDisable(false);
 	}
 
 	private void replaceName(String name) {

@@ -16,12 +16,12 @@ public class ChangeNodeYCommand extends Command {
 	@Override
 	public void run(GraphicGraph graph, int duration) {
 		GraphicNode node = graph.getNodeById(id);
-		double yIncrement = (y - node.getY()) / 100;
+		double yIncrement = (y - node.getY()) / 15;
 
 		Thread taskThread = new Thread(() -> {
 			try {
-				for (int i = 0; i < 100; i++) {
-					Thread.sleep(duration / 100);
+				for (int i = 0; i < 15; i++) {
+					Thread.sleep(duration / 15);
 					node.setY(yIncrement);
 				}
 			} catch (InterruptedException e) {

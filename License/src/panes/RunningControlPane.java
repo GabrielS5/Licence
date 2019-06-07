@@ -21,7 +21,7 @@ public class RunningControlPane extends Pane {
 
 		HBox box = new HBox();
 		box.setSpacing(10);
-		slider = new Slider(0.10, 2, 1);
+		slider = new Slider(0.15, 2, 1);
 		slider.setShowTickLabels(true);
 		slider.setMinWidth(200);
 		slider.setMajorTickUnit(0.25);
@@ -49,7 +49,7 @@ public class RunningControlPane extends Pane {
 		box.setAlignment(Pos.CENTER_RIGHT);
 
 		this.getChildren().add(box);
-		this.setVisible(false);
+		this.setDisable(true);
 	}
 
 	public DoubleProperty getSliderValue() {
