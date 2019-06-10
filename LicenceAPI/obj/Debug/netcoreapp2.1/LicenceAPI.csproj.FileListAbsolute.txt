@@ -1,0 +1,14 @@
+c:\users\gabri\source\repos\LicenceAPI\bin\Debug\netcoreapp2.1\LicenceAPI.deps.json
+c:\users\gabri\source\repos\LicenceAPI\bin\Debug\netcoreapp2.1\LicenceAPI.runtimeconfig.json
+c:\users\gabri\source\repos\LicenceAPI\bin\Debug\netcoreapp2.1\LicenceAPI.runtimeconfig.dev.json
+c:\users\gabri\source\repos\LicenceAPI\bin\Debug\netcoreapp2.1\LicenceAPI.dll
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.csprojAssemblyReference.cache
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.csproj.CoreCompileInputs.cache
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.RazorAssemblyInfo.cache
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.RazorAssemblyInfo.cs
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.AssemblyInfoInputs.cache
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.AssemblyInfo.cs
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.RazorTargetAssemblyInfo.cache
+c:\users\gabri\source\repos\LicenceAPI\bin\Debug\netcoreapp2.1\LicenceAPI.pdb
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.dll
+c:\users\gabri\source\repos\LicenceAPI\obj\Debug\netcoreapp2.1\LicenceAPI.pdb
