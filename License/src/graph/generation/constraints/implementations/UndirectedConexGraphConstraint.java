@@ -8,7 +8,7 @@ import graph.generation.constraints.ConstraintFeedback;
 import graph.graphic.GraphicGraph;
 import graph.graphic.GraphicNode;
 
-public class ConexGraphConstraint extends BooleanConstraint {
+public class UndirectedConexGraphConstraint extends BooleanConstraint {
 	@Override
 	public ConstraintFeedback check(GraphicGraph graph) {
 		List<GraphicNode> component = new ArrayList<GraphicNode>();

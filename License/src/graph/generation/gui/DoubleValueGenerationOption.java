@@ -5,8 +5,11 @@ import graph.generation.constraints.DoubleValueConstraint;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class DoubleValueGenerationOption extends GenerationOption {
 	private CheckBox checkBox;
@@ -21,16 +24,24 @@ public class DoubleValueGenerationOption extends GenerationOption {
 
 		this.constraint = constraint;
 
-		this.setSpacing(30);
-		this.setAlignment(Pos.CENTER_LEFT);
+		HBox body = new HBox();
+
+		body.setMinHeight(25);
+		body.setSpacing(30);
+		body.setAlignment(Pos.CENTER_LEFT);
 
 		checkBox = new CheckBox(name);
 		checkBox.setMinWidth(300);
+		checkBox.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
 
 		firstHBox = new HBox();
 		Label firstLabel = new Label("Min:");
+		firstLabel.setMinWidth(40);
+
 		firstUserInput = new TextField();
+		firstUserInput.getStyleClass().add("value-field");
 		firstUserInput.setMaxWidth(50);
+
 		firstHBox.setVisible(false);
 		firstHBox.setAlignment(Pos.CENTER);
 		firstHBox.setSpacing(3);
@@ -38,8 +49,12 @@ public class DoubleValueGenerationOption extends GenerationOption {
 
 		secondHBox = new HBox();
 		Label secondLabel = new Label("Max:");
+		secondLabel.setMinWidth(40);
+
 		secondUserInput = new TextField();
+		secondUserInput.getStyleClass().add("value-field");
 		secondUserInput.setMaxWidth(50);
+
 		secondHBox.setVisible(false);
 		secondHBox.setAlignment(Pos.CENTER);
 		secondHBox.setSpacing(3);
@@ -47,7 +62,14 @@ public class DoubleValueGenerationOption extends GenerationOption {
 
 		checkBox.setOnAction((event) -> changeInputsVisibility());
 
-		this.getChildren().addAll(checkBox, firstHBox, secondHBox);
+		Separator separator = new Separator();
+		separator.setMinWidth(300);
+		separator.setMaxWidth(300);
+
+		body.getChildren().addAll(checkBox, firstHBox, secondHBox);
+
+		this.getChildren().add(body);
+		this.getChildren().add(1, separator);
 	}
 
 	private void changeInputsVisibility() {

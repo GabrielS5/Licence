@@ -99,6 +99,7 @@ public class MainPane extends VBox {
 
 		programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
 
+		
 		List<Command> commands = programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
 
 		CommandsRunner commandsRunner = new CommandsRunner(commands, graphPane.getEditor().getGraph(),
@@ -111,6 +112,7 @@ public class MainPane extends VBox {
 
 	private void startRunPreparation() {
 		runningControlPane.setDisable(false);
+		runningControlPane.setLabelVisibility(true);
 
 		graphPane.getEditor().disableButtons();
 		codePane.getEditor().disableButtons();
@@ -120,6 +122,7 @@ public class MainPane extends VBox {
 
 	public void endRunPreparation() {
 		runningControlPane.setDisable(true);
+		runningControlPane.setLabelVisibility(false);
 		runningControlPane.getPauseButton().setOnAction(null);
 		runningControlPane.getPlayButton().setOnAction(null);
 		runningControlPane.getStepButton().setOnAction(null);
