@@ -1,0 +1,17 @@
+.nav-item{
+    padding: 20px;
+}
+
+.navbar{
+    padding: 0px;
+}
+
+.nav-item:hover{
+    background-color: rgb(200,200,200);
+}
+
+a {
+    cursor: default;
+    text-decoration: none;
+    font-size: 23px;
+}

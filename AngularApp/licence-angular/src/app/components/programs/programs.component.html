@@ -1,0 +1,11 @@
+<button class="btn btn-secondary category" (click)="onClick()">
+  <span class="button-content">
+    {{ buttonContent }} </span
+  ><i class="fa fa-undo" aria-hidden="true"></i>
+</button>
+
+<div class="row" *ngFor="let program of programs">
+  <div class="col-sm-12">
+    <app-program-item [pending]="pending" [program]="program"></app-program-item>
+  </div>
+</div>

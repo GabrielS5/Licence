@@ -1,0 +1,11 @@
+<button class="btn btn-secondary category" (click)="onClick()">
+  <span class="button-content">
+    {{ buttonContent }} </span
+  ><i class="fa fa-undo" aria-hidden="true"></i>
+</button>
+
+<div class="row" *ngFor="let graph of graphs">
+  <div class="col-sm-12">
+    <app-graph-item [pending]="pending" [graph]="graph"></app-graph-item>
+  </div>
+</div>

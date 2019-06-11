@@ -1,0 +1,17 @@
+<div class="row">
+  <accordion class="col-sm-10">
+    <accordion-group heading="{{ graph.name }}">
+      <pre>{{ fileBody }}</pre>
+    </accordion-group>
+  </accordion>
+  <div class="col-sm-1" *ngIf="pending">
+    <button type="button" class="btn btn-success item-button" (click)="onAccept()">
+      <i class="fa fa-check" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="col-sm-1">
+    <button type="button" class="btn btn-danger item-button" (click)="onDelete()">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
