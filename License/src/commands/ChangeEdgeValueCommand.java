@@ -16,12 +16,14 @@ public class ChangeEdgeValueCommand extends Command {
 	@Override
 	public void run(GraphicGraph graph, int duration) {
 		GraphicEdge edge = graph.getEdgeById(id);
-		double valueIncrement = (value - edge.getValue()) / 5;
+		int divizor = duration / 30;
+		
+		double valueIncrement = (value - edge.getValue()) / divizor;
 
 		Thread taskThread = new Thread(() -> {
 			try {
-				for (int i = 0; i < 5; i++) {
-					Thread.sleep(duration / 5);
+				for (int i = 0; i < divizor; i++) {
+					Thread.sleep(duration / divizor);
 					edge.setValue(edge.getValue() + valueIncrement);
 				}
 				

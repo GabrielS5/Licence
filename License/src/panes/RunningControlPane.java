@@ -1,5 +1,6 @@
 package panes;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class RunningControlPane extends Pane {
 
@@ -20,13 +23,30 @@ public class RunningControlPane extends Pane {
 	private Label runningTimeLabel;
 	private Label commandsNumberLabel;
 
+	private int commandsNumber;
+	private int currentCommandsNumber;
+
 	public RunningControlPane() {
 
 		runningTimeLabel = new Label();
-		runningTimeLabel.setVisible(false);
-
+		runningTimeLabel.getStyleClass().add("transparent-background");
+		runningTimeLabel.getStyleClass().add("round-corners");
+		runningTimeLabel.setMinWidth(150);
+		
 		commandsNumberLabel = new Label();
-		commandsNumberLabel.setVisible(false);
+		commandsNumberLabel.getStyleClass().add("transparent-background");
+		commandsNumberLabel.getStyleClass().add("round-corners");
+		commandsNumberLabel.setMinWidth(75);
+		
+		runningTimeLabel.setMinHeight(30);
+		runningTimeLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
+		runningTimeLabel.setAlignment(Pos.CENTER);
+		
+		commandsNumberLabel.setMinHeight(30);
+		commandsNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+		commandsNumberLabel.setAlignment(Pos.CENTER);
+		
+		this.setLabelVisibility(false);
 
 		HBox box = new HBox();
 		box.setSpacing(10);
@@ -51,9 +71,10 @@ public class RunningControlPane extends Pane {
 		exitButton = new Button("");
 		exitButton.setGraphic(new ImageView(exitImage));
 
-		box.setMinSize(500, 50);
-		box.setMaxSize(500, 50);
-		box.getChildren().addAll(playButton, pauseButton, stepButton, exitButton, slider);
+		box.setMinSize(700, 50);
+		box.setMaxSize(700, 50);
+		box.getChildren().addAll(playButton, pauseButton, stepButton, exitButton, slider, commandsNumberLabel,
+				runningTimeLabel);
 		box.setAlignment(Pos.CENTER_RIGHT);
 
 		this.getChildren().add(box);
@@ -83,5 +104,26 @@ public class RunningControlPane extends Pane {
 	public void setLabelVisibility(boolean visible) {
 		this.runningTimeLabel.setVisible(visible);
 		this.commandsNumberLabel.setVisible(visible);
+	}
+
+	public void setRunningTime(double runningTime) {
+		this.runningTimeLabel.setText("Running time: " + runningTime);
+	}
+
+	public void initializeCommandsNumber(int number) {
+		this.commandsNumber = number;
+		this.currentCommandsNumber = 0;
+		updateCommandsNumberLabel();
+	}
+
+	public void incrementCommandsNumber() {
+		currentCommandsNumber++;
+		updateCommandsNumberLabel();
+	}
+
+	private void updateCommandsNumberLabel() {
+		Platform.runLater(new Thread(() -> {
+			commandsNumberLabel.setText(currentCommandsNumber + "/" + commandsNumber);
+		}));
 	}
 }

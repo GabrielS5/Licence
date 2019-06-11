@@ -37,7 +37,7 @@ public class SingleValueGenerationOption extends GenerationOption {
 		label.setMinWidth(40);
 
 		userInput = new TextField();
-		userInput.getStyleClass().add("value-field");
+		userInput.getStyleClass().add("transparent-background");
 		userInput.setMaxWidth(50);
 		hBox.setVisible(false);
 		hBox.setAlignment(Pos.CENTER);

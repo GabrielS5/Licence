@@ -17,6 +17,7 @@ public class CommandsRunner extends Thread {
 	private DoubleProperty speed = new SimpleDoubleProperty();
 	private final Object pauseLock = new Object();
 	private MainPane mainPane;
+	private RunningControlPane runningControlPane;
 
 	public CommandsRunner(List<Command> commands, GraphicGraph graph, RunningControlPane runningControlPane,
 			MainPane mainPane) {
@@ -24,11 +25,13 @@ public class CommandsRunner extends Thread {
 		this.graph = graph;
 		this.mainPane = mainPane;
 
+		this.runningControlPane = runningControlPane;
 		runningControlPane.getPauseButton().setOnAction((event) -> setRunningMode(RunningMode.Pause));
 		runningControlPane.getPlayButton().setOnAction((event) -> setRunningMode(RunningMode.Automatic));
 		runningControlPane.getStepButton().setOnAction((event) -> setRunningMode(RunningMode.Manual));
 		runningControlPane.getExitButton().setOnAction((event) -> setRunningMode(RunningMode.Exit));
 
+		runningControlPane.initializeCommandsNumber(commands.size());
 		speed.bind(runningControlPane.getSliderValue());
 	}
 
@@ -51,6 +54,7 @@ public class CommandsRunner extends Thread {
 					setRunningMode(RunningMode.Pause);
 				}
 
+				runningControlPane.incrementCommandsNumber();
 				command.run(graph, (int) (1000 * speed.get()));
 			}
 

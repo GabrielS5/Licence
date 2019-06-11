@@ -39,7 +39,7 @@ public class DoubleValueGenerationOption extends GenerationOption {
 		firstLabel.setMinWidth(40);
 
 		firstUserInput = new TextField();
-		firstUserInput.getStyleClass().add("value-field");
+		firstUserInput.getStyleClass().add("transparent-background");
 		firstUserInput.setMaxWidth(50);
 
 		firstHBox.setVisible(false);
@@ -52,7 +52,7 @@ public class DoubleValueGenerationOption extends GenerationOption {
 		secondLabel.setMinWidth(40);
 
 		secondUserInput = new TextField();
-		secondUserInput.getStyleClass().add("value-field");
+		secondUserInput.getStyleClass().add("transparent-background");
 		secondUserInput.setMaxWidth(50);
 
 		secondHBox.setVisible(false);

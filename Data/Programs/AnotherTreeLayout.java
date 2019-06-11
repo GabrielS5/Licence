@@ -15,7 +15,7 @@ public class AnotherTreeLayout extends Program {
       nextLevel.addAll(node.getAllNeighbours());
     }
 
-    			nextLevel.removeAll(visitedNodes);
+    nextLevel.removeAll(visitedNodes);
 
     return nextLevel;
   }

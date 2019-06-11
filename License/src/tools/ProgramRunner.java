@@ -9,46 +9,58 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.base.Stopwatch;
+
 import commands.Command;
 import graph.Graph;
 import graph.graphic.GraphicGraph;
 
 public class ProgramRunner {
-	@SuppressWarnings("unchecked")
-	public List<Command> runProgram(String program, GraphicGraph graphicGraph) {
-		Class<?> programClass = null;		
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public RunResult runProgram(String program, GraphicGraph graphicGraph) {
+		Class<?> programClass = null;
 		List<Command> commands = new ArrayList<Command>();
 		Graph graph = new Graph(graphicGraph);
+		RunResult result = new RunResult();
+		double runTime;
 
 		File directory = new File("../Data/Programs");
 		try {
 			URLClassLoader classLoader = new URLClassLoader(new URL[] { directory.toURL() });
 			programClass = classLoader.loadClass(program);
 			classLoader.close();
-		} catch (Exception e1) {
-			// something went wrong..
-			e1.printStackTrace();
-		}
 
-		try {
 			Object instance = programClass.newInstance();
+
+			if (!(instance instanceof Program))
+				throw new Exception();
 
 			Method method = programClass.getDeclaredMethod("run", graph.getClass());
 			method.setAccessible(true);
+
+			Stopwatch stopwatch = Stopwatch.createStarted();
+
 			method.invoke(instance, graph);
-			
+
+			runTime = stopwatch.elapsed().toMillis() / 1000.0;
+
 			Method getCommandsMethod = programClass.getMethod("getCommands");
 			getCommandsMethod.setAccessible(true);
-			
-			commands.addAll(((List<Command>)getCommandsMethod.invoke(instance)));
+
+			commands.addAll(((List<Command>) getCommandsMethod.invoke(instance)));
 		} catch (Exception e1) {
-			// something went wrong..
-			e1.printStackTrace();
+			result.setSuccessful(false);
+			return result;
 		}
 		commands.addAll(graph.getCommands());
-		
+
 		Collections.sort(commands, Comparator.comparing(Command::getCommandOrder));
-		
-		return commands;
+
+		result.setSuccessful(true);
+		result.setCommands(commands);
+		result.setRunTime(runTime);
+
+		return result;
 	}
 }

@@ -1,8 +1,5 @@
 package panes;
 
-import java.util.List;
-
-import commands.Command;
 import editors.EditorType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
@@ -12,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import tools.CommandsRunner;
 import tools.ProgramRunner;
+import tools.RunResult;
 
 public class MainPane extends VBox {
 	private CodePane codePane;
@@ -99,20 +97,22 @@ public class MainPane extends VBox {
 
 		programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
 
-		
-		List<Command> commands = programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
+		RunResult runResult = programRunner.runProgram(codePane.getEditor().name, graphPane.getEditor().getGraph());
 
-		CommandsRunner commandsRunner = new CommandsRunner(commands, graphPane.getEditor().getGraph(),
-				runningControlPane, this);
+		if (runResult.isSuccessful()) {
+			CommandsRunner commandsRunner = new CommandsRunner(runResult.getCommands(), graphPane.getEditor().getGraph(),
+					runningControlPane, this);
 
-		startRunPreparation();
+			startRunPreparation(runResult);
 
-		commandsRunner.start();
+			commandsRunner.start();
+		}
 	}
 
-	private void startRunPreparation() {
+	private void startRunPreparation(RunResult runResult) {
 		runningControlPane.setDisable(false);
 		runningControlPane.setLabelVisibility(true);
+		runningControlPane.setRunningTime(runResult.getRunTime());
 
 		graphPane.getEditor().disableButtons();
 		codePane.getEditor().disableButtons();

@@ -33,8 +33,13 @@
     -fx-background-color: rgba(0,0,0,0.10);
 }
 
-.constraint-label {
+.transparent-background {
     -fx-background-color: rgba(0,0,0,0.10);
+}
+
+.round-corners {
+    -fx-border-radius: 5 5 5 5; 
+    -fx-background-radius: 5 5 5 5; 
 }
 
 .buttons-box {
