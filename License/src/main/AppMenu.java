@@ -15,6 +15,7 @@ public class AppMenu extends MenuBar {
 	private void init() {
 
 		Menu fileMenu = new Menu("File");
+		Menu browseMenu = new Menu("Browse");
 
 		Menu fileNewMenu = new Menu("New");
 		MenuItem newCodeEditorMenuItem = new MenuItem("New Program");
@@ -42,6 +43,14 @@ public class AppMenu extends MenuBar {
 
 		fileMenu.getItems().addAll(fileNewMenu, fileOpenMenu, saveMenuItem, exitMenuItem);
 		
-		this.getMenus().addAll(fileMenu);
+		MenuItem browseProgramsMenuItem = new MenuItem("Browse Programs");
+		MenuItem browseGraphsMenuItem = new MenuItem("Browse Graphs");
+		
+		browseProgramsMenuItem.setOnAction((event) -> app.handleBrowseCommand(EditorType.Code));
+		browseGraphsMenuItem.setOnAction((event) -> app.handleBrowseCommand(EditorType.Graph));
+		
+		browseMenu.getItems().addAll(browseProgramsMenuItem,browseGraphsMenuItem);
+		
+		this.getMenus().addAll(fileMenu,browseMenu);
 	}
 }

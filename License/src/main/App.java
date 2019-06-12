@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import panes.MainPane;
 import tools.http.ApiClient;
+import tools.http.browse.BrowsingWindow;
+import tools.http.models.ApiEntity;
 
 public class App extends Application {
 	private Stage primaryStage;
@@ -36,6 +38,10 @@ public class App extends Application {
 		primaryStage.setTitle("Aplicatie");
 		primaryStage.show();
 	}
+	
+	public void handleBrowseCommand(EditorType editorType) {
+		new BrowsingWindow(editorType);
+	}
 
 	public void handleSaveCommand() {
 		mainPane.save();
@@ -55,8 +61,6 @@ public class App extends Application {
 	}
 
 	public static void main(String[] args) {
-		ApiClient client = new ApiClient();
-		client.call();	
-		//launch(args);
+		launch(args);
 	}
 }

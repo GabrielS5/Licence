@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-sm bg-light">
   <ul class="navbar-nav">
-    <li routerLinkActive="active" class="nav-item"><a routerLink="/graphs">Graphs</a></li>
-    <li routerLinkActive="active" class="nav-item"><a routerLink="/programs">Programs</a></li>
+    <li *ngIf="loggedIn" routerLinkActive="active" class="nav-item"><a routerLink="/graphs">Graphs</a></li>
+    <li *ngIf="loggedIn" routerLinkActive="active" class="nav-item"><a routerLink="/programs">Programs</a></li>
+    <span *ngIf="loggedIn" class="logout" (click)="onLogout()">Logout</span>
   </ul>
 </nav>

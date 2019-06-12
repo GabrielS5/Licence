@@ -48,8 +48,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tools.LineArrowFactory;
 import tools.ProgramCompiler;
+import tools.http.ApiClient;
+import tools.http.models.ApiEntity;
 
 public class CodeEditor extends Editor {
+	private ApiClient apiClient;
 	private VBox node;
 	public CodeArea codeArea;
 	private IntegerProperty errorLine = new SimpleIntegerProperty(0);
@@ -57,11 +60,13 @@ public class CodeEditor extends Editor {
 	private Button formatButton;
 	private Button saveButton;
 	private Button runButton;
+	private Button uploadButton;
 	private TextField nameField;
 
 	public CodeEditor(String name) {
 		this.name = name;
 		this.modified = false;
+		apiClient = new ApiClient();
 
 		init();
 	}
@@ -92,6 +97,7 @@ public class CodeEditor extends Editor {
 		Image saveImage = new Image(getClass().getResourceAsStream("/resources/save.png"));
 		Image formatImage = new Image(getClass().getResourceAsStream("/resources/format.png"));
 		Image runImage = new Image(getClass().getResourceAsStream("/resources/run.png"));
+		Image uploadImage = new Image(getClass().getResourceAsStream("/resources/upload.png"));
 
 		HBox buttonsBox = new HBox();
 		buttonsBox.setMaxHeight(40);
@@ -113,6 +119,10 @@ public class CodeEditor extends Editor {
 		saveButton.setGraphic(new ImageView(saveImage));
 		saveButton.setTooltip(new Tooltip("Save"));
 
+		uploadButton = new Button("");
+		uploadButton.setGraphic(new ImageView(uploadImage));
+		uploadButton.setTooltip(new Tooltip("Upload your program"));
+
 		nameField = new TextField(this.name);
 		nameField.setMinWidth(150);
 		nameField.setMinHeight(28);
@@ -120,6 +130,7 @@ public class CodeEditor extends Editor {
 		compileButton.setOnAction((event) -> compileCode());
 		formatButton.setOnAction((event) -> formatCode());
 		saveButton.setOnAction((event) -> saveData());
+		uploadButton.setOnAction((event) -> exportData());
 
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setPadding(new Insets(0, 20, 0, 20));
@@ -127,7 +138,7 @@ public class CodeEditor extends Editor {
 		buttonsBox.setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
 				BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
 				CornerRadii.EMPTY, BorderStroke.THIN, Insets.EMPTY)));
-		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, saveButton, runButton);
+		buttonsBox.getChildren().addAll(nameField, compileButton, formatButton, runButton, uploadButton, saveButton);
 
 		VirtualizedScrollPane<CodeArea> pane = new VirtualizedScrollPane<>(codeArea);
 		pane.setPrefHeight(2000);
@@ -238,6 +249,14 @@ public class CodeEditor extends Editor {
 		}
 
 		this.setModified(false);
+	}
+
+	@Override
+	public void exportData() {
+		saveData();
+		new Thread(() -> {
+			apiClient.postProgram(new ApiEntity(name, codeArea.getText()));
+		}).start();
 	}
 
 	private void initializeProgram() {

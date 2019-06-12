@@ -1,16 +1,15 @@
-﻿using System;
+﻿using LicenceAPI.Models;
+using LicenceAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LicenceAPI.Context;
-using LicenceAPI.Models;
-using LicenceAPI.Services;
 
 namespace LicenceAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProgramsController : ControllerBase
@@ -66,17 +65,17 @@ namespace LicenceAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostProgram([FromBody] string text, [FromQuery] string name)
+        public async Task<IActionResult> PostProgram([FromBody] EntityDTO entity)
         {
-            var item = (await programsService.GetAll()).FirstOrDefault(f => f.Name == name);
+            var item = (await programsService.GetAll()).FirstOrDefault(f => f.Name == entity.Name);
 
             if (item != null)
                 return BadRequest();
 
             await programsService.Insert(new Models.Program()
             {
-                Name = name
-            }, text);
+                Name = entity.Name
+            }, entity.Text);
 
             return Ok();
         }

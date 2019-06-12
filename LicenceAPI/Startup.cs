@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LicenceAPI.Common;
 using LicenceAPI.Context;
 using LicenceAPI.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,9 +32,14 @@ namespace LicenceAPI
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddAuthentication("AdminAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, MyAuthenticationHandler>("AdminAuthentication", null);
+
             services.AddScoped<IGraphsService, GraphsService>();
             services.AddScoped<IProgramsService, ProgramsService>();
             services.AddScoped<IDatastoreService, DatastoreService>();
+            services.AddScoped<Services.IAuthenticationService, Services.AuthenticationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +59,8 @@ namespace LicenceAPI
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
+
+            app.UseAuthentication();
 
             //app.UseHttpsRedirection();
             app.UseMvc();

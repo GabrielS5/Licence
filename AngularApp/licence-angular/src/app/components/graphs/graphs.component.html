@@ -6,6 +6,6 @@
 
 <div class="row" *ngFor="let graph of graphs">
   <div class="col-sm-12">
-    <app-graph-item [pending]="pending" [graph]="graph"></app-graph-item>
+    <app-graph-item [pending]="pending" [graph]="graph" (modified)="fetchData()"></app-graph-item>
   </div>
 </div>

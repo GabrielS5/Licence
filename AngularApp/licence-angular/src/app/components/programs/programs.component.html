@@ -6,6 +6,6 @@
 
 <div class="row" *ngFor="let program of programs">
   <div class="col-sm-12">
-    <app-program-item [pending]="pending" [program]="program"></app-program-item>
+    <app-program-item [pending]="pending" [program]="program" (modified)="fetchData()"></app-program-item>
   </div>
 </div>

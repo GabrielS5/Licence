@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Program } from '../../../models/program';
 import { ApiCommunicator } from '../../../services/api-communicator.service';
 
@@ -8,6 +8,9 @@ import { ApiCommunicator } from '../../../services/api-communicator.service';
   styleUrls: ['./program-item.component.css']
 })
 export class ProgramItemComponent implements OnInit {
+  @Output() modified = new EventEmitter<void>();
+
+
   @Input()
   pending: boolean;
 
@@ -25,10 +28,14 @@ export class ProgramItemComponent implements OnInit {
   }
 
   onDelete() {
-    this.apiCommunicator.deleteProgram(this.program.id);
+    this.apiCommunicator.deleteProgram(this.program.id).subscribe(event => {
+      this.modified.emit();
+    });
   }
 
   onAccept() {
-    this.apiCommunicator.acceptProgram(this.program.id);
+    this.apiCommunicator.acceptProgram(this.program.id).subscribe(event => {
+      this.modified.emit();
+    });
   }
 }

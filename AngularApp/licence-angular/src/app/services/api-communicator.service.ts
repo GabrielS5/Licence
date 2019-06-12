@@ -17,11 +17,11 @@ export class ApiCommunicator {
   }
 
   public deleteGraph(id) {
-    this.http.delete(`${this.baseUrl}/graphs?id=` + id).subscribe();
+    return this.http.delete(`${this.baseUrl}/graphs?id=` + id);
   }
 
   public acceptGraph(id) {
-    this.http.get(`${this.baseUrl}/graphs/accept?id=` + id).subscribe();
+    return this.http.get(`${this.baseUrl}/graphs/accept?id=` + id);
   }
 
   public getAllPrograms(): Observable<Program[]> {
@@ -29,11 +29,11 @@ export class ApiCommunicator {
   }
 
   public deleteProgram(id) {
-    this.http.delete(`${this.baseUrl}/programs?id=` + id).subscribe();
+    return this.http.delete(`${this.baseUrl}/programs?id=` + id);
   }
 
   public acceptProgram(id) {
-    this.http.get(`${this.baseUrl}/programs/accept?id=` + id).subscribe();
+    return this.http.get(`${this.baseUrl}/programs/accept?id=` + id);
   }
 
   public getGraphBlob(id): Observable<any> {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Graph } from '../../../models/graph';
 import { ApiCommunicator } from '../../../services/api-communicator.service';
 
@@ -8,15 +8,17 @@ import { ApiCommunicator } from '../../../services/api-communicator.service';
   styleUrls: ['./graph-item.component.css']
 })
 export class GraphItemComponent implements OnInit {
-@Input()
-pending: boolean;
+  @Output() modified = new EventEmitter<void>();
 
-@Input()
-graph: Graph;
+  @Input()
+  pending: boolean;
 
-fileBody: string;
+  @Input()
+  graph: Graph;
 
-  constructor(private apiCommunicator: ApiCommunicator) { }
+  fileBody: string;
+
+  constructor(private apiCommunicator: ApiCommunicator) {}
 
   ngOnInit() {
     this.apiCommunicator.getGraphBlob(this.graph.id).subscribe(event => {
@@ -25,11 +27,14 @@ fileBody: string;
   }
 
   onDelete() {
-    this.apiCommunicator.deleteGraph(this.graph.id);
+    this.apiCommunicator.deleteGraph(this.graph.id).subscribe(event => {
+      this.modified.emit();
+    });
   }
 
   onAccept() {
-    this.apiCommunicator.acceptGraph(this.graph.id);
+    this.apiCommunicator.acceptGraph(this.graph.id).subscribe(event => {
+      this.modified.emit();
+    });
   }
-
 }

@@ -1,5 +1,7 @@
 package editors;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +33,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tools.SwitchButton;
+import tools.http.ApiClient;
+import tools.http.models.ApiEntity;
 
 public class GraphEditor extends Editor {
 
+	private ApiClient apiClient;
 	private GraphicGraph graph = new GraphicGraph();
 	private GraphEditMode editMode = GraphEditMode.AddingEdges;
 	private GraphicNode selectedNode = null;
@@ -46,10 +51,12 @@ public class GraphEditor extends Editor {
 	private SwitchButton directedSwitch;
 	private Button generateButton;
 	private Button deleteButton;
+	private Button uploadButton;
 
 	public GraphEditor(String name) {
 		this.name = name;
 		this.modified = false;
+		apiClient = new ApiClient();
 
 		init();
 	}
@@ -68,6 +75,7 @@ public class GraphEditor extends Editor {
 		Image editImage = new Image(getClass().getResourceAsStream("/resources/edit.png"));
 		Image generateImage = new Image(getClass().getResourceAsStream("/resources/generate.png"));
 		Image deleteImage = new Image(getClass().getResourceAsStream("/resources/delete.png"));
+		Image uploadImage = new Image(getClass().getResourceAsStream("/resources/upload.png"));
 
 		addingEdgesButton = new Button("");
 		addingEdgesButton.setGraphic(new ImageView(addEdgeImage));
@@ -97,6 +105,10 @@ public class GraphEditor extends Editor {
 		deleteButton.setGraphic(new ImageView(deleteImage));
 		deleteButton.setTooltip(new Tooltip("Delete components"));
 
+		uploadButton = new Button("");
+		uploadButton.setGraphic(new ImageView(uploadImage));
+		uploadButton.setTooltip(new Tooltip("Upload your graph"));
+
 		directedSwitch = new SwitchButton("Directed", "Undirected");
 		directedSwitch.getButton().setOnAction((event) -> handleDirectedSwitch());
 
@@ -106,9 +118,10 @@ public class GraphEditor extends Editor {
 		saveButton.setOnAction((event) -> saveData());
 		generateButton.setOnAction((event) -> new GenerationDialog(this));
 		deleteButton.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> handleDeleteButton(event));
+		uploadButton.setOnAction((event) -> exportData());
 
 		buttonsBox.getChildren().addAll(nameField, addingEdgesButton, addingNodesButton, editingValuesButton,
-				deleteButton, directedSwitch, generateButton, saveButton);
+				deleteButton, directedSwitch, generateButton, uploadButton, saveButton);
 
 		this.node = new VBox();
 		this.graph.getDisplay().setPrefSize(2000, 2000);
@@ -201,6 +214,24 @@ public class GraphEditor extends Editor {
 		graphIO.exportGraph(this.graph, "../Data/Graphs/" + name + ".graphml");
 
 		modified = false;
+	}
+
+	@Override
+	public void exportData() {
+		saveData();
+
+		new Thread(() -> {
+			StringBuffer stringBuffer = new StringBuffer();
+			try (FileInputStream fileInputStream = new FileInputStream("../Data/Graphs/" + name + ".graphml");
+					BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
+				while (bufferedInputStream.available() > 0) {
+					stringBuffer.append((char) bufferedInputStream.read());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			apiClient.postGraph(new ApiEntity(name, stringBuffer.toString()));
+		}).start();
 	}
 
 	public void generateGraph(List<Constraint> constraints) {
