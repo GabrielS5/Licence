@@ -58,7 +58,7 @@ public class BrowsingWindow extends Stage {
 		this.setTitle("Browser");
 		this.initStyle(StageStyle.UTILITY);
 		Scene scene = new Scene(vBox, 550, 400);
-		scene.getStylesheets().add(this.getClass().getResource("/resources/java-keywords.css").toExternalForm());
+		scene.getStylesheets().add(this.getClass().getResource("/resources/styleSheet.css").toExternalForm());
 		this.setScene(scene);
 		this.show();
 	}

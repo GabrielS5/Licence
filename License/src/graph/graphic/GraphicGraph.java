@@ -18,11 +18,14 @@ public class GraphicGraph {
 		this.makeDraggable(node);
 		this.canvas.getChildren().add(node);
 		this.nodes.add(node);
+		
+		resetCanvas(); 
 	}
 
 	public void addEdge(GraphicEdge edge) {
 		this.canvas.getChildren().add(edge);
 		this.edges.add(edge);
+		resetCanvas(); 
 	}
 
 	public FlexibleCanvas getDisplay() {
@@ -137,7 +140,7 @@ public class GraphicGraph {
 
 	public void resetCanvas() {
 		canvas.getChildren().clear();
-		canvas.getChildren().addAll(nodes);
 		canvas.getChildren().addAll(edges);
+		canvas.getChildren().addAll(nodes);
 	}
 }

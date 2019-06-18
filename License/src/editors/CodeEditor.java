@@ -47,6 +47,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tools.LineArrowFactory;
+import tools.MiscTools;
 import tools.ProgramCompiler;
 import tools.http.ApiClient;
 import tools.http.models.ApiEntity;
@@ -159,45 +160,36 @@ public class CodeEditor extends Editor {
 	}
 
 	private StyleSpans<Collection<String>> computeHighlighting(String text) {
-		Matcher matcher = PATTERN.matcher(text);
-		int lastKwEnd = 0;
-		StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+		Matcher matcher = MiscTools.getCodeEditorPattern().matcher(text);
+		int lastEnd = 0;
+		StyleSpansBuilder<Collection<String>> styleSpansBuilder = new StyleSpansBuilder<>();
+		
 		while (matcher.find()) {
-			String styleClass = matcher.group("KEYWORD") != null ? "keyword"
-					: matcher.group("PAREN") != null ? "paren"
-							: matcher.group("BRACE") != null ? "brace"
-									: matcher.group("BRACKET") != null ? "bracket"
-											: matcher.group("SEMICOLON") != null ? "semicolon"
-													: matcher.group("STRING") != null ? "string"
-															: matcher.group("COMMENT") != null ? "comment" : null;
-			/* never happens */ assert styleClass != null;
-			spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
-			spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
-			lastKwEnd = matcher.end();
+			String style = null;
+			
+			if(matcher.group("Keyword") != null)
+				style = "keyword";
+			else if(matcher.group("RoundParanthesis") != null)
+				style = "round-paranthesis";
+			else if(matcher.group("CurlyParanthesis") != null)
+				style = "curly-paranthesis";
+			else if(matcher.group("SquareParanthesis") != null)
+				style = "square-paranthesis";
+			else if(matcher.group("PointComma") != null)
+				style = "bold";
+			else if(matcher.group("String") != null)
+				style = "string";
+			else if(matcher.group("SingleLineComment") != null || matcher.group("MultipleLineComment") != null)
+				style = "comment";
+
+			assert style != null;
+			styleSpansBuilder.add(Collections.emptyList(), matcher.start() - lastEnd);
+			styleSpansBuilder.add(Collections.singleton(style), matcher.end() - matcher.start());
+			lastEnd = matcher.end();
 		}
-		spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
-		return spansBuilder.create();
+		styleSpansBuilder.add(Collections.emptyList(), text.length() - lastEnd);
+		return styleSpansBuilder.create();
 	}
-
-	private static final String[] KEYWORDS = new String[] { "abstract", "assert", "boolean", "break", "byte", "case",
-			"catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
-			"final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface",
-			"long", "native", "new", "package", "private", "protected", "public", "return", "short", "static",
-			"strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void",
-			"volatile", "while" };
-
-	private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-	private static final String PAREN_PATTERN = "\\(|\\)";
-	private static final String BRACE_PATTERN = "\\{|\\}";
-	private static final String BRACKET_PATTERN = "\\[|\\]";
-	private static final String SEMICOLON_PATTERN = "\\;";
-	private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-	private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
-
-	private static final Pattern PATTERN = Pattern.compile(
-			"(?<KEYWORD>" + KEYWORD_PATTERN + ")" + "|(?<PAREN>" + PAREN_PATTERN + ")" + "|(?<BRACE>" + BRACE_PATTERN
-					+ ")" + "|(?<BRACKET>" + BRACKET_PATTERN + ")" + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
-					+ "|(?<STRING>" + STRING_PATTERN + ")" + "|(?<COMMENT>" + COMMENT_PATTERN + ")");
 
 	@Override
 	public void loadData(String path) {
@@ -239,11 +231,11 @@ public class CodeEditor extends Editor {
 
 		file = new File("../Data/Programs/" + name + ".java");
 
-		try (FileOutputStream fos = new FileOutputStream(file);
-				BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream(file);
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
 			String text = getText();
-			bos.write(text.getBytes());
-			bos.flush();
+			bufferedOutputStream.write(text.getBytes());
+			bufferedOutputStream.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,6 +294,7 @@ public class CodeEditor extends Editor {
 		formatButton.setDisable(true);
 		saveButton.setDisable(true);
 		runButton.setDisable(true);
+		uploadButton.setDisable(true);
 	}
 
 	public void enableButtons() {
@@ -309,6 +302,7 @@ public class CodeEditor extends Editor {
 		formatButton.setDisable(false);
 		saveButton.setDisable(false);
 		runButton.setDisable(false);
+		uploadButton.setDisable(false);
 	}
 
 	public Button getRunButton() {

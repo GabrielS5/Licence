@@ -12,7 +12,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
             console.log(user);
             request = request.clone({
                 setHeaders: {
-                    Authorization: window.btoa(user.name + ':' + user.password)
+                    Authorization: `Basic ` + window.btoa(user.name + ':' + user.password)
                 }
             });
         }

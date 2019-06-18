@@ -32,10 +32,10 @@ public class App extends Application {
 		mainPane.prefWidthProperty().bind(scene.widthProperty());
 		mainPane.prefHeightProperty().bind(scene.heightProperty());
 
-		scene.getStylesheets().add(this.getClass().getResource("/resources/java-keywords.css").toExternalForm());
+		scene.getStylesheets().add(this.getClass().getResource("/resources/styleSheet.css").toExternalForm());
 
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Aplicatie");
+		primaryStage.setTitle("AlgoGraph");
 		primaryStage.show();
 	}
 	

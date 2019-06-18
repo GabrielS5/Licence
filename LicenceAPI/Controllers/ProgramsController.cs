@@ -28,6 +28,7 @@ namespace LicenceAPI.Controllers
             return Ok(await programsService.GetAll());
         }
 
+        [AllowAnonymous]
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<Graph>>> GetActiveGraphs()
         {
@@ -63,7 +64,7 @@ namespace LicenceAPI.Controllers
             return Ok();
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> PostProgram([FromBody] EntityDTO entity)
         {

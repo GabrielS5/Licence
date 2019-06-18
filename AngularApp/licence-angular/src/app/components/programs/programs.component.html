@@ -5,7 +5,7 @@
 </button>
 
 <div class="row" *ngFor="let program of programs">
-  <div class="col-sm-12">
+  <div class="col-sm-12 program-item">
     <app-program-item [pending]="pending" [program]="program" (modified)="fetchData()"></app-program-item>
   </div>
 </div>

@@ -32,8 +32,6 @@ namespace LicenceAPI.Common
         {
             try
             {
-                string authHeader = Request.Headers["Authorization"];
-                var auth = Request.Headers["authorization"];
                 var credentials = Encoding.UTF8.GetString(Convert
                                           .FromBase64String(AuthenticationHeaderValue
                                           .Parse(Request.Headers["Authorization"]).Parameter))
@@ -42,7 +40,7 @@ namespace LicenceAPI.Common
                 var name = credentials[0];
                 var password = credentials[1];
 
-                var user = authenticationService.Login(new User {Name= name, Password= password });
+                var user = authenticationService.Login(new User { Name = name, Password = password });
 
                 var identity = new ClaimsIdentity(new[] {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

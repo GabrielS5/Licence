@@ -325,6 +325,7 @@ public class GraphEditor extends Editor {
 		directedSwitch.setDisable(true);
 		generateButton.setDisable(true);
 		deleteButton.setDisable(true);
+		uploadButton.setDisable(true);
 	}
 
 	public void enableButtons() {
@@ -335,6 +336,7 @@ public class GraphEditor extends Editor {
 		directedSwitch.setDisable(false);
 		generateButton.setDisable(false);
 		deleteButton.setDisable(false);
+		uploadButton.setDisable(false);
 	}
 
 	private void replaceName(String name) {
