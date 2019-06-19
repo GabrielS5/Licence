@@ -73,7 +73,7 @@ public class GenerationDialog extends Stage {
 		this.setTitle("Graph Generator");
 		this.initStyle(StageStyle.UTILITY);
 		Scene scene = new Scene(vBox, 600, 400);
-		scene.getStylesheets().add(this.getClass().getResource("/resources/java-keywords.css").toExternalForm());
+		scene.getStylesheets().add(this.getClass().getResource("/resources/styleSheet.css").toExternalForm());
 		this.setScene(scene);
 		this.show();
 	}

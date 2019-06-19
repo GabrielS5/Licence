@@ -48,9 +48,7 @@ public class CommandsRunner extends Thread {
 
 				if (runningMode == RunningMode.Exit) {
 					break;
-				}
-
-				if (runningMode != RunningMode.Automatic) {
+				} else if (runningMode == RunningMode.Manual) {
 					setRunningMode(RunningMode.Pause);
 				}
 

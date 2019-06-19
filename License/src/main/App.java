@@ -3,9 +3,13 @@ package main;
 import editors.EditorType;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import panes.MainPane;
+import tools.http.ApiClient;
+import tools.http.browse.BrowsingWindow;
+import tools.http.models.ApiEntity;
 
 public class App extends Application {
 	private Stage primaryStage;
@@ -29,11 +33,16 @@ public class App extends Application {
 		mainPane.prefWidthProperty().bind(scene.widthProperty());
 		mainPane.prefHeightProperty().bind(scene.heightProperty());
 
-		scene.getStylesheets().add(this.getClass().getResource("/resources/java-keywords.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/resources/styleSheet.css").toExternalForm());
 
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Aplicatie");
+		primaryStage.setTitle("AlgoGraph");
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/icon.png")));
 		primaryStage.show();
+	}
+	
+	public void handleBrowseCommand(EditorType editorType) {
+		new BrowsingWindow(editorType);
 	}
 
 	public void handleSaveCommand() {

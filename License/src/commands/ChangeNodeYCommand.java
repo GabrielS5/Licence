@@ -16,7 +16,7 @@ public class ChangeNodeYCommand extends Command {
 	@Override
 	public void run(GraphicGraph graph, int duration) {
 		GraphicNode node = graph.getNodeById(id);
-		int divizor = duration / 10;
+		int divizor = duration / 20;
 		
 		double yIncrement = (y - node.getY()) / divizor;
 

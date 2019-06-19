@@ -1,0 +1,15 @@
+<div class="row justify-content-center">
+    <div class="login-form">
+        <div class="row">
+            <label for="username">Username</label>
+            <input type="text" class="form-control"  [(ngModel)]="name"/>
+        </div>
+        <div class="row">
+            <label for="username">Password</label>
+            <input type="password" class="form-control" [(ngModel)]="password"/>
+        </div>
+        <div class="row">
+            <button class="btn btn-info login-button" (click)="onClick()">Login</button>
+        </div>
+    </div>
+</div>

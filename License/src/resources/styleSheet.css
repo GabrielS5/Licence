@@ -1,24 +1,25 @@
 .keyword {
     -fx-fill: purple;
-    -fx-font-weight: bold;
 }
-.semicolon {
-    -fx-font-weight: bold;
-}
-.paren {
+.round-paranthesis {
     -fx-fill: firebrick;
-    -fx-font-weight: bold;
 }
-.bracket {
+.square-paranthesis {
     -fx-fill: darkgreen;
-    -fx-font-weight: bold;
 }
-.brace {
+.curly-paranthesis {
     -fx-fill: teal;
-    -fx-font-weight: bold;
 }
 .string {
     -fx-fill: blue;
+}
+
+.bolt-text {
+    -fx-font-weight: bold;
+}
+
+.keyword, .round-paranthesis, .square-paranthesis, curly-paranthesis {
+    -fx-font-weight: bold;
 }
 
 .comment {

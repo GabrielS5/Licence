@@ -1,6 +1,7 @@
 package tools;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import graph.graphic.GraphicNode;
 import javafx.beans.binding.Bindings;
@@ -18,18 +19,32 @@ public final class MiscTools {
 
 		return fileToOpen.getAbsolutePath();
 	}
+	
+	public static Pattern getCodeEditorPattern() {
+		String[] KEYWORDS = new String[] { "abstract", "assert", "boolean", "break", "byte", "case",
+				"catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
+				"final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface",
+				"long", "native", "new", "package", "private", "protected", "public", "return", "short", "static",
+				"strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void",
+				"volatile", "while" };
+		
+		return Pattern.compile("(?<Keyword>\\b(" + String.join("|", KEYWORDS) + ")\\b)"
+				+ "|(?<RoundParanthesis>\\(|\\))" + "|(?<CurlyParanthesis>\\{|\\})" + "|(?<SquareParanthesis>\\[|\\])"
+				+ "|(?<PointComma>\\;)" + "|(?<String>\"([^\"\\\\]|\\\\.)*\")" + "|(?<SingleLineComment>//[^\\n]*)"
+				+ "|(?<MultipleLineComment>/\\*(.|\\R)*?\\*/)");
+	}
 
 	public static Pair<Line, Line> createArrowHead(GraphicNode source, GraphicNode destination) {
 		Line arrowLine1 = new Line(), arrowLine2 = new Line();
 
 		DoubleBinding arrowLineXEndBinding = Bindings.createDoubleBinding(() -> {
-			double distance = (source.xProperty.get() - destination.xProperty.get()) / 10;
+			double distance = (source.xProperty.get() - destination.xProperty.get()) / 4;
 
 			return destination.xProperty.get() + distance;
 		}, destination.xProperty, source.xProperty);
 
 		DoubleBinding arrowLineYEndBinding = Bindings.createDoubleBinding(() -> {
-			double distance = (source.yProperty.get() - destination.yProperty.get()) / 10;
+			double distance = (source.yProperty.get() - destination.yProperty.get()) / 4;
 
 			return destination.yProperty.get() + distance;
 		}, destination.yProperty, source.yProperty);
@@ -70,8 +85,8 @@ public final class MiscTools {
 	private static double calculateArrowX(double sourceX, double sourceY, double destinationX, double destinationY,
 			double orientation) {
 		double lineHypot = Math.hypot(sourceX - destinationX, sourceY - destinationY);
-		destinationX = destinationX + (sourceX - destinationX) / 10;
-		destinationY = destinationY + (sourceY - destinationY) / 10;
+		destinationX = destinationX + (sourceX - destinationX) / 4;
+		destinationY = destinationY + (sourceY - destinationY) / 4;
 
 		double dx = (sourceX - destinationX) * 10 / lineHypot;
 		double oy = (sourceY - destinationY) * 5 / lineHypot;
@@ -82,8 +97,8 @@ public final class MiscTools {
 	private static double calculateArrowY(double sourceX, double sourceY, double destinationX, double destinationY,
 			double orientation) {
 		double lineHypot = Math.hypot(sourceX - destinationX, sourceY - destinationY);
-		destinationX = destinationX + (sourceX - destinationX) / 10;
-		destinationY = destinationY + (sourceY - destinationY) / 10;
+		destinationX = destinationX + (sourceX - destinationX) / 4;
+		destinationY = destinationY + (sourceY - destinationY) / 4;
 
 		double dy = (sourceY - destinationY) * 10 / lineHypot;
 		double ox = (sourceX - destinationX) * 5 / lineHypot;

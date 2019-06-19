@@ -1,0 +1,12 @@
+.category {
+    margin: 30px;
+}
+
+.button-content{
+    width: 150px;
+    display: inline-block; 
+}
+
+.graph-item {
+    margin-top: 10px;
+}

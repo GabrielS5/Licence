@@ -54,7 +54,10 @@ public class GraphColoring extends Program {
       List<Node> neighbours = node.getAllNeighbours();
       Color color = findUnusedColor(neighbours, colors);
       node.setColor(color);
-	println("Ceva printat");
+for(int i = 0;i < 100000;i++){
+i++;
+}
+      println("Ceva printat");
     }
   }
 }

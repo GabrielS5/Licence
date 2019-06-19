@@ -1,0 +1,25 @@
+.nav-item {
+  padding: 20px;
+}
+
+.navbar {
+  padding: 0px;
+}
+
+.nav-item:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+a {
+  cursor: default;
+  text-decoration: none;
+  font-size: 23px;
+}
+
+.logout {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 10px;
+}
