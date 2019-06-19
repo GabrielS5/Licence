@@ -3,6 +3,7 @@ package main;
 import editors.EditorType;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import panes.MainPane;
@@ -32,10 +33,11 @@ public class App extends Application {
 		mainPane.prefWidthProperty().bind(scene.widthProperty());
 		mainPane.prefHeightProperty().bind(scene.heightProperty());
 
-		scene.getStylesheets().add(this.getClass().getResource("/resources/styleSheet.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/resources/styleSheet.css").toExternalForm());
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("AlgoGraph");
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/icon.png")));
 		primaryStage.show();
 	}
 	

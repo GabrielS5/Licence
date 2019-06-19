@@ -13,7 +13,7 @@ namespace LicenceAPI.Services
 
         public DatastoreService()
         {
-            string storageConnectionString = Environment.GetEnvironmentVariable("storageconnectionstring");
+            string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=licencestorageaccount;AccountKey=MZFXTV0Tsl3td5NifLNaxZxuiBF62yDVDTA7nB3h2SCfeiEfRCCNoWuC/4cF5DZqfRoUQ0p74oegFuGM9cVUvw==;EndpointSuffix=core.windows.net";
 
             CloudStorageAccount.TryParse(storageConnectionString, out storageAccount);
             CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
