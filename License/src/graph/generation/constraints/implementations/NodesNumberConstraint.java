@@ -19,3 +19,4 @@ public class NodesNumberConstraint extends DoubleValueConstraint {
 		return ConstraintFeedback.Complete;
 	}
 }
+

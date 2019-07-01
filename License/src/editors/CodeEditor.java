@@ -73,13 +73,13 @@ public class CodeEditor extends Editor {
 	}
 
 	private void init() {
+		
 		codeArea = new CodeArea();
 		codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-
 		codeArea.multiPlainChanges().successionEnds(Duration.ofMillis(500))
 				.subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
 
-		this.codeArea.onKeyReleasedProperty().set((event) -> this.setModified(true));
+		codeArea.onKeyReleasedProperty().set((event) -> this.setModified(true));
 
 		IntFunction<Node> lineNumbers = LineNumberFactory.get(codeArea);
 		IntFunction<Node> errorLines = new LineArrowFactory(errorLine);
@@ -89,7 +89,6 @@ public class CodeEditor extends Editor {
 			hbox.setAlignment(Pos.CENTER_LEFT);
 			return hbox;
 		};
-
 		codeArea.setParagraphGraphicFactory(graphics);
 
 		node = new VBox();
@@ -179,7 +178,8 @@ public class CodeEditor extends Editor {
 				style = "bold";
 			else if(matcher.group("String") != null)
 				style = "string";
-			else if(matcher.group("SingleLineComment") != null || matcher.group("MultipleLineComment") != null)
+			else if(matcher.group("SingleLineComment") != null 
+					|| matcher.group("MultipleLineComment") != null)
 				style = "comment";
 
 			assert style != null;
@@ -274,10 +274,13 @@ public class CodeEditor extends Editor {
 	}
 
 	public void formatCode() {
-		Formatter formatter = new Formatter();
 
 		try {
-			this.setText(formatter.formatSource(getText()));
+			
+			Formatter formatter = new Formatter();
+			String formattedText = formatter.formatSource(getText());
+			this.setText(formattedText);
+			
 		} catch (FormatterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

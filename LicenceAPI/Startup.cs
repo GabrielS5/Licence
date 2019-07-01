@@ -36,9 +36,12 @@ namespace LicenceAPI
             services.AddAuthentication("AdminAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, MyAuthenticationHandler>("AdminAuthentication", null);
 
+
             services.AddScoped<IGraphsService, GraphsService>();
             services.AddScoped<IProgramsService, ProgramsService>();
             services.AddScoped<IDatastoreService, DatastoreService>();
+
+
             services.AddScoped<Services.IAuthenticationService, Services.AuthenticationService>();
         }
 

@@ -50,7 +50,6 @@ public class MainPane extends VBox {
 		this.codePane.setOnMouseClicked((event) -> this.hideShowEditor(event, codePane));
 
 		this.getChildren().addAll(controls, display);
-
 	}
 
 	public void save() {

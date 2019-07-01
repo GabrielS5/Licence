@@ -19,15 +19,17 @@ public class ProgramRunner {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public RunResult runProgram(String program, GraphicGraph graphicGraph) {
+		File directory = new File("../Data/Programs");
+		
 		Class<?> programClass = null;
 		List<Command> commands = new ArrayList<Command>();
 		Graph graph = new Graph(graphicGraph);
 		RunResult result = new RunResult();
 		double runTime;
-
-		File directory = new File("../Data/Programs");
+		
 		try {
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { directory.toURL() });
+			URLClassLoader classLoader = new URLClassLoader(
+												new URL[] {directory.toURL() });
 			programClass = classLoader.loadClass(program);
 			classLoader.close();
 
@@ -53,6 +55,7 @@ public class ProgramRunner {
 			result.setSuccessful(false);
 			return result;
 		}
+		
 		commands.addAll(graph.getCommands());
 
 		Collections.sort(commands, Comparator.comparing(Command::getCommandOrder));

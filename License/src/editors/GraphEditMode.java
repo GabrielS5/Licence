@@ -1,8 +1,11 @@
 package editors;
 
-public enum GraphEditMode {
-	AddingNodes,
-	AddingEdges,
-	EditingValues,
-	Deleting
-}
+	public enum GraphEditMode {
+		AddingNodes,
+		AddingEdges,
+		EditingValues,
+		Deleting
+	}
+
+	
+	

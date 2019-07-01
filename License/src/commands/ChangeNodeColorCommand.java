@@ -25,6 +25,5 @@ public class ChangeNodeColorCommand extends Command {
 		node.setColor(color);
 		
 		fill.play();
-
 	}
 }

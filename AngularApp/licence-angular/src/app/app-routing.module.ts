@@ -7,11 +7,6 @@ import { AuthenticationGuard } from './auth/authentication.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    component: ProgramsComponent,
-    canActivate: [AuthenticationGuard]
-  },
-  {
     path: 'graphs',
     component: GraphsComponent,
     canActivate: [AuthenticationGuard]

@@ -29,6 +29,32 @@ namespace LicenceAPI.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> PostGraph([FromBody] EntityDTO entity)
+        {
+            var item = (await graphsService.GetAll())
+                             .FirstOrDefault(f => f.Name == entity.Name);
+
+            if (item != null)
+                return BadRequest();
+
+            await graphsService.Insert(new Graph()
+            {
+                Name = entity.Name
+            }, entity.Text);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteGraph([FromQuery] Guid id)
+        {
+            await graphsService.Delete(id);
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<EntityDTO>>> GetActiveGraphs()
         {
@@ -60,31 +86,6 @@ namespace LicenceAPI.Controllers
             graph.Pending = false;
 
             await graphsService.Update(graph);
-
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> PostGraph([FromBody] EntityDTO entity)
-        {
-            var item = (await graphsService.GetAll()).FirstOrDefault(f => f.Name == entity.Name);
-
-            if (item != null)
-                return BadRequest();
-
-            await graphsService.Insert(new Graph()
-            {
-                Name = entity.Name
-            }, entity.Text);
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteGraph([FromQuery] Guid id)
-        {
-            await graphsService.Delete(id);
 
             return Ok();
         }
